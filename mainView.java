@@ -1,16 +1,29 @@
 package view
 
+import java.util.Scanner;
+import java.util.Calendar;
 
-// As a Volunteer I want to sign up for a job
+import model.Job;
+import model.JobCollection;
+import model.User;
+import model.UserCollection;
 
-// As a Park Manager I want to submit a new job
+/***
+	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
 
-// As a User I want to be identified by the system
+	@author: rrki@uw.edu
+	@date: 2/8/2018
+*/
 
 public class mainView() {
 
+	private static final JOB_LIST_START = 0;
+	private static final JOB_LIST_END = 5;
+
+
 	Scanner myScanner = new Scanner(System.in);
 	String myInputPrompt = "Please enter the number corresponding with your menu choice:"
+	JobCollection myJobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
 	User myUser;
 
 	// entrypoint
@@ -43,14 +56,33 @@ public class mainView() {
 
 		System.out.println("Please enter a start date and time for this job:");
 		Calendar start = new Calendar(scanner.nextLine());
-
+		System.out.println("Please enter an end date and time for this job:");
+		Calendar end = new Calendar(scanner.nextLine());
+		System.out.println("Please enter a description:");
+		String description = scanner.nextLine();
+		Job newJob = new Job(description, start, end);
+		myJobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
+		System.out.println("Your job has been created! Press any button to continue...");
+		char tempInput = scanner.nextChar;
+		showMainMenu();
 
 	} // end showSubmitNewJobMenu
 
 
 	private static showSignupForJobMenu() {
 
+		System.out.println("Select a job from the list below to sign up for, input the corresponding number, and press enter:");
+		for(int i = JOB_LIST_START; i < JOB_LIST_END; i++) {
+			currJob = myJobCollection.get(i);
+			System.out.println(i + ": " + currJob.toString());
+		}
 
+		String choice = scanner.nextLine();
+		selectedJob = myJobCollection.getJob(Integer.parseInt(choice));
+		volunteersList = selectedJob.getVolunteersList();
+		volunteersList.add(myUser);
+		System.out.println("You are now signed up for job " + selectedJob.toString());
+		showMainMenu();
 
 	} // end showSignupForJobMenu
 
