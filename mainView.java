@@ -12,7 +12,7 @@ import model.UserCollection;
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
 
 	@author: rrki@uw.edu
-	@date: 2/8/2018
+	@version: 2/8/2018
 */
 
 public class mainView() {
@@ -49,6 +49,9 @@ public class mainView() {
 
 		case '3':
 			System.exit(0);
+
+		default:
+			System.out.println(choice + " is not valid input");
 	}
 
 
@@ -60,11 +63,16 @@ public class mainView() {
 		Calendar end = new Calendar(scanner.nextLine());
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
-		Job newJob = new Job(description, start, end);
-		myJobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
-		System.out.println("Your job has been created! Press any button to continue...");
-		char tempInput = scanner.nextChar;
-		showMainMenu();
+
+		try {
+			Job newJob = new Job(description, start, end);
+			myJobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
+			System.out.println("Your job has been created! Press any button to continue...");
+			char tempInput = scanner.nextChar;
+			showMainMenu();
+		} catch () { // TODO: Job collection person, add business rules in story 2 here
+
+		}
 
 	} // end showSubmitNewJobMenu
 
@@ -72,18 +80,24 @@ public class mainView() {
 	private static showSignupForJobMenu() {
 
 		System.out.println("Select a job from the list below to sign up for, input the corresponding number, and press enter:");
-		for(int i = JOB_LIST_START; i < JOB_LIST_END; i++) {
+		for(int i = JOB_LIST_START; i < myJobCollection.size(); i++) { // TODO: JobCollection person, whatever your internal workings are, make them work here
+			// TODO: Job person, fill in whatever your field names are here
 			currJob = myJobCollection.get(i);
 			System.out.println(i + ": " + currJob.toString());
 		}
 
 		String choice = scanner.nextLine();
-		selectedJob = myJobCollection.getJob(Integer.parseInt(choice));
-		volunteersList = selectedJob.getVolunteersList();
-		volunteersList.add(myUser);
-		System.out.println("You are now signed up for job " + selectedJob.toString());
-		showMainMenu();
+		
+		try {
+			selectedJob = myJobCollection.getJob(Integer.parseInt(choice));
+			volunteersList = selectedJob.getVolunteersList();
+			volunteersList.add(myUser);
+			System.out.println("You are now signed up for job " + selectedJob.toString());
+			showMainMenu();
+		} catch () { // TODO: Volunteer person, put the exception type here that triggers on business rule
 
+		}
+		
 	} // end showSignupForJobMenu
 
 
@@ -99,6 +113,10 @@ public class mainView() {
 			switch(choice) {
 				case '1':
 					showSubmitNewJobMenu();
+					break;
+				default:
+					System.out.println(choice + " is not valid input");
+					showMainMenu();
 			}
 
 		} // end Park Manager options
@@ -113,6 +131,10 @@ public class mainView() {
 			switch(choice) {
 				case '1':
 					showSignupForJobMenu();
+					break;
+				default:
+					System.out.println(char + " is not valid input");
+					showMainMenu();
 			}
 
 		} // end Volunteer options
@@ -142,18 +164,29 @@ public class mainView() {
 		switch(choice) {
 
 			case '1':
-				System.out.println("Welcome, volunteer " + firstName + "!");
-				Volunteer newVolunteer = Volunteer(email, firstName, lastName, phone);
-				myUser = newVolunteer;
-				showMainMenu();
+				try {
+					Volunteer newVolunteer = Volunteer(email, firstName, lastName, phone);
+					myUser = newVolunteer;
+					System.out.println("Welcome, volunteer " + firstName + "!");
+					showMainMenu();
+				} catch () { 
+					// TODO: Volunteer class person - put the correct type of exception and descriptive text here
+				}
 				break;
 
 			case '2': 
-				System.out.println("Welcome, park manager " + firstName + "!");
-				ParkManager newParkManager = ParkManager(email, firstName, lastName, phone);
-				myUser = newParkManager;
-				showMainMenu();
+				try {
+					ParkManager newParkManager = ParkManager(email, firstName, lastName, phone);
+					myUser = newParkManager;
+					System.out.println("Welcome, park manager " + firstName + "!");
+					showMainMenu();
+				} catch () {
+					// TODO: ParkManager class person - put the correct type of exception and descriptive text here
+				}
+				
 				break;
+			default:
+				showSignupMenu();
 
 		} // end switch
 
