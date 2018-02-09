@@ -1,13 +1,14 @@
 package classes;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.TreeSet;
 
 /**
- * Class that represents a single job.
+ * This class represents a job with its all information.
  * 
  * @author Abderisaq Tarabi
+ * @version 2/8/2018
  *
  */
 public class Job implements Serializable {
@@ -15,29 +16,28 @@ public class Job implements Serializable {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 928850375626876361L;
 
-	/** The job description. */
 	private String myDescription;
 	
-	/** The job start date and time. */
 	private Calendar myStartDateTime;
 	
-	/** The job end date and time. */
 	private Calendar myEndDateTime;
 	
-	/** The job located at the park. */
-	private ParkManager myParkManager;
+	/** The park manager email address. */
+	private String myManager;
 	
-	/** The workload light, medium and heavy. */
-	private int[] myWorkLoad;
+	private int myLight;
 	
-	/** The job is cancelled or not. */
-	private boolean myCancelled;
+	private int myMedium;
 	
-	/** A list of all volunteers of this job. */
-	private ArrayList<Volunteer> myVolunteersList;
+	private int myHeavy;
 	
-	/** The minimum required of volunteers. */
-	private int myMinVolunteers;
+	/** The job status and weather it cancelled or not. */
+	private boolean myStatus;
+	
+	/** A list of all volunteers email whom volunteer for this job. */
+	private TreeSet<String> myVolunteersList;
+	
+	private int myMinimumVolunteers;
 	
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -45,25 +45,24 @@ public class Job implements Serializable {
 	 * @param theDescription the job description.
 	 * @param theStartDateTime the job start date and time.
 	 * @param theEndDateTime the job end date and time.
-	 * @param theParkManager the park.
+	 * @param theParkManager the park manager email.
 	 * @param theLight the number of volunteers required for light workload.
 	 * @param theMediumm the number of volunteers required for medium workload.
 	 * @param theHeavy the number of volunteers required for heavy workload.
 	 * @param theMinVolunteers the minimum number of volunteers required for this job.
 	 */
-	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, final ParkManager theParkManager, 
-			   final int theLight, final int theMediumm, final int theHeavy, final int theMinVolunteers) {
+	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, final String theManager, 
+			   final int theLight, final int theMedium, final int theHeavy, final int theMinVolunteers) {
 		setDescription(theDescription);
 		setStartDateTime(theStartDateTime);
 		setEndDateTime(theEndDateTime);
-		setParkManager(theParkManager);
-		myWorkLoad = new int[3];
-		setWorkLoad(0, theLight);
-		setWorkLoad(1, theMediumm);
-		setWorkLoad(2, theHeavy);
-		myCancelled = false;
-		myVolunteersList = new ArrayList<Volunteer>();
-		setMinVolunteers(theMinVolunteers);
+		setManager(theManager);
+		setLight(theLight);
+		setMedium(theMedium);
+		setHeavy(theHeavy);
+		myStatus = false;
+		myVolunteersList = new TreeSet<String>();
+		setMinimumVolunteers(theMinVolunteers);
 	}
 
 	/**
@@ -121,60 +120,91 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Return the park manager.
+	 * Return the job manager email.
 	 * 
 	 * @return the park manager.
 	 */
-	public Administrator getManager() {
-		return myParkManager;
+	public String getManager() {
+		return myManager;
 	}
 
 	/**
-	 * Change the park manager.
+	 * Change the job manager email.
 	 * 
-	 * @param theParkManager the park manager.
+	 * @param theManager the job manager email.
 	 */
-	public void setParkManager(final ParkManager theParkManager) {
-		myParkManager = theParkManager;
+	public void setManager(final String theManager) {
+		myManager = theManager;
 	}
 
 	/**
-	 * Return the number of volunteers who sign up for this workload.
+	 * The number of volunteers required for light workload.
 	 * 
-	 * @param theIndex the index of the workload level.
-	 * 
-	 * @return the workload value.
+	 * @return the number of volunteers for the light workload.
 	 */
-	public int getWorkLoad(final int theIndex) {
-		if (theIndex > 3) throw new IllegalArgumentException();
-		return myWorkLoad[theIndex];
+	public int getLight() {
+		return myLight;
 	}
 
 	/**
-	 * Change the workload value using the index.
+	 * Change the number of volunteers that required for light workload.
 	 * 
-	 * @param theIndex of the workload.
-	 * @param theValue of the value.
+	 * @param theLight the number of volunteers to do the light workload.
 	 */
-	public void setWorkLoad(final int theIndex, final int theValue) {
-		if (theIndex > 3) throw new IllegalArgumentException();
-		this.myWorkLoad[theIndex] = theValue;
+	public void setLight(int theLight) {
+		myLight = theLight;
 	}
-	
+
 	/**
-	 * Return the status of the job.
+	 * The number of volunteers required for medium workload.
+	 * 
+	 * @return the number of volunteers for the medium workload.
+	 */
+	public int getMedium() {
+		return myMedium;
+	}
+
+	/**
+	 * Change the number of volunteers that required for medium workload.
+	 * 
+	 * @param theLight the number of volunteers to do the medium workload.
+	 */
+	public void setMedium(int theMedium) {
+		myMedium = theMedium;
+	}
+
+	/**
+	 * The number of volunteers required for heavy workload.
+	 * 
+	 * @return the number of volunteers for the heavy workload.
+	 */
+	public int getHeavy() {
+		return myHeavy;
+	}
+
+	/**
+	 * Change the number of volunteers that required for heavy workload.
+	 * 
+	 * @param theLight the number of volunteers to do the heavy workload.
+	 */
+	public void setHeavy(int theHeavy) {
+		myHeavy = theHeavy;
+	}
+
+	/**
+	 * The status of the job false is it is active and true otherwise.
 	 * 
 	 * @return the status of the job.
 	 */
-	public boolean isCancelled() {
-		return myCancelled;
+	public boolean status() {
+		return myStatus;
 	}
 	
 	/**
 	 * Cancel this job.
 	 */
 	public void cancel() {
-		myCancelled = true;
+		myStatus = true;
 	}
 	
 	/**
@@ -182,11 +212,11 @@ public class Job implements Serializable {
 	 * 
 	 * @return all volunteers.
 	 */
-	public ArrayList<Volunteer> getVolunteersList() {
+	public TreeSet<String> getVolunteers() {
 		return myVolunteersList;
 	}
 	
-	public void addVolunteer(final Volunteer theVolunteer) {
+	public void addVolunteer(final String theVolunteer) {
 		myVolunteersList.add(theVolunteer);
 	}
 
@@ -195,17 +225,17 @@ public class Job implements Serializable {
 	 * 
 	 * @return minimum number of volunteers.
 	 */
-	public int getMinVolunteers() {
-		return myMinVolunteers;
+	public int getMinimumVolunteers() {
+		return myMinimumVolunteers;
 	}
 
 	/**
 	 * Change the minimum number of volunteers required for this job.
 	 * 
-	 * @param theMinVolunteers minimum number of volunteers.
+	 * @param theMinimumVolunteers minimum number of volunteers.
 	 */
-	public void setMinVolunteers(final int theMinVolunteers) {
-		myMinVolunteers = theMinVolunteers;
+	public void setMinimumVolunteers(final int theMinimumVolunteers) {
+		myMinimumVolunteers = theMinimumVolunteers;
 	}
 	
 	/**
@@ -217,59 +247,29 @@ public class Job implements Serializable {
 		return myVolunteersList.size();
 	}
 	
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    public boolean equals(final Object theOther) {
-//        
-//        boolean result;
-//        
-//        if (this == theOther) {
-//            return true;
-//        } else if (theOther == null || getClass() != theOther.getClass()) {
-//            result = false;
-//        } else {
-//            final Job otherJob = (Job) theOther;
-//            
-//            
-//            result = myDescription.equals(otherJob.myDescription) 
-//                    && myStartDateTime.equals(otherJob.myStartDateTime) 
-//                    && myEndDateTime.equals(otherJob.myEndDateTime) 
-//                    && myManager.equals(otherJob.myManager)
-//                    && Arrays.equals(myWorkLoad, otherJob.myWorkLoad)
-//                    && myCancelled == otherJob.myCancelled
-//                    && myMinVolunteers == otherJob.myMinVolunteers
-//                    && myVolunteersList.size() == otherJob.myVolunteersList.size();
-//            
-//            for (int index = 0; index < myVolunteersList.size() && result; index++) {
-//            	result = myVolunteersList.get(index).equals(otherJob.myVolunteersList.get(index));
-//            }
-//        }
-//        
-//        return result;
-//    }
-	
 	@Override
 	public String toString() {
 		
-		/*
-		 * 	 * @param theDescription the job description.
-	 * @param theStartDateTime the job start date and time.
-	 * @param theEndDateTime the job end date and time.
-	 * @param thePark the park.
-	 * @param theLight the number of volunteers required for light workload.
-	 * @param theMediumm the number of volunteers required for medium workload.
-	 * @param theHeavy the number of volunteers required for heavy workload.
-	 * @param theMinVolunteers the minimum number of volunteers required for this job.
-		 */
+		String symbol = "(+)";
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append(myDescription);
-		//sb.append("\nStart Date and Time = " + myStartDateTime);
-		//sb.append("\nEnd Date and Time = " + myEndDateTime);
-		//sb.append("\nPark = " + myPark);
-		//sb.append("\nWorkload = " + Arrays.toString(myWorkLoad));
-		//sb.append("\n");
+		sb.append(symbol);
+		sb.append(myStartDateTime);
+		sb.append(symbol);
+		sb.append(myEndDateTime);
+		sb.append(symbol);
+		sb.append(myManager);
+		sb.append(symbol);
+		sb.append(myLight);
+		sb.append(symbol);
+		sb.append(myMedium);
+		sb.append(symbol);
+		sb.append(myHeavy);
+		sb.append(symbol);
+		sb.append(myVolunteersList.toString());
+		sb.append(symbol);
+		sb.append(myMinimumVolunteers);
 		return sb.toString();
 	}
 
