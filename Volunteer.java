@@ -7,7 +7,6 @@ public class Volunteer extends User {
 	private final int MINIMUM_NUMBER_OF_DAYS = 2;
 
 	
-	private static final long serialVersionUID = -2648387901303116577L;
 	private ArrayList<Job> acceptedJobs;
 	public Volunteer(String theFirstName, String theLastName, String theEmail, String ThePhone) {
 		super(theFirstName, theLastName, theEmail, ThePhone);
