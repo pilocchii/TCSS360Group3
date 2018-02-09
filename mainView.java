@@ -20,7 +20,7 @@ import model.UserCollection;
 /***
 	
 */
-public class mainView() {
+public class MainView() {
 
 	private static final JOB_LIST_PAGE_END = 5;
 
@@ -28,6 +28,7 @@ public class mainView() {
 	Scanner scanner = new Scanner(System.in);
 	String inputPrompt = "Please enter the number corresponding with your menu choice:"
 	JobCollection jobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
+	UserCollection userCollection = new UserCollection(); // TODO: thi also needs to be loaded from file
 	User user;
 
 	System.out.println("Welcome to Urban Parks!);
@@ -53,7 +54,7 @@ public class mainView() {
 			case '1':
 				System.out.println("Please enter your email address:");
 				String username = scanner.nextLine();
-				user = UserCollection.getUser(username);
+				user = userCollection.getUser(username);
 				showMainMenu();
 				break;
 			
