@@ -1,32 +1,275 @@
-package urbanparks
+package classes;
 
-import java.util.Date;
-import java.util.HashMap;
-import 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.TreeSet;
 
 /**
-* Job Class
-* @author Alyssa Ingersoll
-*/
+ * This class represents a job with its all information.
+ * 
+ * @author Abderisaq Tarabi
+ * @version 2/8/2018
+ *
+ */
+public class Job implements Serializable {
+	
+	private static final long serialVersionUID = 928850375626876361L;
 
+	private String myDescription;
+	
+	private Calendar myStartDateTime;
+	
+	private Calendar myEndDateTime;
+	
+	/** The park manager email address. */
+	private String myManager;
+	
+	private int myLight;
+	
+	private int myMedium;
+	
+	private int myHeavy;
+	
+	/** The job status and weather it cancelled or not. */
+	private boolean myStatus;
+	
+	/** A list of all volunteers email whom volunteer for this job. */
+	private TreeSet<String> myVolunteersList;
+	
+	private int myMinimumVolunteers;
+	
+	/**
+	 * Constructor to initialize all the fields for this job.
+	 * 
+	 * @param theDescription the job description.
+	 * @param theStartDateTime the job start date and time.
+	 * @param theEndDateTime the job end date and time.
+	 * @param theParkManager the park manager email.
+	 * @param theLight the number of volunteers required for light workload.
+	 * @param theMediumm the number of volunteers required for medium workload.
+	 * @param theHeavy the number of volunteers required for heavy workload.
+	 * @param theMinVolunteers the minimum number of volunteers required for this job.
+	 */
+	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, final String theManager, 
+			   final int theLight, final int theMedium, final int theHeavy, final int theMinVolunteers) {
+		setDescription(theDescription);
+		setStartDateTime(theStartDateTime);
+		setEndDateTime(theEndDateTime);
+		setManager(theManager);
+		setLight(theLight);
+		setMedium(theMedium);
+		setHeavy(theHeavy);
+		myStatus = false;
+		myVolunteersList = new TreeSet<String>();
+		setMinimumVolunteers(theMinVolunteers);
+	}
 
-public class Job {
+	/**
+	 * Return the job description.
+	 * 
+	 * @return job description.
+	 */
+	public String getDescription() {
+		return myDescription;
+	}
 
-    private Date startDate;
-    private Date endDate;
-    private HashMap<String, Integer> workLoad; 
-    private String description;
-    private int minVolunteers;
-    private ParkManager manager;
+	/**
+	 * Change the job description.
+	 * 
+	 * @param theDescription the job description.
+	 */
+	public void setDescription(final String theDescription) {
+		myDescription = theDescription;
+	}
 
-    public Job(Date startDate, Date endDate, HashMap<String, Integer> workLoad, 
-        String description, int minVolunteers, ParkManager manager) {
+	/**
+	 * Return the job start date and time.
+	 * 
+	 * @return the job start date and time.
+	 */
+	public Calendar getStartDateTime() {
+		return myStartDateTime;
+	}
 
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.workLoad = workLoad; 
-        this.description = description;
-        this.minVolunteers = minVolunteers;
-        this.manager = manager;
-    }
+	/**
+	 * Change the job start date and time.
+	 * 
+	 * @param theDate the job start date and time.
+	 */
+	public void setStartDateTime(final Calendar theStartDateTime) {
+		myStartDateTime = theStartDateTime;
+	}
+
+	/**
+	 * Return the job end date and time.
+	 * 
+	 * @return the job end date and time.
+	 */
+	public Calendar getEndDateTime() {
+		return myEndDateTime;
+	}
+
+	/**
+	 * Change the job end date and time.
+	 * 
+	 * @param theDate the job end date and time.
+	 */
+	public void setEndDateTime(final Calendar theEndDateTime) {
+		myEndDateTime = theEndDateTime;
+	}
+
+	/**
+	 * Return the job manager email.
+	 * 
+	 * @return the park manager.
+	 */
+	public String getManager() {
+		return myManager;
+	}
+
+	/**
+	 * Change the job manager email.
+	 * 
+	 * @param theManager the job manager email.
+	 */
+	public void setManager(final String theManager) {
+		myManager = theManager;
+	}
+
+	/**
+	 * The number of volunteers required for light workload.
+	 * 
+	 * @return the number of volunteers for the light workload.
+	 */
+	public int getLight() {
+		return myLight;
+	}
+
+	/**
+	 * Change the number of volunteers that required for light workload.
+	 * 
+	 * @param theLight the number of volunteers to do the light workload.
+	 */
+	public void setLight(int theLight) {
+		myLight = theLight;
+	}
+
+	/**
+	 * The number of volunteers required for medium workload.
+	 * 
+	 * @return the number of volunteers for the medium workload.
+	 */
+	public int getMedium() {
+		return myMedium;
+	}
+
+	/**
+	 * Change the number of volunteers that required for medium workload.
+	 * 
+	 * @param theLight the number of volunteers to do the medium workload.
+	 */
+	public void setMedium(int theMedium) {
+		myMedium = theMedium;
+	}
+
+	/**
+	 * The number of volunteers required for heavy workload.
+	 * 
+	 * @return the number of volunteers for the heavy workload.
+	 */
+	public int getHeavy() {
+		return myHeavy;
+	}
+
+	/**
+	 * Change the number of volunteers that required for heavy workload.
+	 * 
+	 * @param theLight the number of volunteers to do the heavy workload.
+	 */
+	public void setHeavy(int theHeavy) {
+		myHeavy = theHeavy;
+	}
+
+	/**
+	 * The status of the job false is it is active and true otherwise.
+	 * 
+	 * @return the status of the job.
+	 */
+	public boolean status() {
+		return myStatus;
+	}
+	
+	/**
+	 * Cancel this job.
+	 */
+	public void cancel() {
+		myStatus = true;
+	}
+	
+	/**
+	 * Return all volunteers for this job.
+	 * 
+	 * @return all volunteers.
+	 */
+	public TreeSet<String> getVolunteers() {
+		return myVolunteersList;
+	}
+	
+	public void addVolunteer(final String theVolunteer) {
+		myVolunteersList.add(theVolunteer);
+	}
+
+	/**
+	 * Return the minimum number of volunteers required for this job.
+	 * 
+	 * @return minimum number of volunteers.
+	 */
+	public int getMinimumVolunteers() {
+		return myMinimumVolunteers;
+	}
+
+	/**
+	 * Change the minimum number of volunteers required for this job.
+	 * 
+	 * @param theMinimumVolunteers minimum number of volunteers.
+	 */
+	public void setMinimumVolunteers(final int theMinimumVolunteers) {
+		myMinimumVolunteers = theMinimumVolunteers;
+	}
+	
+	/**
+	 * Return the total number of volunteers.
+	 * 
+	 * @return total number of volunteers.
+	 */
+	public int getTotalVolunteers() {
+		return myVolunteersList.size();
+	}
+	
+	@Override
+	public String toString() {
+		
+		String symbol = "(+)";
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(myDescription);
+		sb.append(symbol);
+		sb.append(myStartDateTime);
+		sb.append(symbol);
+		sb.append(myEndDateTime);
+		sb.append(symbol);
+		sb.append(myManager);
+		sb.append(symbol);
+		sb.append(myLight);
+		sb.append(symbol);
+		sb.append(myMedium);
+		sb.append(symbol);
+		sb.append(myHeavy);
+		sb.append(symbol);
+		sb.append(myVolunteersList.toString());
+		sb.append(symbol);
+		sb.append(myMinimumVolunteers);
+		return sb.toString();
+	}
+
 }
