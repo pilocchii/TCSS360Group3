@@ -21,7 +21,7 @@ public class Volunteer extends User {
 	// =======================================================================================================================
 	// Walker - Please merge this code with your code ========================================================================
 	
-	private static final int MINIMUM_NUMBER_OF_DAYS = 2;
+	private final int MINIMUM_NUMBER_OF_DAYS = 2;
 
 	/**
 	 * Check weather the given job start more, less or exactly the minimum days.

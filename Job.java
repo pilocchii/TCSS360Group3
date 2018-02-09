@@ -13,7 +13,6 @@ import java.util.TreeSet;
  */
 public class Job implements Serializable {
 	
-	/** serialVersionUID */
 	private static final long serialVersionUID = 928850375626876361L;
 
 	private String myDescription;

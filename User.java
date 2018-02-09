@@ -1,5 +1,6 @@
 package classes;
 
+import java.io.Serializable;
 import java.util.TreeSet;
 
 /**
@@ -9,7 +10,9 @@ import java.util.TreeSet;
  * @version 2/8/2018
  *
  */
-public abstract class User {
+public abstract class User implements Serializable {
+
+	private static final long serialVersionUID = -805912316703380684L;
 
 	private String myFirstName;
 	
