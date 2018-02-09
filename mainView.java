@@ -1,5 +1,6 @@
 package view
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Calendar;
 
@@ -15,105 +16,84 @@ import model.UserCollection;
 	@version: 2/8/2018
 */
 
-public class mainView() {
 
-	private static final JOB_LIST_START = 0;
-	private static final JOB_LIST_END = 5;
+/***
+	
+*/
+public class MainView() {
 
+	private static final JOB_LIST_PAGE_END = 5;
 
-	Scanner myScanner = new Scanner(System.in);
-	String myInputPrompt = "Please enter the number corresponding with your menu choice:"
-	JobCollection myJobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
-	User myUser;
+	/* Member variable initialization */
+	Scanner scanner = new Scanner(System.in);
+	String inputPrompt = "Please enter the number corresponding with your menu choice:"
+	JobCollection jobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
+	UserCollection userCollection = new UserCollection(); // TODO: thi also needs to be loaded from file
+	User user;
 
-	// entrypoint
 	System.out.println("Welcome to Urban Parks!);
-	System.out.println(myInputPrompt);
-	System.out.println("1. Sign in");
-	System.out.println("2. Create a new user");
-	System.out.println("3. Exit this application");
-	char choice = scanner.nextChar();
+	showLoginMenu();
 
-	switch(choice) {
+	/***
+		Login menu
 
-		case '1':
-			System.out.println("Please enter your email address:");
-			String username = scanner.nextLine();
-			myUser = UserCollection.getUser(username);
-			showMainMenu();
-			break;
-		
-		case '2':
-			showSignupMenu();
-			break;
+		The initial menu. The user will identify themself.
+	*/
+	private static void showLoginMenu() {
+		System.out.println(inputPrompt);
+		System.out.println("0. Exit");
+		System.out.println("1. Sign in");
+		System.out.println("2. Create a new user");
+		char choice = scanner.nextChar();
 
-		case '3':
-			System.exit(0);
+		switch(choice) {
 
-		default:
-			System.out.println(choice + " is not valid input");
+			case '0':
+				System.exit(0);
+
+			case '1':
+				System.out.println("Please enter your email address:");
+				String username = scanner.nextLine();
+				user = userCollection.getUser(username);
+				showMainMenu();
+				break;
+			
+			case '2':
+				showSignupMenu();
+				break;
+
+			default:
+				System.out.println(choice + " is not valid input");
+				showLoginMenu();
+				break;
+		}
 	}
 
 
-	private static showSubmitNewJobMenu() {
+	/***
+		Main menu
 
-		System.out.println("Please enter a start date and time for this job:");
-		Calendar start = new Calendar(scanner.nextLine());
-		System.out.println("Please enter an end date and time for this job:");
-		Calendar end = new Calendar(scanner.nextLine());
-		System.out.println("Please enter a description:");
-		String description = scanner.nextLine();
-
-		try {
-			Job newJob = new Job(description, start, end);
-			myJobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
-			System.out.println("Your job has been created! Press any button to continue...");
-			char tempInput = scanner.nextChar;
-			showMainMenu();
-		} catch () { // TODO: Job collection person, add business rules in story 2 here
-
-		}
-
-	} // end showSubmitNewJobMenu
-
-
-	private static showSignupForJobMenu() {
-
-		System.out.println("Select a job from the list below to sign up for, input the corresponding number, and press enter:");
-		for(int i = JOB_LIST_START; i < myJobCollection.size(); i++) { // TODO: JobCollection person, whatever your internal workings are, make them work here
-			// TODO: Job person, fill in whatever your field names are here
-			currJob = myJobCollection.get(i);
-			System.out.println(i + ": " + currJob.toString());
-		}
-
-		String choice = scanner.nextLine();
-		
-		try {
-			selectedJob = myJobCollection.getJob(Integer.parseInt(choice));
-			volunteersList = selectedJob.getVolunteersList();
-			volunteersList.add(myUser);
-			System.out.println("You are now signed up for job " + selectedJob.toString());
-			showMainMenu();
-		} catch () { // TODO: Volunteer person, put the exception type here that triggers on business rule
-
-		}
-		
-	} // end showSignupForJobMenu
-
-
+		Follows the login menu. The user can select a choice based on the type of user they are.
+	*/
 	private static void showMainMenu() {
 
 		// show Park Manager options
-		if (myUser instanceof ParkManager) {
-			System.out.println("Hi, " + myUser.getFirstName() + "! What would you like to do?");
-			System.out.println(myInputPrompt);
+		if (user instanceof ParkManager) {
+			System.out.println("Hi, " + user.getFirstName() + "! What would you like to do?");
+			System.out.println(inputPrompt);
+			System.out.println("0. Go back to login menu");
 			System.out.println("1. Submit a new job");
 			String choice = scanner.nextChar();
 
 			switch(choice) {
+				case '0':
+					showLoginMenu();
+					break;
+
 				case '1':
 					showSubmitNewJobMenu();
 					break;
+
 				default:
 					System.out.println(choice + " is not valid input");
 					showMainMenu();
@@ -122,16 +102,22 @@ public class mainView() {
 		} // end Park Manager options
 
 		// show Volunteer options
-		else if (myUser instanceof Volunteer) {
-			System.out.println("Hi, " + myUser.getFirstName() + "! What would you like to do?");
-			System.out.println(myInputPrompt);
+		else if (user instanceof Volunteer) {
+			System.out.println("Hi, " + user.getFirstName() + "! What would you like to do?");
+			System.out.println(inputPrompt);
+			System.out.println("0. Go back to login menu");
 			System.out.println("1. Sign up for a job");
 			String choice = scanner.nextChar();
 
 			switch(choice) {
+				case '0':
+					showLoginMenu();
+					break;
+
 				case '1':
 					showSignupForJobMenu();
 					break;
+
 				default:
 					System.out.println(char + " is not valid input");
 					showMainMenu();
@@ -142,12 +128,132 @@ public class mainView() {
 	} // end showMainMenu
 
 
+	/***
+		Submit new job menu
+		Park Managers can create a new job here.
+	*/
+	private static void showSubmitNewJobMenu() {
+
+		System.out.println("Please enter a start date and time for this job:");
+		Calendar start = new Calendar(scanner.nextLine());
+		System.out.println("Please enter an end date and time for this job:");
+		Calendar end = new Calendar(scanner.nextLine());
+		System.out.println("Please enter a description:");
+		String description = scanner.nextLine();
+
+		try {
+			Job newJob = new Job(description, start, end);
+			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
+			System.out.println("Your job has been created! Press any button to continue...");
+			char tempInput = scanner.nextChar;
+			showMainMenu();
+		} catch () { // TODO: Job collection person, add business rules in story 2 here
+
+		}
+
+	} // end showSubmitNewJobMenu
+
+
+	/***
+		Signup for job
+		Volunteers can volunteer for jobs here.
+	*/
+	private static void showSignupForJobMenu() {
+
+		System.out.println("Select a job from the list below to sign up for.\n" +  
+			"Input the corresponding number, and press enter, or press '0' to go back.");
+
+		// display the list of jobs
+		for(int i = 0; i < jobCollection.size(); i++) { // TODO: JobCollection person, whatever your internal workings are, make them work here
+			// TODO: Job person, fill in whatever your field names are here
+			currJob = jobCollection.get(i);
+			System.out.println(i + ". " + currJob.getStartDate() + " - " + currJob.getDescription());
+		}
+
+		char choice = scanner.nextChar();
+
+		if (choice == '0') {
+			showMainMenu();
+		}
+		
+		try {
+			selectedJob = jobCollection.getJob(Integer.parseInt(choice));
+			showJobDetails(selectedJob);
+			System.out.println("0. Go back to jobs list");
+			System.out.println("1. Sign up for this job");
+			char choice = scanner.nextChar();
+
+			static final List<String> validChoices = Arrays.asList('0', '1');
+			validateJobMenuChoice(choice, validChoices);
+
+			switch (choice) {
+				case '0':
+					showSignupForJobMenu();
+					break;
+
+				case '1':
+					volunteersList = selectedJob.getVolunteersList();
+					volunteersList.add(user);
+					System.out.println("You are now signed up for job " + selectedJob.toString());
+					showMainMenu();
+					break;
+
+				default:
+					showSignupForJobMenu();
+			} // end switch
+
+		} catch () { // TODO: Volunteer person, put the exception type here that triggers on business rule
+
+		}
+		
+	} // end showSignupForJobMenu
+
+
+	/***
+		Shows the job's information in more detail
+
+		Job job - the job to show extra details for
+	*/
+	private static void showJobDetails(Job job) {
+		System.out.println("Starting time: " + job.getStartDateTime);
+		System.out.println("Ending time: " + job.getEndDateTime);
+		// System.out.println("Park name: " + job.getParkName); // TODO: this should exist
+		// System.out.println("Location: " + job.getLocation); // TODO: this should also exist
+		System.out.println("Job description: " + job.getDescription);
+		System.out.println("Work levels: Light - " + job.getLight +
+			"Medium - " + job.getMedium + 
+			"Heavy - " + job.getHeavy);
+	} // end showJobDetails
+
+
+	/***
+		Validate the choice taken in the job menu
+
+		char choice - the character to validate
+	*/
+	private static void validateJobMenuChoice(char choice, List<String> validChoices) {
+		if (!validChoices.contains(choice)) {
+			System.out.println(choice + " is not a valid option. Please enter a choice as listed above.")
+			validateJobMenuChoice(choice, validChoices);
+		} 
+	} // end showJobDetails
+
+
+	/***
+		Signup for job
+		Volunteers can volunteer for jobs here.
+	*/
 	private static void showSignupMenu() {
 
-		System.out.println("Please enter the number corresponding with your user type:");
+		System.out.println("Please enter the number corresponding with your user type, or '0' to go back:");
+		System.out.println("0. Go back to main menu");
 		System.out.println("1. Volunteer");
 		System.out.println("2. Park Manager");
+
 		String choice = scanner.nextChar();
+		if (choice == '0') {
+			showMainMenu();
+		}
 
 		System.out.println("Please enter your email address:");
 		String email = scanner.nextLine();
@@ -166,7 +272,7 @@ public class mainView() {
 			case '1':
 				try {
 					Volunteer newVolunteer = Volunteer(email, firstName, lastName, phone);
-					myUser = newVolunteer;
+					user = newVolunteer;
 					System.out.println("Welcome, volunteer " + firstName + "!");
 					showMainMenu();
 				} catch () { 
@@ -177,7 +283,7 @@ public class mainView() {
 			case '2': 
 				try {
 					ParkManager newParkManager = ParkManager(email, firstName, lastName, phone);
-					myUser = newParkManager;
+					user = newParkManager;
 					System.out.println("Welcome, park manager " + firstName + "!");
 					showMainMenu();
 				} catch () {
@@ -185,6 +291,7 @@ public class mainView() {
 				}
 				
 				break;
+
 			default:
 				showSignupMenu();
 
@@ -193,4 +300,3 @@ public class mainView() {
 	} // end showSignupMenu
 
 } // end MainView
-
