@@ -1,5 +1,3 @@
-package classes;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TreeSet;
@@ -12,32 +10,32 @@ import java.util.TreeSet;
  *
  */
 public class Job implements Serializable {
-	
+
 	private static final long serialVersionUID = 928850375626876361L;
 
 	private String myDescription;
-	
+
 	private Calendar myStartDateTime;
-	
+
 	private Calendar myEndDateTime;
-	
+
 	/** The park manager email address. */
 	private String myManager;
-	
+
 	private int myLight;
-	
+
 	private int myMedium;
-	
+
 	private int myHeavy;
-	
+
 	/** The job status and weather it cancelled or not. */
 	private boolean myStatus;
-	
+
 	/** A list of all volunteers email whom volunteer for this job. */
 	private TreeSet<String> myVolunteersList;
-	
+
 	private int myMinimumVolunteers;
-	
+
 	/**
 	 * Constructor to initialize all the fields for this job.
 	 * 
@@ -51,7 +49,7 @@ public class Job implements Serializable {
 	 * @param theMinVolunteers the minimum number of volunteers required for this job.
 	 */
 	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, final String theManager, 
-			   final int theLight, final int theMedium, final int theHeavy, final int theMinVolunteers) {
+			final int theLight, final int theMedium, final int theHeavy, final int theMinVolunteers) {
 		setDescription(theDescription);
 		setStartDateTime(theStartDateTime);
 		setEndDateTime(theEndDateTime);
@@ -198,14 +196,14 @@ public class Job implements Serializable {
 	public boolean status() {
 		return myStatus;
 	}
-	
+
 	/**
 	 * Cancel this job.
 	 */
 	public void cancel() {
 		myStatus = true;
 	}
-	
+
 	/**
 	 * Return all volunteers for this job.
 	 * 
@@ -214,7 +212,7 @@ public class Job implements Serializable {
 	public TreeSet<String> getVolunteers() {
 		return myVolunteersList;
 	}
-	
+
 	public void addVolunteer(final String theVolunteer) {
 		myVolunteersList.add(theVolunteer);
 	}
@@ -236,7 +234,7 @@ public class Job implements Serializable {
 	public void setMinimumVolunteers(final int theMinimumVolunteers) {
 		myMinimumVolunteers = theMinimumVolunteers;
 	}
-	
+
 	/**
 	 * Return the total number of volunteers.
 	 * 
@@ -245,12 +243,12 @@ public class Job implements Serializable {
 	public int getTotalVolunteers() {
 		return myVolunteersList.size();
 	}
-	
+
 	@Override
 	public String toString() {
-		
+
 		String symbol = "(+)";
-		
+
 		StringBuffer sb = new StringBuffer();
 		sb.append(myDescription);
 		sb.append(symbol);
