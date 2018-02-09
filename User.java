@@ -1,144 +1,39 @@
-package classes;
+package urbanparks;
 
-import java.io.Serializable;
-import java.util.TreeSet;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
- * This class represent a user 
- * 
- * @author Abderisaq Tarabi
- * @version 2/8/2018
- *
- */
-public abstract class User implements Serializable {
+* User classes
+* @author Alyssa Ingersoll
+*/
 
-	private static final long serialVersionUID = -805912316703380684L;
 
-	private String myFirstName;
-	
-	private String myLastName;
-	
-	private String myEmail;
-	
-	private String myPhone;
-	
-	/** List of all jobs that user accepted or created depends on the user. */
-	private TreeSet<String> myJobsList;
-	
-	
-	/**
-	 * Constructor to initialize all the fields for this job.
-	 * 
-	 * @param theFirstName the first name of the user.
-	 * @param theLastName the last name of the user.
-	 * @param theEmail the email address of the user.
-	 * @param thePhone the phone number of the user.
-	 */
-	public User(String theFirstName, String theLastName, String theEmail, String thePhone) {
-		setFirstName(theFirstName);
-		setLastName(theLastName);
-		setEmail(theEmail);
-		setPhoneNumber(thePhone);
-		myJobsList = new TreeSet<String>();
-	}
+/*
+The class signature and hierarchy is ordered this way because our design has other 
+classes that inherit from User. Uncalled method signatures that differ between 
+classes not shown.
+*/
 
-	/**
-	 * Return the first name of the user.
-	 * 
-	 * @return the first name.
-	 */
-	public String getFirstName() {
-		return myFirstName;
-	}
+protected class User {
 
-	/**
-	 * Change the first name of the user.
-	 * 
-	 * @param myFirstName the new first name.
-	 */
-	public void setFirstName(String myFirstName) {
-		this.myFirstName = myFirstName;
-	}
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String phoneNumber;
 
-	/**
-	 * Return the last name of the user.
-	 * 
-	 * @return the last name.
-	 */
-	public String getLastName() {
-		return myLastName;
-	}
-
-	/**
-	 * Change the last name of the user.
-	 * 
-	 * @param myLastName the new last name.
-	 */
-	public void setLastName(String myLastName) {
-		this.myLastName = myLastName;
-	}
-
-	/**
-	 * Return the email address of the user.
-	 * 
-	 * @return the email address.
-	 */
-	public String getEmail() {
-		return myEmail;
-	}
-
-	/**
-	 * Change the email address of the user.
-	 * 
-	 * @param myEmail the new email address.
-	 */
-	public void setEmail(String myEmail) {
-		this.myEmail = myEmail;
-	}
-
-	/**
-	 * Return the phone number of the user.
-	 * 
-	 * @return the phone number.
-	 */
-	public String getPhoneNumber() {
-		return myPhone;
-	}
-
-	/**
-	 * Change the phone number of the user.
-	 * 
-	 * @param myPhone the phone number.
-	 */
-	public void setPhoneNumber(String myPhone) {
-		this.myPhone = myPhone;
-	}
-	
-	/**
-	 * Add the given job key to the list of jobs.
-	 * 
-	 * @param theJobKey the new job to be added to the list.
-	 */
-	public void addJob(String theJobKey) {
-		myJobsList.add(theJobKey);
-	}
-	
-	/**
-	 * Return the jobs list for this user.
-	 * 
-	 * @return list of all jobs.
-	 */
-	public TreeSet<String> getJobsList() {
-		return myJobsList;
-	}
-	
-	/**
-	 * Return the total number of jobs for this user.
-	 * 
-	 * @return total number of jobs.
-	 */
-	public int getTotalJobs() {
-		return myJobsList.size();
-	}
-	
+    protected User(String firstName, String lastName, String email, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 }
+
+public class ParkManager implements User {
+    public ParkManager(String firstName, String lastName, String email, String phoneNumber) {
+        super(String firstName, String lastName, String email, String phoneNumber);
+    }
+}
+
+
