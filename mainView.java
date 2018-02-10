@@ -134,26 +134,52 @@ public class MainView() {
 	*/
 	private static void showSubmitNewJobMenu() {
 
-		System.out.println("Please enter a start date and time for this job:");
-		Calendar start = new Calendar(scanner.nextLine());
-		System.out.println("Please enter an end date and time for this job:");
-		Calendar end = new Calendar(scanner.nextLine());
+		System.out.println("Please enter a start date and time for this job in this formate (Year Month Date Hour Minute):");
+		Calendar start = getDateTime(scanner.nextLine());
+		System.out.println("Please enter an end date and time for this job in this formate (Year Month Date Hour Minute):");
+		Calendar end = getDateTime(scanner.nextLine());
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
+		System.out.println("Please enter the park name:");
+		String parkName = scanner.nextLine();
+		System.out.println("Please enter the location:");
+		String location = scanner.nextLine();
+		System.out.println("Please enter the work level (Light):");
+		int light = scanner.nextInt();
+		System.out.println("Please enter the work level (Medium):");
+		int medium = scanner.nextInt();
+		System.out.println("Please enter the work level (Heavy):");
+		int heavy = scanner.nextInt();
+		System.out.println("Please enter the minimum required volunteers:");
+		int minimumVolunteers = scanner.nextInt();
+		
 
 		try {
-			Job newJob = new Job(description, start, end);
+			Job newJob = new Job(description, start, end, parkName, location, light, medium, heavy, minimumVolunteers);
 			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
 			System.out.println("Your job has been created! Press any button to continue...");
 			char tempInput = scanner.nextChar;
 			showMainMenu();
-		} catch () { // TODO: Job collection person, add business rules in story 2 here
+		} catch () { // TODO: JobCollection person, add business rules in story 2 here
 
 		}
 
 	} // end showSubmitNewJobMenu
 
-
+	/**
+	 * Create from the given date and time as string and create a calendar object and return it.
+	 * 
+	 * @param theDateTime the given date and time.
+	 * @return return the calendar.
+	 */
+	private static Calendar getDateTime(String theDateTime) {
+		Calendar calendar = Calendar.getInstance();
+		Scanner scanner = new Scanner(theDateTime);
+		calendar.set(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), 0);
+		scanner.close();
+		return calendar;
+	}
+	
 	/***
 		Signup for job
 		Volunteers can volunteer for jobs here.
