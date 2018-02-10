@@ -217,8 +217,8 @@ public class MainView() {
 	private static void showJobDetails(Job job) {
 		System.out.println("Starting time: " + job.getStartDateTime);
 		System.out.println("Ending time: " + job.getEndDateTime);
-		// System.out.println("Park name: " + job.getParkName); // TODO: this should exist
-		// System.out.println("Location: " + job.getLocation); // TODO: this should also exist
+		System.out.println("Park name: " + job.getParkName);
+		System.out.println("Location: " + job.getLocation);
 		System.out.println("Job description: " + job.getDescription);
 		System.out.println("Work levels: Light - " + job.getLight +
 			"Medium - " + job.getMedium + 
