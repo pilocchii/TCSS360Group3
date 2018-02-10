@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class Volunteer extends User {
 	
 	// todo: move to constants class
-	private final static int MIN_NUMBER_DAYS_BEFORE_SIGNUP = 2;
+	private final static int MIN_DAYS_BEFORE_SIGNUP = 2;
 	private final static int MILLISECONDS_IN_DAY = 86400000;
 	
 	public class volunteerJobOverlapException extends Exception {
@@ -100,7 +100,7 @@ public class Volunteer extends User {
 	public static boolean isSignupEarlyEnough(Job theCandidateJob) {
 		Calendar now = Calendar.getInstance();
 		long diff = theCandidateJob.getStartDateTime().getTimeInMillis() - now.getTimeInMillis();
-		long minDaysInMillis = MIN_NUMBER_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
+		long minDaysInMillis = MIN_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
 		return (diff >= minDaysInMillis);
 	}
 }
