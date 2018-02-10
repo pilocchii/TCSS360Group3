@@ -1,4 +1,4 @@
-package test;
+package urbanparks.tests;
 
 import static org.junit.Assert.*;
 

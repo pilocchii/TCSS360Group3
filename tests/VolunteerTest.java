@@ -1,4 +1,5 @@
-package tests;
+package urbanparks.tests;
+
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
