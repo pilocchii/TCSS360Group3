@@ -1,4 +1,4 @@
-package view
+package urbanparks;
 
 import java.util.Arrays;
 import java.util.Scanner;
