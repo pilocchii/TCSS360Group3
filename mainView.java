@@ -17,7 +17,7 @@ import model.UserCollection;
 */
 
 
-/***
+/**
 	
 */
 public class MainView() {
@@ -34,7 +34,7 @@ public class MainView() {
 	System.out.println("Welcome to Urban Parks!);
 	showLoginMenu();
 
-	/***
+	/**
 		Login menu
 
 		The initial menu. The user will identify themself.
@@ -70,7 +70,7 @@ public class MainView() {
 	}
 
 
-	/***
+	/**
 		Main menu
 
 		Follows the login menu. The user can select a choice based on the type of user they are.
@@ -128,15 +128,17 @@ public class MainView() {
 	} // end showMainMenu
 
 
-	/***
+	/**
 		Submit new job menu
 		Park Managers can create a new job here.
 	*/
 	private static void showSubmitNewJobMenu() {
 
-		System.out.println("Please enter a start date and time for this job in this formate (Year Month Date Hour Minute):");
+		System.out.println("Please enter a start date and time for this job in " + 
+						   "this formate (Year Month Date Hour Minute):");
 		Calendar start = getDateTime(scanner.nextLine());
-		System.out.println("Please enter an end date and time for this job in this formate (Year Month Date Hour Minute):");
+		System.out.println("Please enter an end date and time for this job in this " + 
+						    "formate (Year Month Date Hour Minute):");
 		Calendar end = getDateTime(scanner.nextLine());
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
@@ -155,7 +157,8 @@ public class MainView() {
 		
 
 		try {
-			Job newJob = new Job(description, start, end, parkName, location, light, medium, heavy, minimumVolunteers);
+			Job newJob = new Job(description, start, end, parkName, location, light, medium, 
+								 heavy, minimumVolunteers);
 			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
 			System.out.println("Your job has been created! Press any button to continue...");
 			char tempInput = scanner.nextChar;
@@ -175,12 +178,13 @@ public class MainView() {
 	private static Calendar getDateTime(String theDateTime) {
 		Calendar calendar = Calendar.getInstance();
 		Scanner scanner = new Scanner(theDateTime);
-		calendar.set(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), 0);
+		calendar.set(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), 
+					 scanner.nextInt(), scanner.nextInt(), 0);
 		scanner.close();
 		return calendar;
 	}
 	
-	/***
+	/**
 		Signup for job
 		Volunteers can volunteer for jobs here.
 	*/
@@ -235,7 +239,7 @@ public class MainView() {
 	} // end showSignupForJobMenu
 
 
-	/***
+	/**
 		Shows the job's information in more detail
 
 		Job job - the job to show extra details for
@@ -252,7 +256,7 @@ public class MainView() {
 	} // end showJobDetails
 
 
-	/***
+	/**
 		Validate the choice taken in the job menu
 
 		char choice - the character to validate
@@ -265,7 +269,7 @@ public class MainView() {
 	} // end showJobDetails
 
 
-	/***
+	/**
 		Signup for job
 		Volunteers can volunteer for jobs here.
 	*/
