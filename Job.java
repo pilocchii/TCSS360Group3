@@ -1,3 +1,5 @@
+package classes;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TreeSet;
@@ -10,50 +12,55 @@ import java.util.TreeSet;
  *
  */
 public class Job implements Serializable {
-
+	
 	private static final long serialVersionUID = 928850375626876361L;
 
 	private String myDescription;
-
+	
 	private Calendar myStartDateTime;
-
+	
 	private Calendar myEndDateTime;
-
-	/** The park manager email address. */
-	private String myManager;
-
+	
+	private String myParkName;
+	
+	private String myLocation;
+	
 	private int myLight;
-
+	
 	private int myMedium;
-
+	
 	private int myHeavy;
-
+	
 	/** The job status and weather it cancelled or not. */
 	private boolean myStatus;
-
+	
 	/** A list of all volunteers email whom volunteer for this job. */
 	private TreeSet<String> myVolunteersList;
-
+	
 	private int myMinimumVolunteers;
-
+	
 	/**
 	 * Constructor to initialize all the fields for this job.
 	 * 
 	 * @param theDescription the job description.
 	 * @param theStartDateTime the job start date and time.
 	 * @param theEndDateTime the job end date and time.
-	 * @param theParkManager the park manager email.
+	 * @param theParkName the park name.
+	 * @param theLocation the job location.
 	 * @param theLight the number of volunteers required for light workload.
 	 * @param theMediumm the number of volunteers required for medium workload.
 	 * @param theHeavy the number of volunteers required for heavy workload.
 	 * @param theMinVolunteers the minimum number of volunteers required for this job.
 	 */
-	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, final String theManager, 
-			final int theLight, final int theMedium, final int theHeavy, final int theMinVolunteers) {
+	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
+			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
+			   final int theHeavy, final int theMinVolunteers) {
+		
 		setDescription(theDescription);
 		setStartDateTime(theStartDateTime);
 		setEndDateTime(theEndDateTime);
-		setManager(theManager);
+		setParkName(theParkName);
+		setLocation(theLocation);
 		setLight(theLight);
 		setMedium(theMedium);
 		setHeavy(theHeavy);
@@ -117,21 +124,39 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Return the job manager email.
+	 * Return the park name where the job will take a place.
 	 * 
-	 * @return the park manager.
+	 * @return the park name.
 	 */
-	public String getManager() {
-		return myManager;
+	public String getParkName() {
+		return myParkName;
 	}
 
 	/**
-	 * Change the job manager email.
+	 * Change the park name to the new given name.
 	 * 
-	 * @param theManager the job manager email.
+	 * @param theParkName the new park name
 	 */
-	public void setManager(final String theManager) {
-		myManager = theManager;
+	public void setParkName(String theParkName) {
+		myParkName = theParkName;
+	}
+
+	/**
+	 * The location where the job will take a place.
+	 * 
+	 * @return the location of the job.
+	 */
+	public String getLocation() {
+		return myLocation;
+	}
+
+	/**
+	 * Change the location of the job to the given location.
+	 * 
+	 * @param theLocation
+	 */
+	public void setLocation(String theLocation) {
+		myLocation = theLocation;
 	}
 
 	/**
@@ -196,14 +221,14 @@ public class Job implements Serializable {
 	public boolean status() {
 		return myStatus;
 	}
-
+	
 	/**
 	 * Cancel this job.
 	 */
 	public void cancel() {
 		myStatus = true;
 	}
-
+	
 	/**
 	 * Return all volunteers for this job.
 	 * 
@@ -212,7 +237,7 @@ public class Job implements Serializable {
 	public TreeSet<String> getVolunteers() {
 		return myVolunteersList;
 	}
-
+	
 	public void addVolunteer(final String theVolunteer) {
 		myVolunteersList.add(theVolunteer);
 	}
@@ -234,7 +259,7 @@ public class Job implements Serializable {
 	public void setMinimumVolunteers(final int theMinimumVolunteers) {
 		myMinimumVolunteers = theMinimumVolunteers;
 	}
-
+	
 	/**
 	 * Return the total number of volunteers.
 	 * 
@@ -243,12 +268,12 @@ public class Job implements Serializable {
 	public int getTotalVolunteers() {
 		return myVolunteersList.size();
 	}
-
+	
 	@Override
 	public String toString() {
-
-		String symbol = "(+)";
-
+		
+		String symbol = ", ";
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append(myDescription);
 		sb.append(symbol);
@@ -256,7 +281,9 @@ public class Job implements Serializable {
 		sb.append(symbol);
 		sb.append(myEndDateTime);
 		sb.append(symbol);
-		sb.append(myManager);
+		sb.append(myParkName);
+		sb.append(symbol);
+		sb.append(myLocation);
 		sb.append(symbol);
 		sb.append(myLight);
 		sb.append(symbol);
