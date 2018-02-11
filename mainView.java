@@ -199,63 +199,63 @@ public class mainView() {
 			"Input the corresponding number, and press enter, or press '0' to go back.");
 
 		// display the list of jobs
+		/**
+		 *  TODO: Make jobCollection sortable by start date with Comparator,
+		 *  sort it,
+		 *  then iterate each Job in it.
+		 */
+		// Temp code:
 		for(int i = 0; i < jobCollection.size(); i++) {
-			/**
-			 *  TODO: Make jobCollection sortable by start date with Comparator,
-			 *  sort it,
-			 *  then iterate each Job in it.
-			 */
-			// Temp code:
 			Job currJob = jobCollection.get(i);
 			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
 		}
-
+		
 		char choice = scanner.nextChar();
 		if (choice == '0') {
 			showMainMenu();
 		}
+		int jobIndex = Integer.parseInt(choice) - 1;
+		Job selectedJob = jobCollection.getJob(jobIndex);
+		showJobDetails(selectedJob);
+		System.out.println("0. Go back to jobs list");
+		System.out.println("1. Sign up for this job");
+		choice = scanner.nextChar();
+
+		// Needed? This feature isn't in other menus. The default case gives a similar result.
+		//List<String> validChoices = Arrays.asList('0', '1');
+		//validateJobMenuChoice(choice, validChoices);
 		
-		try {
-			int jobIndex = Integer.parseInt(choice) - 1;
-			Job selectedJob = jobCollection.getJob(jobIndex);
-			showJobDetails(selectedJob);
-			System.out.println("0. Go back to jobs list");
-			System.out.println("1. Sign up for this job");
-			choice = scanner.nextChar();
+		switch (choice) {
+			case '0':
+				showSignupForJobMenu(volunteer);
+				break;
 
-			// Needed? This feature isn't in other menus. The default case gives a similar result.
-			//List<String> validChoices = Arrays.asList('0', '1');
-			//validateJobMenuChoice(choice, validChoices);
-			
-			switch (choice) {
-				case '0':
-					showSignupForJobMenu(volunteer);
-					break;
-
-				case '1':
-					//volunteersList = selectedJob.getVolunteersList();
+			case '1':
+				//volunteersList = selectedJob.getVolunteersList();
+				
+				try {
 					volunteer.signUpForJob(selectedJob);
-					//volunteersList.add(user);
-					System.out.println("You are now signed up for job " + selectedJob.toString());
-					showMainMenu();
-					break;
-
-				default:
-					System.out.println("Invalid option. Please try again.");
+					
+				} catch (volunteerJobOverlapException e) {
+					System.out.println("The job you selected overlaps with another job you are "
+							+ "signed up for. Please try another job.");
 					showSignupForJobMenu(volunteer);
-			}
+					
+				} catch (jobSignupTooLateException e) {
+					System.out.println("The job you selected starts too soon (less than " 
+							+ Volunteer.MIN_DAYS_BEFORE_SIGNUP + " than now. Please try another job.");
+					showSignupForJobMenu(volunteer);
+				}
+				
+				//volunteersList.add(user);
+				System.out.println("You are now signed up for job " + selectedJob.toString());
+				showMainMenu();
+				break;
 
-		} catch (volunteerJobOverlapException e) {
-			System.out.println("The job you selected overlaps with another job you are "
-					+ "signed up for. Please try another job.");
-			showSignupForJobMenu(volunteer);
-			
-		} catch (jobSignupTooLateException e) {
-			System.out.println("The job you selected starts too soon (less than " 
-					+ Volunteer.MIN_DAYS_BEFORE_SIGNUP + " than now. Please try another job.");
-			showSignupForJobMenu(volunteer);
-		}
-		
+			default:
+				System.out.println("Invalid option. Please try again.");
+				showSignupForJobMenu(volunteer);
+		}	
 	} // end showSignupForJobMenu
 
 
