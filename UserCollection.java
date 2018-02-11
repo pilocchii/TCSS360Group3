@@ -26,7 +26,7 @@ public class UserCollection implements Serializable{
 		//Read all users
 		try {
 			  while (true) {
-			    obj = in.readObject();
+			    obj = obj_in.readObject();
 			    // make sure its a user
 				if (obj instanceof User) {
 					// Cast object to a user
