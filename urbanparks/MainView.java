@@ -91,14 +91,14 @@ public class MainView {
 			System.out.println(inputPrompt);
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Submit a new job");
-			String choice = scanner.next();
+			int choice = scanner.nextInt();
 
 			switch(choice) {
-				case "0":
+				case 0:
 					showLoginMenu();
 					break;
 
-				case "1":
+				case 1:
 					showSubmitNewJobMenu();
 					break;
 
@@ -115,14 +115,14 @@ public class MainView {
 			System.out.println(inputPrompt);
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Sign up for a job");
-			String choice = scanner.next();
+			int choice = scanner.nextInt();
 
 			switch(choice) {
-				case "0":
+				case 0:
 					showLoginMenu();
 					break;
 
-				case "1":
+				case 1:
 					showSignupForJobMenu();
 					break;
 
@@ -207,28 +207,28 @@ public class MainView {
 			System.out.println(i + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
 		}
 
-		String choice = scanner.next();
+		int choice = scanner.nextInt();
 
-		if (choice.equals("0")) {
+		if (choice == 0) {
 			showMainMenu();
 		}
 		
 		try {
-			Job selectedJob = jobCollection.getJob(Integer.parseInt(choice));
+			Job selectedJob = jobCollection.getJob(choice);
 			showJobDetails(selectedJob);
 			System.out.println("0. Go back to jobs list");
 			System.out.println("1. Sign up for this job");
-			choice = scanner.next();
+			choice = scanner.nextInt();
 
-			final List<String> validChoices = Arrays.asList("0", "1");
+			final List<Integer> validChoices = Arrays.asList(0, 1);
 			validateJobMenuChoice(choice, validChoices);
 
 			switch (choice) {
-				case "0":
+				case 0:
 					showSignupForJobMenu();
 					break;
 
-				case "1":
+				case 1:
 					TreeSet volunteersList = selectedJob.getVolunteers();
 					volunteersList.add(user);
 					System.out.println("You are now signed up for job " + selectedJob.toString());
@@ -268,9 +268,9 @@ public class MainView {
 
 		char choice - the character to validate
 	*/
-	private void validateJobMenuChoice(String choice, List<String> validChoices) {
+	private void validateJobMenuChoice(int choice, List<Integer> validChoices) {
 		if (!validChoices.contains(choice)) {
-			System.out.println(choice + " is not a valid option. Please enter a choice as listed above.");
+			System.out.println(Integer.toString(choice) + " is not a valid option. Please enter a choice as listed above.");
 			validateJobMenuChoice(choice, validChoices);
 		} 
 	} // end showJobDetails
@@ -287,8 +287,8 @@ public class MainView {
 		System.out.println("1. Volunteer");
 		System.out.println("2. Park Manager");
 
-		String choice = scanner.next();
-		if (choice.equals("0")) {
+		int choice = scanner.nextInt();
+		if (choice == 0) {
 			showMainMenu();
 		}
 
@@ -306,7 +306,7 @@ public class MainView {
 
 		switch(choice) {
 
-			case "1":
+			case 1:
 				try {
 					Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
 					user = newVolunteer;
@@ -318,7 +318,7 @@ public class MainView {
 				}
 				break;
 
-			case "2":
+			case 2:
 				try {
 					ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
 					user = newParkManager;
