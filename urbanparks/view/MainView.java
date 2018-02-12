@@ -1,4 +1,4 @@
-package urbanparks;
+package view;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.StringTokenizer;
 
-import urbanparks.Job;
-import urbanparks.JobCollection;
-import urbanparks.User;
-import urbanparks.UserCollection;
-import urbanparks.Volunteer.jobSignupTooLateException;
-import urbanparks.Volunteer.volunteerJobOverlapException;
+import model.Job;
+import model.JobCollection;
+import model.ParkManager;
+import model.User;
+import model.UserCollection;
+import model.Volunteer;
+import model.Volunteer.jobSignupTooLateException;
+import model.Volunteer.volunteerJobOverlapException;
 
 /***
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
@@ -125,7 +127,7 @@ public class MainView {
 					break;
 
 				case 1:
-					showSignupForJobMenu();
+					showSignupForJobMenu((Volunteer) user);
 					break;
 
 				default:
@@ -209,8 +211,9 @@ public class MainView {
 		 *  then iterate each Job in it.
 		 */
 		// Temp code:
-		for(int i = 0; i < jobCollection.size(); i++) {
-			Job currJob = jobCollection.get(i);
+		Job[] jobs = jobCollection.getSortedJobs();
+		for(int i = 0; i < jobCollection.getJobCollection().size(); i++) {
+			Job currJob = jobs[i];
 			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
 		}
 		
@@ -219,7 +222,7 @@ public class MainView {
 			showMainMenu();
 		}
 		int jobIndex = choice - 1;
-		Job selectedJob = jobCollection.getJob(jobIndex);
+		Job selectedJob = jobs[jobIndex];
 		showJobDetails(selectedJob);
 		System.out.println("0. Go back to jobs list");
 		System.out.println("1. Sign up for this job");
@@ -308,7 +311,7 @@ public class MainView {
 		if (choice == 0) {
 			showMainMenu();
 		}
-
+		scanner.nextLine();
 		System.out.println("Please enter your email address:");
 		String email = scanner.nextLine();
 
