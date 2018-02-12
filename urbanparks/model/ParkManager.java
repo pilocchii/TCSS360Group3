@@ -21,11 +21,11 @@ public class ParkManager extends User {
 
 	private final int MAXIMUM_NUMBER_OF_JOB_END_DAYS = 75;
 
-	private ArrayList<Job> jobsCreated;
-
-	private HashMap<Integer, Job> jobsList;
-
-	public JobCollection collectionJobs;
+//	private ArrayList<Job> jobsCreated;
+//
+//	private HashMap<Integer, Job> jobsList;
+//
+//	public JobCollection collectionJobs;
 
 
 
@@ -63,7 +63,7 @@ public class ParkManager extends User {
 	 * @param candidateJob
 	 * @return list of jobs created;
 	 */
-	public ArrayList<Job> createdANewJob(Job candidateJob) throws mangerPendingJobsException, 
+	public void createdANewJob(Job candidateJob, JobCollection jobcollection) throws mangerPendingJobsException, 
 	managerJobDaysException, managerJobEndDaysException {
 		if(isMaximumJobDays(candidateJob))  {
 			throw new managerJobDaysException();
@@ -73,19 +73,18 @@ public class ParkManager extends User {
 			throw new managerJobEndDaysException();
 
 		}
-		if(isPendingJobs()) {
+		if(isPendingJobs(jobcollection)) {
 			throw new mangerPendingJobsException();
 		}
-		jobsCreated.add(candidateJob);
+		myJobsList.add(candidateJob.getJobId());
 
-		return jobsCreated;
-
+		//return jobsCreated;
 	}
-	public boolean isPendingJobs() {
+	public boolean isPendingJobs(JobCollection jobcollection) {
 		int counter = 0;
 		boolean pending = false;
-		for(Integer jobId: jobsList.keySet()) {
-			Job currentJob = jobsList.get(jobId);
+		for(Integer jobId: jobcollection.getJobCollection().keySet()) {
+			Job currentJob = jobcollection.getJobCollection().get(jobId);
 			Calendar currentDate = Calendar.getInstance();		
 			if(compare2Date(currentDate, currentJob.getEndDateTime()) < 0) {
 				counter++;

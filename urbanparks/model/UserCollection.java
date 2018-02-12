@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class UserCollection implements Serializable{
+public class UserCollection {
 	
 	/**A HashMap that stores users based on a string key, represented
 	 * by email.*/

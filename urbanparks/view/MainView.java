@@ -52,13 +52,11 @@ public class MainView {
 		try {
 			jobCollection.loadData();
 		} catch (Exception e3) {
-			e3.printStackTrace();
 			System.out.println("Couldn't load JOB data. Using empty job data!");
 		}
 		try {
 			userCollection.loadData();
 		} catch (ClassNotFoundException | IOException e3) {
-			e3.printStackTrace();
 			System.out.println("Couldn't load user data. Using empty user data!");
 		}
 		
@@ -188,8 +186,8 @@ public class MainView {
 		System.out.println("Please enter an end date and time for this job in this " + 
 						    "format (Year Month Date Hour Minute):");
 		Calendar end = getDateTime(scanner.nextLine());
-		System.out.println("Please enter a JobId:");
-		Integer jobId = scanner.nextInt();
+//		System.out.println("Please enter a JobId:");
+//		Integer jobId = scanner.nextInt();
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
 		System.out.println("Please enter the park name:");
@@ -207,7 +205,7 @@ public class MainView {
 		
 
 		try {
-			Job newJob = new Job(jobId, description, start, end, parkName, location, light, medium, 
+			Job newJob = new Job(description, start, end, parkName, location, light, medium, 
 								 heavy, minimumVolunteers);
 			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
 			System.out.println("Your job has been created!");
@@ -354,7 +352,7 @@ public class MainView {
 
 
 			try {
-				parkManager.createdANewJob(selectedJob);
+				parkManager.createdANewJob(selectedJob, jobCollection);
 
 			} catch (mangerPendingJobsException e) {
 				System.out.println("The Job cannot be created as maximum number of pending "

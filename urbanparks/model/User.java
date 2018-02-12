@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
@@ -23,8 +24,8 @@ public abstract class User implements Serializable {
 	private String myPhone;
 
 	/** List of all jobs that user accepted or created depends on the user. */
-	private TreeSet<String> myJobsList;
-
+	//private TreeSet<String> myJobsList;
+	protected ArrayList<Integer> myJobsList;
 
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -39,7 +40,7 @@ public abstract class User implements Serializable {
 		setLastName(theLastName);
 		setEmail(theEmail);
 		setPhoneNumber(thePhone);
-		myJobsList = new TreeSet<String>();
+		myJobsList = new ArrayList<Integer>();
 	}
 
 	/**
@@ -119,7 +120,7 @@ public abstract class User implements Serializable {
 	 * 
 	 * @param theJobKey the new job to be added to the list.
 	 */
-	public void addJob(String theJobKey) {
+	public void addJob(int theJobKey) {
 		myJobsList.add(theJobKey);
 	}
 
@@ -128,7 +129,7 @@ public abstract class User implements Serializable {
 	 * 
 	 * @return list of all jobs.
 	 */
-	public TreeSet<String> getJobsList() {
+	public ArrayList<Integer> getJobsList() {
 		return myJobsList;
 	}
 
