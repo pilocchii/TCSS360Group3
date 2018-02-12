@@ -34,8 +34,7 @@ public class ParkManager extends User {
 
 	public ParkManager(String theFirstName, String theLastName, String theEmail, String thePhone) {
 		super(theFirstName, theLastName, theEmail, thePhone);
-//		jobsList  = collectionJobs.getJobCollection();
-
+		//jobsList  = collectionJobs.getJobCollection();
 	}
 
 	public class mangerPendingJobsException extends Exception {
