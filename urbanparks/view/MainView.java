@@ -380,11 +380,12 @@ public class MainView {
 				try {
 					ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
 					user = newParkManager;
+					userCollection.addUser(user);
 					System.out.println("Welcome, park manager " + firstName + "!");
 					showMainMenu();
 				} catch (Exception e) {
 					// TODO: ParkManager class person - put the correct type of exception and descriptive text here
-					System.out.println(e);
+					e.printStackTrace();
 				}
 				
 				break;
