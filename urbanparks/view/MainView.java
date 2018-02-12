@@ -1,5 +1,7 @@
 package view;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -42,6 +44,22 @@ public class MainView {
 
 	public MainView () {
 		System.out.println("Welcome to Urban Parks!");
+		
+		
+		try {
+			jobCollection.loadData();
+		} catch (Exception e3) {
+			e3.printStackTrace();
+			System.out.println("Couldn't load JOB data. Using empty job data!");
+		}
+		try {
+			userCollection.loadData();
+		} catch (ClassNotFoundException | IOException e3) {
+			e3.printStackTrace();
+			System.out.println("Couldn't load user data. Using empty user data!");
+		}
+		
+		
 		showLoginMenu();
 	}
 
@@ -63,6 +81,13 @@ public class MainView {
 		switch(choice) {
 
 			case 0:
+				try {
+					userCollection.saveData();
+					jobCollection.saveData();
+				} catch (IOException e1) {
+					System.out.println("Could not save your data to disk.");
+				}
+				System.out.println("Data saved. Goodbye!");
 				System.exit(0);
 
 			case 1:
@@ -348,7 +373,6 @@ public class MainView {
 				} catch (Exception e) {
 					// TODO: Volunteer class person - put the correct type of exception and descriptive text here
 					System.out.println(e);
-					showMainMenu();
 				}
 				break;
 
@@ -356,13 +380,11 @@ public class MainView {
 				try {
 					ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
 					user = newParkManager;
-                    userCollection.addUser(user);
 					System.out.println("Welcome, park manager " + firstName + "!");
 					showMainMenu();
 				} catch (Exception e) {
 					// TODO: ParkManager class person - put the correct type of exception and descriptive text here
 					System.out.println(e);
-					showMainMenu();
 				}
 				
 				break;
