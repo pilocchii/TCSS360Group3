@@ -6,7 +6,7 @@ import java.util.Calendar;
 public class Volunteer extends User {
 	
 	// todo: move to constants class
-	private final static int MIN_DAYS_BEFORE_SIGNUP = 2;
+	public final static int MIN_DAYS_BEFORE_SIGNUP = 2;
 	private final static int MILLISECONDS_IN_DAY = 86400000;
 	
 	public class volunteerJobOverlapException extends Exception {
@@ -22,6 +22,7 @@ public class Volunteer extends User {
 	    }
 	}
 	
+	//TODO: use the job key arrayList in User instead
 	private ArrayList<Job> acceptedJobs;
 	
 	/**
@@ -67,6 +68,7 @@ public class Volunteer extends User {
 	 * @return
 	 */
 	public boolean doesNewJobOverlap(Job candidateJob) {
+		//TODO: make this iteration based on job's key
 		for (Job j : acceptedJobs) {
 			if (are2DatesOnSameDay(candidateJob.getStartDateTime(), j.getStartDateTime())) {
 				return false;
