@@ -2,13 +2,14 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import model.Job;
 import model.JobCollection;
-import model.ParkManager;
-import model.User;
 import static model.ProgramConstants.*;
 
 /**There can be more than the maximum number of pending jobs at a time in the entire system,
@@ -19,38 +20,39 @@ import static model.ProgramConstants.*;
 
 public class SubmitJobTest {
 
+	
 	@Before
 	public void setup() {
-		User u = new ParkManager("JohnDoe@gmail.com");
-		JobCollection jc = new JobCollection();
+		
 	}
 	
 	@Test
 	public void createNoJobsTest() {
-		int code = u.createJob();
-		assertEquals(code, 1);
+		Calendar c = Calendar.getInstance();
+		Job newJob = new Job("A", c, c, "B", "C", 1, 2, 3, 4);
+		assertEquals(newJob, "A, " + c + ", " + c + ", " + "B, C, 1, 2, 3, 4");
 	}
 	
 	@Test
-	public void createMaxMinus1Test() {
+	public void createMaxMinus1Test() throws NoSuchAlgorithmException {
+		JobCollection jc = new JobCollection();
 		Job j;
-		for(int i = 0; i < MAX_PENDING_JOBS - 1; i++) {
-			j = new Job();
-			jc.add(j);
+		for(int i = 1; i < MAX_PENDING_JOBS - 1; i++) {
+			j = new Job("decription of job # " + i, Calendar.getInstance(), Calendar.getInstance(), "XYZ Park", "2343 23rd Ave N", 2, 3, 4, 10);
+			jc.addJob(j);
 		}
-		int code = u.createJob();
-		assertEquals(code, 1);
+		assertEquals(jc.getSortedJobs().size(), MAX_PENDING_JOBS - 1);
 	}
 	
 	@Test
-	public void createMaxJobsTest() {
+	public void createMaxJobsTest() throws NoSuchAlgorithmException {
+		JobCollection jc = new JobCollection();
 		Job j;
-		for(int i = 0; i < MAX_PENDING_JOBS; i++) {
-			j = new Job();
-			jc.add(j);
+		for(int i = 1; i < MAX_PENDING_JOBS; i++) {
+			j = new Job("decription of job # " + i, Calendar.getInstance(), Calendar.getInstance(), "XYZ Park", "2343 23rd Ave N", 2, 3, 4, 10);
+			jc.addJob(j);
 		}
-		int code = u.createJob();
-		assertEquals(code, -1);
+		assertEquals(jc.getSortedJobs().size(), MAX_PENDING_JOBS - 1);
 	}
 
 }

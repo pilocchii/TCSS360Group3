@@ -249,33 +249,33 @@ public class Job implements Serializable {
 		minTotalVolunteers = theMinimumVolunteers;
 	}
 	
-//	@Override
-//	public String toString() {
-//		
-//		String symbol = ", ";
-//		
-//		StringBuffer sb = new StringBuffer();
-//		sb.append(description);
-//		sb.append(symbol);
-//		sb.append(startDateTime);
-//		sb.append(symbol);
-//		sb.append(endDateTime);
-//		sb.append(symbol);
-//		sb.append(parkName);
-//		sb.append(symbol);
-//		sb.append(location);
-//		sb.append(symbol);
-//		sb.append(maxLightWorkers);
-//		sb.append(symbol);
-//		sb.append(maxMediumWorker);
-//		sb.append(symbol);
-//		sb.append(maxHeavyWorkers);
-//		sb.append(symbol);
+	@Override
+	public String toString() {
+		
+		String symbol = ", ";
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(description);
+		sb.append(symbol);
+		sb.append(startDateTime);
+		sb.append(symbol);
+		sb.append(endDateTime);
+		sb.append(symbol);
+		sb.append(parkName);
+		sb.append(symbol);
+		sb.append(location);
+		sb.append(symbol);
+		sb.append(maxLightWorkers);
+		sb.append(symbol);
+		sb.append(maxMediumWorker);
+		sb.append(symbol);
+		sb.append(maxHeavyWorkers);
+		sb.append(symbol);
 //		sb.append(myVolunteersList.toString());
 //		sb.append(symbol);
-//		sb.append(myMinimumVolunteers);
-//		return sb.toString();
-//	}
+		sb.append(myMinimumVolunteers);
+		return sb.toString();
+	}
 //	@Override
 //	public int compare(Job arg0, Job arg1) {
 //		return arg0.getStartDateTime().compareTo(arg1.getEndDateTime());
