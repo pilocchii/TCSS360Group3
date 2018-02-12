@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
 import org.junit.Before;
@@ -11,9 +12,12 @@ import org.junit.jupiter.api.Test;
 
 import model.Job;
 import model.ParkManager;
+import model.ParkManager.jobStartTooLongFromNowException;
+import model.ParkManager.jobTooLongException;
 import model.ParkManager.managerJobDaysException;
 import model.ParkManager.managerJobEndDaysException;
 import model.ParkManager.mangerPendingJobsException;
+import model.ParkManager.numJobsAtMaximumException;
 
 
 class ParkManagerTest {
@@ -22,8 +26,8 @@ class ParkManagerTest {
 
 
 	@Before
-	public void setUpParkManagerTest() throws mangerPendingJobsException, 
-	managerJobDaysException, managerJobEndDaysException {
+	public void setUpParkManagerTest() 
+			throws NoSuchAlgorithmException, numJobsAtMaximumException, jobTooLongException, jobStartTooLongFromNowException {
 		myParkManager = new ParkManager("Aashish Kumar", "aashish1996", "vats@gmail.com", "2525252525");
 		Calendar signedUpJobStart = Calendar.getInstance();
 		Calendar signedUpJobEnd = Calendar.getInstance();
