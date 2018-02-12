@@ -54,10 +54,10 @@ public abstract class User implements Serializable {
 	/**
 	 * Change the first name of the user.
 	 * 
-	 * @param myFirstName the new first name.
+	 * @param theFirstName the new first name.
 	 */
-	public void setFirstName(String myFirstName) {
-		this.myFirstName = myFirstName;
+	public void setFirstName(String theFirstName) {
+		myFirstName = theFirstName;
 	}
 
 	/**
@@ -72,10 +72,10 @@ public abstract class User implements Serializable {
 	/**
 	 * Change the last name of the user.
 	 * 
-	 * @param myLastName the new last name.
+	 * @param theLastName the new last name.
 	 */
-	public void setLastName(String myLastName) {
-		this.myLastName = myLastName;
+	public void setLastName(String theLastName) {
+		myLastName = theLastName;
 	}
 
 	/**
@@ -90,10 +90,10 @@ public abstract class User implements Serializable {
 	/**
 	 * Change the email address of the user.
 	 * 
-	 * @param myEmail the new email address.
+	 * @param theEmail the new email address.
 	 */
-	public void setEmail(String myEmail) {
-		this.myEmail = myEmail;
+	public void setEmail(String theEmail) {
+		myEmail = theEmail;
 	}
 
 	/**
@@ -108,10 +108,10 @@ public abstract class User implements Serializable {
 	/**
 	 * Change the phone number of the user.
 	 * 
-	 * @param myPhone the phone number.
+	 * @param thePhone the phone number.
 	 */
-	public void setPhoneNumber(String myPhone) {
-		this.myPhone = myPhone;
+	public void setPhoneNumber(String thePhone) {
+		myPhone = thePhone;
 	}
 
 	/**

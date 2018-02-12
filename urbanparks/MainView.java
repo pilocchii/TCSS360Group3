@@ -3,11 +3,16 @@ package urbanparks;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Calendar;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.StringTokenizer;
 
-import model.Job;
-import model.JobCollection;
-import model.User;
-import model.UserCollection;
+import urbanparks.Job;
+import urbanparks.JobCollection;
+import urbanparks.User;
+import urbanparks.UserCollection;
+import urbanparks.Volunteer.jobSignupTooLateException;
+import urbanparks.Volunteer.volunteerJobOverlapException;
 
 /***
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
@@ -20,45 +25,50 @@ import model.UserCollection;
 /**
 	
 */
-public class MainView() {
+public class MainView {
 
-	private static final JOB_LIST_PAGE_END = 5;
+	private static final int JOB_LIST_PAGE_END = 5;
+
 
 	/* Member variable initialization */
-	Scanner scanner = new Scanner(System.in);
-	String inputPrompt = "Please enter the number corresponding with your menu choice:"
-	JobCollection jobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
-	UserCollection userCollection = new UserCollection(); // TODO: thi also needs to be loaded from file
-	User user;
+	private Scanner scanner = new Scanner(System.in);
+	private String inputPrompt = "Please enter the number corresponding with your menu choice:";
+	private JobCollection jobCollection = new JobCollection(); // TODO: this will need to be loaded from file later
+	private UserCollection userCollection = new UserCollection(); // TODO: thi also needs to be loaded from file
+	private User user;
 
-	System.out.println("Welcome to Urban Parks!);
-	showLoginMenu();
+	public MainView () {
+		System.out.println("Welcome to Urban Parks!");
+		showLoginMenu();
+	}
+
+
 
 	/**
 		Login menu
 
 		The initial menu. The user will identify themself.
 	*/
-	private static void showLoginMenu() {
+	private void showLoginMenu() {
 		System.out.println(inputPrompt);
 		System.out.println("0. Exit");
 		System.out.println("1. Sign in");
 		System.out.println("2. Create a new user");
-		char choice = scanner.nextChar();
+		String choice = scanner.nextLine();
 
 		switch(choice) {
 
-			case '0':
+			case "0":
 				System.exit(0);
 
-			case '1':
+			case "1":
 				System.out.println("Please enter your email address:");
 				String username = scanner.nextLine();
 				user = userCollection.getUser(username);
 				showMainMenu();
 				break;
 			
-			case '2':
+			case "2":
 				showSignupMenu();
 				break;
 
@@ -75,7 +85,7 @@ public class MainView() {
 
 		Follows the login menu. The user can select a choice based on the type of user they are.
 	*/
-	private static void showMainMenu() {
+	private void showMainMenu() {
 
 		// show Park Manager options
 		if (user instanceof ParkManager) {
@@ -83,14 +93,14 @@ public class MainView() {
 			System.out.println(inputPrompt);
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Submit a new job");
-			String choice = scanner.nextChar();
+			int choice = scanner.nextInt();
 
 			switch(choice) {
-				case '0':
+				case 0:
 					showLoginMenu();
 					break;
 
-				case '1':
+				case 1:
 					showSubmitNewJobMenu();
 					break;
 
@@ -107,19 +117,19 @@ public class MainView() {
 			System.out.println(inputPrompt);
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Sign up for a job");
-			String choice = scanner.nextChar();
+			int choice = scanner.nextInt();
 
 			switch(choice) {
-				case '0':
+				case 0:
 					showLoginMenu();
 					break;
 
-				case '1':
+				case 1:
 					showSignupForJobMenu();
 					break;
 
 				default:
-					System.out.println(char + " is not valid input");
+					System.out.println(choice + " is not valid input");
 					showMainMenu();
 			}
 
@@ -132,7 +142,7 @@ public class MainView() {
 		Submit new job menu
 		Park Managers can create a new job here.
 	*/
-	private static void showSubmitNewJobMenu() {
+	private void showSubmitNewJobMenu() {
 
 		System.out.println("Please enter a start date and time for this job in " + 
 						   "this formate (Year Month Date Hour Minute):");
@@ -160,11 +170,10 @@ public class MainView() {
 			Job newJob = new Job(description, start, end, parkName, location, light, medium, 
 								 heavy, minimumVolunteers);
 			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
-			System.out.println("Your job has been created! Press any button to continue...");
-			char tempInput = scanner.nextChar;
+			System.out.println("Your job has been created!");
 			showMainMenu();
-		} catch () { // TODO: JobCollection person, add business rules in story 2 here
-
+		} catch (Exception e) { // TODO: JobCollection person, add business rules in story 2 here
+			System.out.println(e);
 		}
 
 	} // end showSubmitNewJobMenu
@@ -175,7 +184,7 @@ public class MainView() {
 	 * @param theDateTime the given date and time.
 	 * @return return the calendar.
 	 */
-	private static Calendar getDateTime(String theDateTime) {
+	private Calendar getDateTime(String theDateTime) {
 		Calendar calendar = Calendar.getInstance();
 		Scanner scanner = new Scanner(theDateTime);
 		calendar.set(scanner.nextInt(), scanner.nextInt(), scanner.nextInt(), 
@@ -188,54 +197,69 @@ public class MainView() {
 		Signup for job
 		Volunteers can volunteer for jobs here.
 	*/
-	private static void showSignupForJobMenu() {
+	private void showSignupForJobMenu(Volunteer volunteer) {
 
 		System.out.println("Select a job from the list below to sign up for.\n" +  
 			"Input the corresponding number, and press enter, or press '0' to go back.");
 
 		// display the list of jobs
-		for(int i = 0; i < jobCollection.size(); i++) { // TODO: JobCollection person, whatever your internal workings are, make them work here
-			// TODO: Job person, fill in whatever your field names are here
-			currJob = jobCollection.get(i);
-			System.out.println(i + ". " + currJob.getStartDate() + " - " + currJob.getDescription());
+		/**
+		 *  TODO: Make jobCollection sortable by start date with Comparator,
+		 *  sort it,
+		 *  then iterate each Job in it.
+		 */
+		// Temp code:
+		for(int i = 0; i < jobCollection.size(); i++) {
+			Job currJob = jobCollection.get(i);
+			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
 		}
-
-		char choice = scanner.nextChar();
-
+		
+		int choice = scanner.nextInt();
 		if (choice == '0') {
 			showMainMenu();
 		}
+		int jobIndex = choice - 1;
+		Job selectedJob = jobCollection.getJob(jobIndex);
+		showJobDetails(selectedJob);
+		System.out.println("0. Go back to jobs list");
+		System.out.println("1. Sign up for this job");
+		choice = scanner.nextInt();
+
+		// Needed? This feature isn't in other menus. The default case gives a similar result.
+		//List<String> validChoices = Arrays.asList('0', '1');
+		//validateJobMenuChoice(choice, validChoices);
 		
-		try {
-			selectedJob = jobCollection.getJob(Integer.parseInt(choice));
-			showJobDetails(selectedJob);
-			System.out.println("0. Go back to jobs list");
-			System.out.println("1. Sign up for this job");
-			char choice = scanner.nextChar();
+		switch (choice) {
+			case 0:
+				showSignupForJobMenu(volunteer);
+				break;
 
-			static final List<String> validChoices = Arrays.asList('0', '1');
-			validateJobMenuChoice(choice, validChoices);
+			case 1:
+				//volunteersList = selectedJob.getVolunteersList();
+				
+				try {
+					volunteer.signUpForJob(selectedJob);
+					
+				} catch (volunteerJobOverlapException e) {
+					System.out.println("The job you selected overlaps with another job you are "
+							+ "signed up for. Please try another job.");
+					showSignupForJobMenu(volunteer);
+					
+				} catch (jobSignupTooLateException e) {
+					System.out.println("The job you selected starts too soon (less than " 
+							+ Volunteer.MIN_DAYS_BEFORE_SIGNUP + " than now. Please try another job.");
+					showSignupForJobMenu(volunteer);
+				}
+				
+				//volunteersList.add(user);
+				System.out.println("You are now signed up for job " + selectedJob.toString());
+				showMainMenu();
+				break;
 
-			switch (choice) {
-				case '0':
-					showSignupForJobMenu();
-					break;
-
-				case '1':
-					volunteersList = selectedJob.getVolunteersList();
-					volunteersList.add(user);
-					System.out.println("You are now signed up for job " + selectedJob.toString());
-					showMainMenu();
-					break;
-
-				default:
-					showSignupForJobMenu();
-			} // end switch
-
-		} catch () { // TODO: Volunteer person, put the exception type here that triggers on business rule
-
-		}
-		
+			default:
+				System.out.println("Invalid option. Please try again.");
+				showSignupForJobMenu(volunteer);
+		}	
 	} // end showSignupForJobMenu
 
 
@@ -244,15 +268,15 @@ public class MainView() {
 
 		Job job - the job to show extra details for
 	*/
-	private static void showJobDetails(Job job) {
-		System.out.println("Starting time: " + job.getStartDateTime);
-		System.out.println("Ending time: " + job.getEndDateTime);
-		System.out.println("Park name: " + job.getParkName);
-		System.out.println("Location: " + job.getLocation);
-		System.out.println("Job description: " + job.getDescription);
-		System.out.println("Work levels: Light - " + job.getLight +
-			"Medium - " + job.getMedium + 
-			"Heavy - " + job.getHeavy);
+	private void showJobDetails(Job job) {
+		System.out.println("Starting time: " + job.getStartDateTime());
+		System.out.println("Ending time: " + job.getEndDateTime());
+		System.out.println("Park name: " + job.getParkName());
+		System.out.println("Location: " + job.getLocation());
+		System.out.println("Job description: " + job.getDescription());
+		System.out.println("Work levels: Light - " + job.getLight() +
+			"Medium - " + job.getMedium() +
+			"Heavy - " + job.getHeavy());
 	} // end showJobDetails
 
 
@@ -261,9 +285,9 @@ public class MainView() {
 
 		char choice - the character to validate
 	*/
-	private static void validateJobMenuChoice(char choice, List<String> validChoices) {
+	private void validateJobMenuChoice(int choice, List<Integer> validChoices) {
 		if (!validChoices.contains(choice)) {
-			System.out.println(choice + " is not a valid option. Please enter a choice as listed above.")
+			System.out.println(Integer.toString(choice) + " is not a valid option. Please enter a choice as listed above.");
 			validateJobMenuChoice(choice, validChoices);
 		} 
 	} // end showJobDetails
@@ -273,15 +297,15 @@ public class MainView() {
 		Signup for job
 		Volunteers can volunteer for jobs here.
 	*/
-	private static void showSignupMenu() {
+	private void showSignupMenu() {
 
 		System.out.println("Please enter the number corresponding with your user type, or '0' to go back:");
 		System.out.println("0. Go back to main menu");
 		System.out.println("1. Volunteer");
 		System.out.println("2. Park Manager");
 
-		String choice = scanner.nextChar();
-		if (choice == '0') {
+		int choice = scanner.nextInt();
+		if (choice == 0) {
 			showMainMenu();
 		}
 
@@ -299,25 +323,27 @@ public class MainView() {
 
 		switch(choice) {
 
-			case '1':
+			case 1:
 				try {
-					Volunteer newVolunteer = Volunteer(email, firstName, lastName, phone);
+					Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
 					user = newVolunteer;
 					System.out.println("Welcome, volunteer " + firstName + "!");
 					showMainMenu();
-				} catch () { 
+				} catch (Exception e) {
 					// TODO: Volunteer class person - put the correct type of exception and descriptive text here
+					System.out.println(e);
 				}
 				break;
 
-			case '2': 
+			case 2:
 				try {
-					ParkManager newParkManager = ParkManager(email, firstName, lastName, phone);
+					ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
 					user = newParkManager;
 					System.out.println("Welcome, park manager " + firstName + "!");
 					showMainMenu();
-				} catch () {
+				} catch (Exception e) {
 					// TODO: ParkManager class person - put the correct type of exception and descriptive text here
+					System.out.println(e);
 				}
 				
 				break;
