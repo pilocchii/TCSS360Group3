@@ -11,6 +11,9 @@ import java.util.StringTokenizer;
 import model.Job;
 import model.JobCollection;
 import model.ParkManager;
+import model.ParkManager.managerJobDaysException;
+import model.ParkManager.managerJobEndDaysException;
+import model.ParkManager.mangerPendingJobsException;
 import model.User;
 import model.UserCollection;
 import model.Volunteer;
@@ -160,6 +163,8 @@ public class MainView {
 		System.out.println("Please enter an end date and time for this job in this " + 
 						    "format (Year Month Date Hour Minute):");
 		Calendar end = getDateTime(scanner.nextLine());
+		System.out.println("Please enter a JobId:");
+		Integer jobId = scanner.nextInt();
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
 		System.out.println("Please enter the park name:");
@@ -177,7 +182,7 @@ public class MainView {
 		
 
 		try {
-			Job newJob = new Job(description, start, end, parkName, location, light, medium, 
+			Job newJob = new Job(jobId, description, start, end, parkName, location, light, medium, 
 								 heavy, minimumVolunteers);
 			jobCollection.addJob(newJob); // TODO: make sure the specifics are right, i.e. method call
 			System.out.println("Your job has been created!");
@@ -275,6 +280,84 @@ public class MainView {
 				showSignupForJobMenu(volunteer);
 		}	
 	} // end showSignupForJobMenu
+	/**
+	 * Managers can create a job here.
+	 */
+	private void showSubmitNewJobMenu(ParkManager parkManager) {
+
+		System.out.println("Create a new Job.\n" +  
+				"Input the corresponding number, and press enter, or press '0' to go back.");
+
+		// display the list of jobs
+		/**
+		 *  TODO: Make jobCollection sortable by start date with Comparator,
+		 *  sort it,
+		 *  then iterate each Job in it.
+		 */
+		// Temp code:
+		Job[] jobs = jobCollection.getSortedJobs();
+		for(int i = 0; i < jobCollection.getJobCollection().size(); i++) {
+			Job currJob = jobs[i];
+			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) +
+					" - " + currJob.getDescription());
+		}
+
+		int choice = scanner.nextInt();
+
+		if (choice == '0') {
+			showMainMenu();
+		}
+		int jobIndex = choice - 1;
+		Job selectedJob = jobs[jobIndex];
+		showJobDetails(selectedJob);
+		System.out.println("0. Go back to jobs list");
+		System.out.println("1. Create a job");
+		choice = scanner.nextInt();
+		scanner.nextLine();
+
+		// Needed? This feature isn't in other menus. The default case gives a similar result.
+		//List<String> validChoices = Arrays.asList('0', '1');
+		//validateJobMenuChoice(choice, validChoices);
+
+		switch (choice) {
+		case 0:
+			showSubmitNewJobMenu(parkManager);			
+			break;
+
+		case 1:
+
+
+			try {
+				parkManager.createdANewJob(selectedJob);
+
+			} catch (mangerPendingJobsException e) {
+				System.out.println("The Job cannot be created as maximum number of pending "
+						+ "jobs at a time in the entire system is 20");
+				showSubmitNewJobMenu(parkManager);
+
+			} catch (managerJobDaysException e) {
+				System.out.println("The job cannot be created as it takes more than the "
+						+ "maximum number of days a job should take");
+				showSubmitNewJobMenu(parkManager);
+			}
+			catch (managerJobEndDaysException e) {
+				System.out.println("The job cannot be created as its end date is more than "
+						+ "the maximum number of days from the current date");
+				showSubmitNewJobMenu(parkManager);
+			}
+
+			//volunteersList.add(user);
+			System.out.println("You created a new job " + selectedJob.getDescription());
+			showMainMenu();
+			break;
+
+		default:
+			System.out.println("Invalid option. Please try again.");
+			showSubmitNewJobMenu(parkManager);
+		}	
+	} // end showSignupForJobMenu
+
 
 
 	/**
