@@ -1,5 +1,6 @@
-package urbanparks;
+package view;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Calendar;
@@ -7,12 +8,14 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.StringTokenizer;
 
-import urbanparks.Job;
-import urbanparks.JobCollection;
-import urbanparks.User;
-import urbanparks.UserCollection;
-import urbanparks.Volunteer.jobSignupTooLateException;
-import urbanparks.Volunteer.volunteerJobOverlapException;
+import model.Job;
+import model.JobCollection;
+import model.ParkManager;
+import model.User;
+import model.UserCollection;
+import model.Volunteer;
+import model.Volunteer.jobSignupTooLateException;
+import model.Volunteer.volunteerJobOverlapException;
 
 /***
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
@@ -53,22 +56,28 @@ public class MainView {
 		System.out.println(inputPrompt);
 		System.out.println("0. Exit");
 		System.out.println("1. Sign in");
-		System.out.println("2. Create a new user");
-		String choice = scanner.nextLine();
+		System.out.println("2. Create a new account");
+		int choice = scanner.nextInt();
+		scanner.nextLine();
 
 		switch(choice) {
 
-			case "0":
+			case 0:
 				System.exit(0);
 
-			case "1":
+			case 1:
 				System.out.println("Please enter your email address:");
 				String username = scanner.nextLine();
-				user = userCollection.getUser(username);
-				showMainMenu();
+				try {
+                    user = userCollection.getUser(username);
+                    showMainMenu();
+                } catch (NullPointerException e) {
+                    System.out.println("User " + username + " does not exist. If you do not have an account, please create one.");
+                    showLoginMenu();
+                }
 				break;
 			
-			case "2":
+			case 2:
 				showSignupMenu();
 				break;
 
@@ -94,6 +103,7 @@ public class MainView {
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Submit a new job");
 			int choice = scanner.nextInt();
+			scanner.nextLine();
 
 			switch(choice) {
 				case 0:
@@ -125,7 +135,7 @@ public class MainView {
 					break;
 
 				case 1:
-					showSignupForJobMenu();
+					showSignupForJobMenu((Volunteer) user);
 					break;
 
 				default:
@@ -145,10 +155,10 @@ public class MainView {
 	private void showSubmitNewJobMenu() {
 
 		System.out.println("Please enter a start date and time for this job in " + 
-						   "this formate (Year Month Date Hour Minute):");
+						   "this format (Year Month Date Hour Minute):");
 		Calendar start = getDateTime(scanner.nextLine());
 		System.out.println("Please enter an end date and time for this job in this " + 
-						    "formate (Year Month Date Hour Minute):");
+						    "format (Year Month Date Hour Minute):");
 		Calendar end = getDateTime(scanner.nextLine());
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
@@ -209,9 +219,12 @@ public class MainView {
 		 *  then iterate each Job in it.
 		 */
 		// Temp code:
-		for(int i = 0; i < jobCollection.size(); i++) {
-			Job currJob = jobCollection.get(i);
-			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
+		Job[] jobs = jobCollection.getSortedJobs();
+		for(int i = 0; i < jobCollection.getJobCollection().size(); i++) {
+			Job currJob = jobs[i];
+			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) +
+                    " - " + currJob.getDescription());
 		}
 		
 		int choice = scanner.nextInt();
@@ -219,11 +232,12 @@ public class MainView {
 			showMainMenu();
 		}
 		int jobIndex = choice - 1;
-		Job selectedJob = jobCollection.getJob(jobIndex);
+		Job selectedJob = jobs[jobIndex];
 		showJobDetails(selectedJob);
 		System.out.println("0. Go back to jobs list");
 		System.out.println("1. Sign up for this job");
 		choice = scanner.nextInt();
+		scanner.nextLine();
 
 		// Needed? This feature isn't in other menus. The default case gives a similar result.
 		//List<String> validChoices = Arrays.asList('0', '1');
@@ -252,7 +266,7 @@ public class MainView {
 				}
 				
 				//volunteersList.add(user);
-				System.out.println("You are now signed up for job " + selectedJob.toString());
+				System.out.println("You are now signed up for job " + selectedJob.getDescription());
 				showMainMenu();
 				break;
 
@@ -269,8 +283,9 @@ public class MainView {
 		Job job - the job to show extra details for
 	*/
 	private void showJobDetails(Job job) {
-		System.out.println("Starting time: " + job.getStartDateTime());
-		System.out.println("Ending time: " + job.getEndDateTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+		System.out.println("Starting time: " + dateFormat.format(job.getStartDateTime().getTime()));
+		System.out.println("Ending time: " + dateFormat.format(job.getEndDateTime().getTime()));
 		System.out.println("Park name: " + job.getParkName());
 		System.out.println("Location: " + job.getLocation());
 		System.out.println("Job description: " + job.getDescription());
@@ -308,7 +323,7 @@ public class MainView {
 		if (choice == 0) {
 			showMainMenu();
 		}
-
+		scanner.nextLine();
 		System.out.println("Please enter your email address:");
 		String email = scanner.nextLine();
 
@@ -327,6 +342,7 @@ public class MainView {
 				try {
 					Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
 					user = newVolunteer;
+					userCollection.addUser(user);
 					System.out.println("Welcome, volunteer " + firstName + "!");
 					showMainMenu();
 				} catch (Exception e) {

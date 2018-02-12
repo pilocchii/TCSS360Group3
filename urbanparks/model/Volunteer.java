@@ -1,4 +1,4 @@
-package urbanparks;
+package model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,6 +103,6 @@ public class Volunteer extends User {
 		Calendar now = Calendar.getInstance();
 		long diff = theCandidateJob.getStartDateTime().getTimeInMillis() - now.getTimeInMillis();
 		long minDaysInMillis = MIN_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
-		return (diff >= minDaysInMillis);
+		return (diff <= minDaysInMillis);
 	}
 }
