@@ -12,7 +12,7 @@ public class Job implements Serializable {
 	
 	private static final long serialVersionUID = 928850375626876361L;
 
-	private Integer jbId;
+	private Integer jobId;
 	private String description;
 	private Calendar startDateTime;
 	private Calendar endDateTime;
@@ -40,8 +40,6 @@ public class Job implements Serializable {
 	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
 			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
 			   final int theHeavy, final int theMinVolunteers) {
-		
-		//setJobId(theJobId);
 		setDescription(theDescription);
 		setStartDateTime(theStartDateTime);
 		setEndDateTime(theEndDateTime);
@@ -52,13 +50,32 @@ public class Job implements Serializable {
 		setHeavy(theHeavy);
 		setMinimumVolunteers(theMinVolunteers);
 	}
+	
+	/**
+	 * Constructor for Job with the job ID
+	 */
+	public Job(final int jobID, final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
+			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
+			   final int theHeavy, final int theMinVolunteers) {
+		setJobId(jobID);
+		setDescription(theDescription);
+		setStartDateTime(theStartDateTime);
+		setEndDateTime(theEndDateTime);
+		setParkName(theParkName);
+		setLocation(theLocation);
+		setLight(theLight);
+		setMedium(theMedium);
+		setHeavy(theHeavy);
+		setMinimumVolunteers(theMinVolunteers);
+	}
+	
 	/**
 	 * Return the job description.
 	 * 
 	 * @return job description.
 	 */
 	public Integer getJobId() {
-		return jbId;
+		return jobId;
 	}
 	
 	/**
@@ -67,7 +84,7 @@ public class Job implements Serializable {
 	 * @return job description.
 	 */
 	public void setJobId(final Integer theJobId) {
-		jbId = theJobId;
+		jobId = theJobId;
 	}
 
 	/**

@@ -1,9 +1,15 @@
-package urbanparks.tests;
+package tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import model.Job;
+import model.JobCollection;
+import model.ParkManager;
+import model.User;
+import static model.ProgramConstants.*;
 
 /**There can be more than the maximum number of pending jobs at a time in the entire system,
 * default of 20
@@ -28,7 +34,7 @@ public class SubmitJobTest {
 	@Test
 	public void createMaxMinus1Test() {
 		Job j;
-		for(int i = 0; i < Job.MAX_PENDING_JOBS - 1; i++) {
+		for(int i = 0; i < MAX_PENDING_JOBS - 1; i++) {
 			j = new Job();
 			jc.add(j);
 		}
@@ -39,7 +45,7 @@ public class SubmitJobTest {
 	@Test
 	public void createMaxJobsTest() {
 		Job j;
-		for(int i = 0; i < Job.MAX_PENDING_JOBS; i++) {
+		for(int i = 0; i < MAX_PENDING_JOBS; i++) {
 			j = new Job();
 			jc.add(j);
 		}

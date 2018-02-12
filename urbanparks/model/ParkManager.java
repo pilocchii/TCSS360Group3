@@ -2,6 +2,7 @@
 
 package model;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,9 +30,9 @@ public class ParkManager extends User {
 			super(message);
 		}
 	}
-	public class jobStartIsTooFarAwayException extends Exception {
-		public jobStartIsTooFarAwayException() {}
-		public jobStartIsTooFarAwayException(String message) {
+	public class jobStartTooLongFromNowException extends Exception {
+		public jobStartTooLongFromNowException() {}
+		public jobStartTooLongFromNowException(String message) {
 			super(message);
 		}
 	}
@@ -41,25 +42,41 @@ public class ParkManager extends User {
 	 * 
 	 * @param candidateJob
 	 * @return list of jobs created;
+	 * @throws NoSuchAlgorithmException 
 	 */
-	public void createNewJob(Job candidateJob, JobCollection jobcollection) 
-			throws numJobsAtMaximumException, jobTooLongException, jobStartIsTooFarAwayException {
+	public void createNewJob(Job candidateJob) 
+			throws numJobsAtMaximumException, jobTooLongException, jobStartTooLongFromNowException, NoSuchAlgorithmException {
 
-		if(jobcollection.getJobCollection().size() == ProgramConstants.MAX_PENDING_JOBS) {
+		if(isNumJobsAtMaximum()) {
 			throw new numJobsAtMaximumException();
 		}
-		
-		int jobLength = (int)(candidateJob.getEndDateTime().getTimeInMillis() - candidateJob.getStartDateTime().getTimeInMillis()) / MILLISECONDS_IN_DAY;
-		if (jobLength >= ProgramConstants.MAX_JOB_LENGTH) {
+
+		if (isJobTooLong(candidateJob)) {
 			throw new jobTooLongException();
 		}
 		
-		int daysBeforeJobStart = (int)(candidateJob.getStartDateTime().getTimeInMillis() - System.currentTimeMillis()) / MILLISECONDS_IN_DAY;
-		if (daysBeforeJobStart >= ProgramConstants.MAX_DAYS_BEFORE_JOB_START) {
-			throw new jobStartIsTooFarAwayException();
+		if (doesJobStartTooLongFromNow(candidateJob)) {
+			throw new jobStartTooLongFromNowException();
 		}
 		
 		myJobsList.add(candidateJob.getJobId());
-		jobcollection.addJob(candidateJob);
+		new JobCollection().addJob(candidateJob);
+	}
+	
+	
+	public boolean isJobTooLong(Job candidateJob) {
+		int jobLength = (int)(candidateJob.getEndDateTime().getTimeInMillis() 
+				- candidateJob.getStartDateTime().getTimeInMillis()) / MILLISECONDS_IN_DAY;
+		return (jobLength >= ProgramConstants.MAX_JOB_LENGTH);
+	}
+	
+	public boolean doesJobStartTooLongFromNow(Job candidateJob) {
+		int daysBeforeJobStart = (int)(candidateJob.getStartDateTime().getTimeInMillis() 
+				- System.currentTimeMillis()) / MILLISECONDS_IN_DAY;
+		return (daysBeforeJobStart >= ProgramConstants.MAX_DAYS_BEFORE_JOB_START);
+	}
+	
+	public boolean isNumJobsAtMaximum() throws NoSuchAlgorithmException {
+		return (new JobCollection().getJobCollection().size() == ProgramConstants.MAX_PENDING_JOBS);
 	}
 }

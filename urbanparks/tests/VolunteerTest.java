@@ -1,16 +1,19 @@
-package urbanparks.tests;
+package tests;
 
 import static org.junit.Assert.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.Job;
-import urbanparks.Volunteer;
-import urbanparks.Volunteer.jobSignupTooLateException;
-import urbanparks.Volunteer.volunteerJobOverlapException;
+import model.Job;
+import model.JobCollection;
+import model.Volunteer;
+import model.Volunteer.alreadySignedUpException;
+import model.Volunteer.jobSignupTooLateException;
+import model.Volunteer.volunteerJobOverlapException;
 
 
 /**
@@ -20,11 +23,14 @@ public class VolunteerTest {
 
 	private Volunteer volunteerNoJobs;
 	private Volunteer volunteerWithJobs;
+	private JobCollection jobcollection;
 
 	@Before
 	public final void setUpTestVolunteers() 
-			throws volunteerJobOverlapException, jobSignupTooLateException {
+			throws volunteerJobOverlapException, jobSignupTooLateException, alreadySignedUpException, NoSuchAlgorithmException {
 
+		jobcollection = new JobCollection();
+		
 		// create a volunteer with no signed up jobs
 		volunteerNoJobs = new Volunteer("First", "Last", "email@email.com", "(123)-456-7890");
 		
@@ -35,6 +41,9 @@ public class VolunteerTest {
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
 		Job signedUpJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
+		signedUpJob.setJobId(1234);
+		jobcollection.addJob(signedUpJob);
+		volunteerWithJobs = new Volunteer("First", "Last", "email@email.com", "(123)-456-7890");
 		volunteerWithJobs.signUpForJob(signedUpJob);
 	}
 
@@ -47,10 +56,12 @@ public class VolunteerTest {
 		Calendar candidateEnd = Calendar.getInstance();
 		candidateStart.set(2018, Calendar.JANUARY, 30, 9, 30);
 		candidateEnd.set(2018, Calendar.JANUARY, 30, 11, 30);
-		Job condidateJob = new Job("This job is on 1/30/2018.", candidateStart, candidateEnd, 
+		Job candidateJob = new Job("This job is on 1/30/2018.", candidateStart, candidateEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
+		candidateJob.setJobId(5678);
+		jobcollection.addJob(candidateJob);
 		
-		assertFalse(volunteerNoJobs.doesNewJobOverlap(condidateJob));
+		assertFalse(volunteerNoJobs.doesNewJobOverlap(candidateJob));
 	}
 
 	/**
@@ -67,6 +78,8 @@ public class VolunteerTest {
 		candidateEnd.set(2018, Calendar.JANUARY, 30, 11, 30);
 		Job candidateJob = new Job("This job is on 1/30/2018.", candidateStart, candidateEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
+		candidateJob.setJobId(5678);
+		jobcollection.addJob(candidateJob);
 
 		assertFalse(volunteerWithJobs.doesNewJobOverlap(candidateJob));
 	}
@@ -85,6 +98,8 @@ public class VolunteerTest {
 		candidateEnd.set(2018, Calendar.JANUARY, 21, 10, 30);
 		Job candidateJob = new Job("This job is on 1/21/2018.", candidateStart, candidateEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
+		candidateJob.setJobId(5678);
+		jobcollection.addJob(candidateJob);
 
 		assertTrue(volunteerWithJobs.doesNewJobOverlap(candidateJob));
 	}
@@ -103,6 +118,8 @@ public class VolunteerTest {
 		candidateEnd.set(2018, Calendar.JANUARY, 20, 18, 15);
 		Job candidateJob = new Job("This job is on 1/19/2018.", candidateStart, candidateEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
+		candidateJob.setJobId(5678);
+		jobcollection.addJob(candidateJob);
 
 		assertTrue(volunteerWithJobs.doesNewJobOverlap(candidateJob));
 	}
