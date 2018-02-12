@@ -266,7 +266,7 @@ public class MainView {
 				}
 				
 				//volunteersList.add(user);
-				System.out.println("You are now signed up for job " + selectedJob.toString());
+				System.out.println("You are now signed up for job " + selectedJob.getDescription());
 				showMainMenu();
 				break;
 

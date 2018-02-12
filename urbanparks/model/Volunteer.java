@@ -71,16 +71,16 @@ public class Volunteer extends User {
 		//TODO: make this iteration based on job's key
 		for (Job j : acceptedJobs) {
 			if (are2DatesOnSameDay(candidateJob.getStartDateTime(), j.getStartDateTime())) {
-				return false;
+				return true;
 			}
 			if (are2DatesOnSameDay(candidateJob.getStartDateTime(), j.getEndDateTime())) {
-				return false;
+				return true;
 			}
 			if (are2DatesOnSameDay(candidateJob.getEndDateTime(), j.getEndDateTime())) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	/**
@@ -103,6 +103,6 @@ public class Volunteer extends User {
 		Calendar now = Calendar.getInstance();
 		long diff = theCandidateJob.getStartDateTime().getTimeInMillis() - now.getTimeInMillis();
 		long minDaysInMillis = MIN_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
-		return (diff >= minDaysInMillis);
+		return (diff <= minDaysInMillis);
 	}
 }
