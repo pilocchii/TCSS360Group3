@@ -1,14 +1,12 @@
 package model;
 
+import static model.ProgramConstants.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 public class Volunteer extends User {
-	
-	// todo: move to constants class
-	public final static int MIN_DAYS_BEFORE_SIGNUP = 2;
-	private final static int MILLISECONDS_IN_DAY = 86400000;
-	
+
 	public class volunteerJobOverlapException extends Exception {
 		public volunteerJobOverlapException() {}
 	    public volunteerJobOverlapException(String message) {
@@ -28,15 +26,11 @@ public class Volunteer extends User {
 	    }
 	}
 	
-	//TODO: use the job key arrayList in User instead
-	//private ArrayList<Job> acceptedJobs;
-	
 	/**
 	 * Constructor for Volunteer class
 	 */
 	public Volunteer(String firstName, String lastName, String email, String phoneNum) {
 		super(firstName, lastName, email, phoneNum);
-		//acceptedJobs = new ArrayList<Job>();
 	}
 	
 	/**
@@ -50,7 +44,9 @@ public class Volunteer extends User {
 	public void signUpForJob(Job candidateJob) 
 			throws volunteerJobOverlapException, jobSignupTooLateException, alreadySignedUpException {
 
-		//check if job is the same
+		/**
+		 * Checks if selected job is the same as a signed up job.
+		 */
 		for (int i : myJobsList) {
 			if (i == candidateJob.getJobId()) {
 				throw new alreadySignedUpException();

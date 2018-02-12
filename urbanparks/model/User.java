@@ -6,25 +6,15 @@ import java.util.TreeSet;
 
 /**
  * This class represent a user 
- * 
- * @author Abderisaq Tarabi
- * @version 2/8/2018
- *
  */
 public abstract class User implements Serializable {
 
-	private static final long serialVersionUID = -805912316703380684L;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String phoneNum;
 
-	private String myFirstName;
-
-	private String myLastName;
-
-	private String myEmail;
-
-	private String myPhone;
-
-	/** List of all jobs that user accepted or created depends on the user. */
-	//private TreeSet<String> myJobsList;
+	/** List of all jobs that user accepted or created. */
 	protected ArrayList<Integer> myJobsList;
 
 	/**
@@ -49,7 +39,7 @@ public abstract class User implements Serializable {
 	 * @return the first name.
 	 */
 	public String getFirstName() {
-		return myFirstName;
+		return firstName;
 	}
 
 	/**
@@ -58,7 +48,7 @@ public abstract class User implements Serializable {
 	 * @param theFirstName the new first name.
 	 */
 	public void setFirstName(String theFirstName) {
-		myFirstName = theFirstName;
+		firstName = theFirstName;
 	}
 
 	/**
@@ -67,7 +57,7 @@ public abstract class User implements Serializable {
 	 * @return the last name.
 	 */
 	public String getLastName() {
-		return myLastName;
+		return lastName;
 	}
 
 	/**
@@ -76,7 +66,7 @@ public abstract class User implements Serializable {
 	 * @param theLastName the new last name.
 	 */
 	public void setLastName(String theLastName) {
-		myLastName = theLastName;
+		lastName = theLastName;
 	}
 
 	/**
@@ -85,7 +75,7 @@ public abstract class User implements Serializable {
 	 * @return the email address.
 	 */
 	public String getEmail() {
-		return myEmail;
+		return email;
 	}
 
 	/**
@@ -94,7 +84,7 @@ public abstract class User implements Serializable {
 	 * @param theEmail the new email address.
 	 */
 	public void setEmail(String theEmail) {
-		myEmail = theEmail;
+		email = theEmail;
 	}
 
 	/**
@@ -103,7 +93,7 @@ public abstract class User implements Serializable {
 	 * @return the phone number.
 	 */
 	public String getPhoneNumber() {
-		return myPhone;
+		return phoneNum;
 	}
 
 	/**
@@ -112,7 +102,7 @@ public abstract class User implements Serializable {
 	 * @param thePhone the phone number.
 	 */
 	public void setPhoneNumber(String thePhone) {
-		myPhone = thePhone;
+		phoneNum = thePhone;
 	}
 
 	/**

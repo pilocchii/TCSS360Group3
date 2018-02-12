@@ -9,16 +9,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import static model.ProgramConstants.*;
 
 
 public class JobCollection implements Serializable {
-
-	private static final String JOB_DATA_FILE = "joblist.data";
 	
 	private static HashMap<Integer, Job> jobsList;
 	private static SecureRandom random;
@@ -51,27 +53,25 @@ public class JobCollection implements Serializable {
 	
 	public void addJob(Job j) {
 		int jobID = random.nextInt();
-		System.out.println("RANDOM NUM IS " + jobID);
 		j.setJobId(jobID);
 		jobsList.put(jobID, j);
 	}
 	
-	public Job[] getSortedJobs() {
-		Job jobs[] = new Job[jobsList.size()];
-		Job j;
-		int i = 0;
-		Set<Map.Entry<Integer,Job>> s = jobsList.entrySet();
-		for(Entry<Integer, Job> e : s) {
-			j = e.getValue();
-			for(Entry<Integer, Job> other : s) {
-				if(j.getStartDateTime().compareTo(other.getValue().getStartDateTime()) < 0) {
-					j = other.getValue();
-				}
-			}
-			jobs[i] = j;
-			i++;
+	public ArrayList<Job> getSortedJobs() {
+		
+		ArrayList<Job> sortedHashMap = new ArrayList<Job>();
+		for(Map.Entry<Integer, Job> entry : jobsList.entrySet()) {
+		      sortedHashMap.add(entry.getValue());
 		}
-		return jobs;
+
+		Collections.sort(sortedHashMap, new Comparator<Job>() {
+	        @Override
+	        public int compare(Job job1, Job job2)
+	        {
+	            return  job1.getStartDateTime().compareTo(job2.getEndDateTime());
+	        }
+	    });
+		return sortedHashMap;
 	}
 	
 	public HashMap<Integer, Job> getJobCollection() {

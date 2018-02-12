@@ -12,14 +12,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import static model.ProgramConstants.*;
 
 public class UserCollection implements Serializable {
 	
 	/**A HashMap that stores users based on a string key, represented
 	 * by email.*/
 	private HashMap<String, User> userList;
-	
-	private static final String USER_DATA_FILE = "userlist.data";
 	
 	public UserCollection() {
 		userList = new HashMap<String, User>(99);

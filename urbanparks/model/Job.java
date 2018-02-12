@@ -2,44 +2,27 @@ package model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.TreeSet;
 
 /**
  * This class represents a job with its all information.
- * 
- * @author Abderisaq Tarabi
- * @version 2/8/2018
- *
  */
 public class Job implements Serializable {
 	
 	private static final long serialVersionUID = 928850375626876361L;
 
-	private String myDescription;
+	private Integer jbId;
+	private String description;
+	private Calendar startDateTime;
+	private Calendar endDateTime;
+	private String parkName;
+	private String location;
 	
-	private Integer myJobId;
-	
-	private Calendar myStartDateTime;
-	
-	private Calendar myEndDateTime;
-	
-	private String myParkName;
-	
-	private String myLocation;
-	
-	private int myLight;
-	
-	private int myMedium;
-	
-	private int myHeavy;
-	
-	/** The job status and weather it cancelled or not. */
-	private boolean myStatus;
-	
-	/** A list of all volunteers email whom volunteer for this job. */
-	private TreeSet<String> myVolunteersList;
-	
-	private int myMinimumVolunteers;
+	private int maxLightWorkers;
+	private int maxMediumWorker;
+	private int maxHeavyWorkers;
+	private int minTotalVolunteers;
 	
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -67,8 +50,6 @@ public class Job implements Serializable {
 		setLight(theLight);
 		setMedium(theMedium);
 		setHeavy(theHeavy);
-		myStatus = false;
-		myVolunteersList = new TreeSet<String>();
 		setMinimumVolunteers(theMinVolunteers);
 	}
 	/**
@@ -77,7 +58,7 @@ public class Job implements Serializable {
 	 * @return job description.
 	 */
 	public Integer getJobId() {
-		return myJobId;
+		return jbId;
 	}
 	
 	/**
@@ -86,7 +67,7 @@ public class Job implements Serializable {
 	 * @return job description.
 	 */
 	public void setJobId(final Integer theJobId) {
-		myJobId = theJobId;
+		jbId = theJobId;
 	}
 
 	/**
@@ -95,7 +76,7 @@ public class Job implements Serializable {
 	 * @return job description.
 	 */
 	public String getDescription() {
-		return myDescription;
+		return description;
 	}
 
 	/**
@@ -104,7 +85,7 @@ public class Job implements Serializable {
 	 * @param theDescription the job description.
 	 */
 	public void setDescription(final String theDescription) {
-		myDescription = theDescription;
+		description = theDescription;
 	}
 
 	/**
@@ -113,7 +94,7 @@ public class Job implements Serializable {
 	 * @return the job start date and time.
 	 */
 	public Calendar getStartDateTime() {
-		return myStartDateTime;
+		return startDateTime;
 	}
 
 	/**
@@ -122,7 +103,7 @@ public class Job implements Serializable {
 	 * @param theDate the job start date and time.
 	 */
 	public void setStartDateTime(final Calendar theStartDateTime) {
-		myStartDateTime = theStartDateTime;
+		startDateTime = theStartDateTime;
 	}
 
 	/**
@@ -131,7 +112,7 @@ public class Job implements Serializable {
 	 * @return the job end date and time.
 	 */
 	public Calendar getEndDateTime() {
-		return myEndDateTime;
+		return endDateTime;
 	}
 
 	/**
@@ -140,7 +121,7 @@ public class Job implements Serializable {
 	 * @param theDate the job end date and time.
 	 */
 	public void setEndDateTime(final Calendar theEndDateTime) {
-		myEndDateTime = theEndDateTime;
+		endDateTime = theEndDateTime;
 	}
 
 	/**
@@ -149,7 +130,7 @@ public class Job implements Serializable {
 	 * @return the park name.
 	 */
 	public String getParkName() {
-		return myParkName;
+		return parkName;
 	}
 
 	/**
@@ -158,7 +139,7 @@ public class Job implements Serializable {
 	 * @param theParkName the new park name
 	 */
 	public void setParkName(String theParkName) {
-		myParkName = theParkName;
+		parkName = theParkName;
 	}
 
 	/**
@@ -167,7 +148,7 @@ public class Job implements Serializable {
 	 * @return the location of the job.
 	 */
 	public String getLocation() {
-		return myLocation;
+		return location;
 	}
 
 	/**
@@ -176,7 +157,7 @@ public class Job implements Serializable {
 	 * @param theLocation
 	 */
 	public void setLocation(String theLocation) {
-		myLocation = theLocation;
+		location = theLocation;
 	}
 
 	/**
@@ -185,7 +166,7 @@ public class Job implements Serializable {
 	 * @return the number of volunteers for the light workload.
 	 */
 	public int getLight() {
-		return myLight;
+		return maxLightWorkers;
 	}
 
 	/**
@@ -194,7 +175,7 @@ public class Job implements Serializable {
 	 * @param theLight the number of volunteers to do the light workload.
 	 */
 	public void setLight(int theLight) {
-		myLight = theLight;
+		maxLightWorkers = theLight;
 	}
 
 	/**
@@ -203,7 +184,7 @@ public class Job implements Serializable {
 	 * @return the number of volunteers for the medium workload.
 	 */
 	public int getMedium() {
-		return myMedium;
+		return maxMediumWorker;
 	}
 
 	/**
@@ -212,7 +193,7 @@ public class Job implements Serializable {
 	 * @param theLight the number of volunteers to do the medium workload.
 	 */
 	public void setMedium(int theMedium) {
-		myMedium = theMedium;
+		maxMediumWorker = theMedium;
 	}
 
 	/**
@@ -221,7 +202,7 @@ public class Job implements Serializable {
 	 * @return the number of volunteers for the heavy workload.
 	 */
 	public int getHeavy() {
-		return myHeavy;
+		return maxHeavyWorkers;
 	}
 
 	/**
@@ -230,36 +211,7 @@ public class Job implements Serializable {
 	 * @param theLight the number of volunteers to do the heavy workload.
 	 */
 	public void setHeavy(int theHeavy) {
-		myHeavy = theHeavy;
-	}
-
-	/**
-	 * The status of the job false is it is active and true otherwise.
-	 * 
-	 * @return the status of the job.
-	 */
-	public boolean status() {
-		return myStatus;
-	}
-	
-	/**
-	 * Cancel this job.
-	 */
-	public void cancel() {
-		myStatus = true;
-	}
-	
-	/**
-	 * Return all volunteers for this job.
-	 * 
-	 * @return all volunteers.
-	 */
-	public TreeSet<String> getVolunteers() {
-		return myVolunteersList;
-	}
-	
-	public void addVolunteer(final String theVolunteer) {
-		myVolunteersList.add(theVolunteer);
+		maxHeavyWorkers = theHeavy;
 	}
 
 	/**
@@ -268,7 +220,7 @@ public class Job implements Serializable {
 	 * @return minimum number of volunteers.
 	 */
 	public int getMinimumVolunteers() {
-		return myMinimumVolunteers;
+		return minTotalVolunteers;
 	}
 
 	/**
@@ -277,44 +229,38 @@ public class Job implements Serializable {
 	 * @param theMinimumVolunteers minimum number of volunteers.
 	 */
 	public void setMinimumVolunteers(final int theMinimumVolunteers) {
-		myMinimumVolunteers = theMinimumVolunteers;
+		minTotalVolunteers = theMinimumVolunteers;
 	}
 	
-	/**
-	 * Return the total number of volunteers.
-	 * 
-	 * @return total number of volunteers.
-	 */
-	public int getTotalVolunteers() {
-		return myVolunteersList.size();
-	}
-	
-	@Override
-	public String toString() {
-		
-		String symbol = ", ";
-		
-		StringBuffer sb = new StringBuffer();
-		sb.append(myDescription);
-		sb.append(symbol);
-		sb.append(myStartDateTime);
-		sb.append(symbol);
-		sb.append(myEndDateTime);
-		sb.append(symbol);
-		sb.append(myParkName);
-		sb.append(symbol);
-		sb.append(myLocation);
-		sb.append(symbol);
-		sb.append(myLight);
-		sb.append(symbol);
-		sb.append(myMedium);
-		sb.append(symbol);
-		sb.append(myHeavy);
-		sb.append(symbol);
-		sb.append(myVolunteersList.toString());
-		sb.append(symbol);
-		sb.append(myMinimumVolunteers);
-		return sb.toString();
-	}
-
+//	@Override
+//	public String toString() {
+//		
+//		String symbol = ", ";
+//		
+//		StringBuffer sb = new StringBuffer();
+//		sb.append(description);
+//		sb.append(symbol);
+//		sb.append(startDateTime);
+//		sb.append(symbol);
+//		sb.append(endDateTime);
+//		sb.append(symbol);
+//		sb.append(parkName);
+//		sb.append(symbol);
+//		sb.append(location);
+//		sb.append(symbol);
+//		sb.append(maxLightWorkers);
+//		sb.append(symbol);
+//		sb.append(maxMediumWorker);
+//		sb.append(symbol);
+//		sb.append(maxHeavyWorkers);
+//		sb.append(symbol);
+//		sb.append(myVolunteersList.toString());
+//		sb.append(symbol);
+//		sb.append(myMinimumVolunteers);
+//		return sb.toString();
+//	}
+//	@Override
+//	public int compare(Job arg0, Job arg1) {
+//		return arg0.getStartDateTime().compareTo(arg1.getEndDateTime());
+//	}
 }
