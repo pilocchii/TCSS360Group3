@@ -1,4 +1,4 @@
-package urbanparks;
+import urbanparks.MainView;
 
 public class Main {
 

@@ -1,6 +1,6 @@
 
 
-package model;
+package urbanparks;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,8 +26,11 @@ public class ParkManager extends User {
 	private final int MAXIMUM_NUMBER_OF_JOB_END_DAYS = 75;
 	
 	private ArrayList<Job> jobsCreated;
-	
-	
+
+	public ParkManager(String theFirstName, String theLastName, String theEmail, String thePhone) {
+		super(theFirstName, theLastName, theEmail, thePhone);
+
+	}
 	
 	public ParkManager(String theFirstName, String theLastName, String theEmail, String thePhone, String theParkName, int theParkZipCode) {
 		super(theFirstName, theLastName, theEmail, thePhone);
