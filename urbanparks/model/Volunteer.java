@@ -1,14 +1,12 @@
 package model;
 
+import static model.ProgramConstants.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 public class Volunteer extends User {
-	
-	// todo: move to constants class
-	public final static int MIN_DAYS_BEFORE_SIGNUP = 2;
-	private final static int MILLISECONDS_IN_DAY = 86400000;
-	
+
 	public class volunteerJobOverlapException extends Exception {
 		public volunteerJobOverlapException() {}
 	    public volunteerJobOverlapException(String message) {
@@ -21,16 +19,18 @@ public class Volunteer extends User {
 	        super(message);
 	    }
 	}
-	
-	//TODO: use the job key arrayList in User instead
-	private ArrayList<Job> acceptedJobs;
+	public class alreadySignedUpException extends Exception {
+		public alreadySignedUpException() {}
+	    public alreadySignedUpException(String message) {
+	        super(message);
+	    }
+	}
 	
 	/**
 	 * Constructor for Volunteer class
 	 */
 	public Volunteer(String firstName, String lastName, String email, String phoneNum) {
 		super(firstName, lastName, email, phoneNum);
-		acceptedJobs = new ArrayList<Job>();
 	}
 	
 	/**
@@ -39,9 +39,20 @@ public class Volunteer extends User {
 	 * @param candidateJob the job to be signed up for
 	 * @throws volunteerJobOverlapException
 	 * @throws jobSignupTooLateException
+	 * @throws alreadySignedUpException 
 	 */
-	public void signUpForJob(Job candidateJob) throws volunteerJobOverlapException, jobSignupTooLateException {
+	public void signUpForJob(Job candidateJob) 
+			throws volunteerJobOverlapException, jobSignupTooLateException, alreadySignedUpException {
 
+		/**
+		 * Checks if selected job is the same as a signed up job.
+		 */
+		for (int i : myJobsList) {
+			if (i == candidateJob.getJobId()) {
+				throw new alreadySignedUpException();
+			}
+		}
+		
 		/**
 		 * Checks business rule "A volunteer cannot sign up for more than one job 
 		 * that extends across any particular calendar day"
@@ -57,7 +68,8 @@ public class Volunteer extends User {
 		if (isSignupEarlyEnough(candidateJob)) {
 			throw new jobSignupTooLateException();
 		}
-		acceptedJobs.add(candidateJob);
+		
+		myJobsList.add(candidateJob.getJobId());
 	}
 	
 	/**
@@ -68,8 +80,8 @@ public class Volunteer extends User {
 	 * @return
 	 */
 	public boolean doesNewJobOverlap(Job candidateJob) {
-		//TODO: make this iteration based on job's key
-		for (Job j : acceptedJobs) {
+		for (int i : myJobsList) {
+			Job j = JobCollection.findJob(i);
 			if (are2DatesOnSameDay(candidateJob.getStartDateTime(), j.getStartDateTime())) {
 				return true;
 			}

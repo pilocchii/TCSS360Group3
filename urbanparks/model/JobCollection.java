@@ -8,19 +8,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import static model.ProgramConstants.*;
 
 
-public class JobCollection {
-
-	private HashMap<Integer, Job> jobsList;
-	private int jobID = 0;
+public class JobCollection implements Serializable {
 	
-	private static final String JOB_DATA_FILE = "joblist.data";
+	private static HashMap<Integer, Job> jobsList;
+	private static SecureRandom random;
 	
-	public JobCollection() {
+	public JobCollection() throws NoSuchAlgorithmException {
+		random = SecureRandom.getInstance("SHA1PRNG");
 		jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
 	}
 	
@@ -41,43 +47,31 @@ public class JobCollection {
 		jobsList = (HashMap<Integer, Job>)ois.readObject();
 	}
 	
-	public Job findJob(Integer id) {
+	public static Job findJob(Integer id) {
 		return jobsList.get(id);
 	}
 	
 	public void addJob(Job j) {
-		if(jobsList.size() == ProgramConstants.MAX_PENDING_JOBS) {
-			throw new IllegalStateException("Job Collection is full!");
-		} else if ((int)((j.getEndDateTime().getTimeInMillis() - 
-				j.getStartDateTime().getTimeInMillis()) / (1000*60*60*24l)) >= ProgramConstants.MAX_JOB_LENGTH) {
-			throw new IllegalArgumentException("Job must not be longer than " +  ProgramConstants.MAX_JOB_LENGTH + " days!");
-		} else if ((int)((j.getEndDateTime().getTimeInMillis() - 
-				j.getStartDateTime().getTimeInMillis()) / (1000*60*60*24l)) >= ProgramConstants.MAX_JOB_OFFSET) {
-			throw new IllegalArgumentException("Job must not start more than " 
-				+ ProgramConstants.MAX_JOB_OFFSET + " days from now!");
-		}
-
-		jobID++;
+		int jobID = random.nextInt();
 		j.setJobId(jobID);
 		jobsList.put(jobID, j);
 	}
 	
-	public Job[] getSortedJobs() {
-		Job jobs[] = new Job[jobsList.size()];
-		Job j;
-		int i = 0;
-		Set<Map.Entry<Integer,Job>> s = jobsList.entrySet();
-		for(Entry<Integer, Job> e : s) {
-			j = e.getValue();
-			for(Entry<Integer, Job> other : s) {
-				if(j.getStartDateTime().compareTo(other.getValue().getStartDateTime()) < 0) {
-					j = other.getValue();
-				}
-			}
-			jobs[i] = j;
-			i++;
+	public ArrayList<Job> getSortedJobs() {
+		
+		ArrayList<Job> sortedHashMap = new ArrayList<Job>();
+		for(Map.Entry<Integer, Job> entry : jobsList.entrySet()) {
+		      sortedHashMap.add(entry.getValue());
 		}
-		return jobs;
+
+		Collections.sort(sortedHashMap, new Comparator<Job>() {
+	        @Override
+	        public int compare(Job job1, Job job2)
+	        {
+	            return  job1.getStartDateTime().compareTo(job2.getEndDateTime());
+	        }
+	    });
+		return sortedHashMap;
 	}
 	
 	public HashMap<Integer, Job> getJobCollection() {
