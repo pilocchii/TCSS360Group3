@@ -342,6 +342,7 @@ public class MainView {
 				try {
 					Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
 					user = newVolunteer;
+					userCollection.addUser(user);
 					System.out.println("Welcome, volunteer " + firstName + "!");
 					showMainMenu();
 				} catch (Exception e) {

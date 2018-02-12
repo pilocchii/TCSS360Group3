@@ -101,5 +101,9 @@ public class UserCollection implements Serializable{
 		
 	}
 	
+	public void addUser(User u) {
+		userList.put(u.getEmail(), u);
+	}
+	
 	
 }
