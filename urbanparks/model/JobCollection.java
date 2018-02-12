@@ -27,7 +27,7 @@ public class JobCollection implements Serializable {
 	
 	public JobCollection() throws NoSuchAlgorithmException {
 		random = SecureRandom.getInstance("SHA1PRNG");
-		jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
+		//jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
 	}
 	
 	public void saveData() throws IOException {
@@ -58,7 +58,6 @@ public class JobCollection implements Serializable {
 	}
 	
 	public ArrayList<Job> getSortedJobs() {
-		
 		ArrayList<Job> sortedHashMap = new ArrayList<Job>();
 		for(Map.Entry<Integer, Job> entry : jobsList.entrySet()) {
 		      sortedHashMap.add(entry.getValue());

@@ -182,7 +182,7 @@ public class MainView {
 		for(int i = 0; i < sortedJobs.size(); i++) {
 			Job currJob = sortedJobs.get(i);
 			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d, yyyy HH:mm:ss");
-			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) + " - " + currJob.getDescription());
+			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) + " - " + currJob.getDescription() );
 		}
 		
 		int choice = scanner.nextInt();
