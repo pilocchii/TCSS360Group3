@@ -18,55 +18,27 @@ public class JobCollection {
 	private HashMap<Integer, Job> jobsList;
 	private int jobID = 0;
 	
+	private static final String JOB_DATA_FILE = "joblist.data";
 	
 	public JobCollection() {
-		
 		jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
-
 	}
 	
-	public JobCollection(String filename) {
-		
-		jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
-		
-		FileInputStream f_in = null;
-		try {
-			f_in = new 
-					FileInputStream("jobs.data");
-		} catch (FileNotFoundException e1) {
-			System.out.println("File not found!");
-		}
-
-			//Make an ObjectInputStream to read with
-			ObjectInputStream obj_in = null;
-			try {
-				obj_in = new ObjectInputStream (f_in);
-			} catch (IOException e1) {
-				System.out.println("File not found!");
-			}
-
-			Object obj;
-			
-			//Read all jobs
-			try {
-				  while (true) {
-				    obj = obj_in.readObject();
-				    // make sure its a user
-					if (obj instanceof Job) {
-						// Cast object to a user
-						Job j = (Job) obj;
-
-						// Add it to the map
-						jobID++;
-						jobsList.put(jobID, j);
-					}
-				  }
-				} catch (EOFException e) {
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+	public void saveData() throws IOException {
+		FileOutputStream fos = new FileOutputStream(JOB_DATA_FILE);
+		ObjectOutputStream ois = new ObjectOutputStream(fos);
+		ois.writeObject(jobsList);
+	}
+	
+	/**Makes a new user collection with a capacity of 99;
+	 * Reads in the serialized user objects and stores them in 
+	 * the collection.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException */
+	public void loadData() throws IOException, ClassNotFoundException {
+		FileInputStream fis = new FileInputStream(JOB_DATA_FILE);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		jobsList = (HashMap<Integer, Job>)ois.readObject();
 	}
 	
 	public Job findJob(Integer id) {
@@ -87,26 +59,6 @@ public class JobCollection {
 
 		jobID++;
 		jobsList.put(jobID, j);
-	}
-	
-	public void saveJobs() throws IOException {
-		// Make a file
-		FileOutputStream f_out = new 
-			FileOutputStream("joblist.data");
-
-		// Make an ObjectOutputStream
-		ObjectOutputStream obj_out = new
-			ObjectOutputStream (f_out);
-
-		// Write jobs to the disk
-		Job j;
-		Set<Map.Entry<Integer,Job>> s = jobsList.entrySet();
-		for(Entry<Integer, Job> e : s) {
-			j = e.getValue(); 
-			obj_out.writeObject(j);
-		}
-
-		
 	}
 	
 	public Job[] getSortedJobs() {
