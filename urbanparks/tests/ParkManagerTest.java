@@ -33,7 +33,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
-		myJob = new Job(1,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.createNewJob(myJob);
 		
@@ -47,7 +47,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
-		myJob = new Job(2,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.isJobTooLong(myJob);
 		
@@ -60,7 +60,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 22, 14, 00);
-		myJob = new Job(3,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.isMaximumJobDays(myJob);
 
@@ -72,7 +72,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 28, 14, 00);
-		myJob = new Job(4,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.isMaximumJobDays(myJob);
 
@@ -84,7 +84,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.JUNE, 28, 14, 00);
-		myJob = new Job(5,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.isMaximumEndDays(myJob);
 
@@ -96,7 +96,7 @@ class ParkManagerTest {
 		Calendar signedUpJobEnd = Calendar.getInstance();
 		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
 		signedUpJobEnd.set(2018, Calendar.MARCH, 28, 14, 00);
-		myJob = new Job(6,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
+		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		myParkManager.isMaximumEndDays(myJob);
 
