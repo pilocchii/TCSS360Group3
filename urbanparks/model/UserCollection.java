@@ -74,6 +74,10 @@ public class UserCollection implements Serializable{
 	}
 	
 	public User getUser(String email) {
+		User user = userList.get(email);
+		if (user == null) {
+			throw new NullPointerException("User " + user.toString() + " does not exist");
+		}
 		return userList.get(email);
 	}
 	

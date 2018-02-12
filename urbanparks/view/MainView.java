@@ -1,5 +1,6 @@
 package view;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Calendar;
@@ -55,22 +56,28 @@ public class MainView {
 		System.out.println(inputPrompt);
 		System.out.println("0. Exit");
 		System.out.println("1. Sign in");
-		System.out.println("2. Create a new user");
-		String choice = scanner.nextLine();
+		System.out.println("2. Create a new account");
+		int choice = scanner.nextInt();
+		scanner.nextLine();
 
 		switch(choice) {
 
-			case "0":
+			case 0:
 				System.exit(0);
 
-			case "1":
+			case 1:
 				System.out.println("Please enter your email address:");
 				String username = scanner.nextLine();
-				user = userCollection.getUser(username);
-				showMainMenu();
+				try {
+                    user = userCollection.getUser(username);
+                    showMainMenu();
+                } catch (NullPointerException e) {
+                    System.out.println("User " + username + " does not exist. If you do not have an account, please create one.");
+                    showLoginMenu();
+                }
 				break;
 			
-			case "2":
+			case 2:
 				showSignupMenu();
 				break;
 
@@ -96,6 +103,7 @@ public class MainView {
 			System.out.println("0. Go back to login menu");
 			System.out.println("1. Submit a new job");
 			int choice = scanner.nextInt();
+			scanner.nextLine();
 
 			switch(choice) {
 				case 0:
@@ -147,10 +155,10 @@ public class MainView {
 	private void showSubmitNewJobMenu() {
 
 		System.out.println("Please enter a start date and time for this job in " + 
-						   "this formate (Year Month Date Hour Minute):");
+						   "this format (Year Month Date Hour Minute):");
 		Calendar start = getDateTime(scanner.nextLine());
 		System.out.println("Please enter an end date and time for this job in this " + 
-						    "formate (Year Month Date Hour Minute):");
+						    "format (Year Month Date Hour Minute):");
 		Calendar end = getDateTime(scanner.nextLine());
 		System.out.println("Please enter a description:");
 		String description = scanner.nextLine();
@@ -214,7 +222,9 @@ public class MainView {
 		Job[] jobs = jobCollection.getSortedJobs();
 		for(int i = 0; i < jobCollection.getJobCollection().size(); i++) {
 			Job currJob = jobs[i];
-			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy.hh.mm");
+			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) +
+                    " - " + currJob.getDescription());
 		}
 		
 		int choice = scanner.nextInt();
@@ -227,6 +237,7 @@ public class MainView {
 		System.out.println("0. Go back to jobs list");
 		System.out.println("1. Sign up for this job");
 		choice = scanner.nextInt();
+		scanner.nextLine();
 
 		// Needed? This feature isn't in other menus. The default case gives a similar result.
 		//List<String> validChoices = Arrays.asList('0', '1');
