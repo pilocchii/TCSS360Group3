@@ -21,16 +21,22 @@ public class Volunteer extends User {
 	        super(message);
 	    }
 	}
+	public class alreadySignedUpException extends Exception {
+		public alreadySignedUpException() {}
+	    public alreadySignedUpException(String message) {
+	        super(message);
+	    }
+	}
 	
 	//TODO: use the job key arrayList in User instead
-	private ArrayList<Job> acceptedJobs;
+	//private ArrayList<Job> acceptedJobs;
 	
 	/**
 	 * Constructor for Volunteer class
 	 */
 	public Volunteer(String firstName, String lastName, String email, String phoneNum) {
 		super(firstName, lastName, email, phoneNum);
-		acceptedJobs = new ArrayList<Job>();
+		//acceptedJobs = new ArrayList<Job>();
 	}
 	
 	/**
@@ -39,9 +45,18 @@ public class Volunteer extends User {
 	 * @param candidateJob the job to be signed up for
 	 * @throws volunteerJobOverlapException
 	 * @throws jobSignupTooLateException
+	 * @throws alreadySignedUpException 
 	 */
-	public void signUpForJob(Job candidateJob) throws volunteerJobOverlapException, jobSignupTooLateException {
+	public void signUpForJob(Job candidateJob) 
+			throws volunteerJobOverlapException, jobSignupTooLateException, alreadySignedUpException {
 
+		//check if job is the same
+		for (int i : myJobsList) {
+			if (i == candidateJob.getJobId()) {
+				throw new alreadySignedUpException();
+			}
+		}
+		
 		/**
 		 * Checks business rule "A volunteer cannot sign up for more than one job 
 		 * that extends across any particular calendar day"
@@ -57,7 +72,8 @@ public class Volunteer extends User {
 		if (isSignupEarlyEnough(candidateJob)) {
 			throw new jobSignupTooLateException();
 		}
-		acceptedJobs.add(candidateJob);
+		
+		myJobsList.add(candidateJob.getJobId());
 	}
 	
 	/**
@@ -68,8 +84,8 @@ public class Volunteer extends User {
 	 * @return
 	 */
 	public boolean doesNewJobOverlap(Job candidateJob) {
-		//TODO: make this iteration based on job's key
-		for (Job j : acceptedJobs) {
+		for (int i : myJobsList) {
+			Job j = JobCollection.findJob(i);
 			if (are2DatesOnSameDay(candidateJob.getStartDateTime(), j.getStartDateTime())) {
 				return true;
 			}

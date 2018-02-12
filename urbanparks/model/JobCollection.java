@@ -8,19 +8,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 
-public class JobCollection {
+public class JobCollection implements Serializable {
 
-	private HashMap<Integer, Job> jobsList;
-	private int jobID = 0;
-	
 	private static final String JOB_DATA_FILE = "joblist.data";
 	
-	public JobCollection() {
+	private static HashMap<Integer, Job> jobsList;
+	private static SecureRandom random;
+	
+	public JobCollection() throws NoSuchAlgorithmException {
+		random = SecureRandom.getInstance("SHA1PRNG");
 		jobsList = new HashMap<Integer, Job>(ProgramConstants.MAX_PENDING_JOBS);
 	}
 	
@@ -41,23 +45,13 @@ public class JobCollection {
 		jobsList = (HashMap<Integer, Job>)ois.readObject();
 	}
 	
-	public Job findJob(Integer id) {
+	public static Job findJob(Integer id) {
 		return jobsList.get(id);
 	}
 	
 	public void addJob(Job j) {
-		if(jobsList.size() == ProgramConstants.MAX_PENDING_JOBS) {
-			throw new IllegalStateException("Job Collection is full!");
-		} else if ((int)((j.getEndDateTime().getTimeInMillis() - 
-				j.getStartDateTime().getTimeInMillis()) / (1000*60*60*24l)) >= ProgramConstants.MAX_JOB_LENGTH) {
-			throw new IllegalArgumentException("Job must not be longer than " +  ProgramConstants.MAX_JOB_LENGTH + " days!");
-		} else if ((int)((j.getEndDateTime().getTimeInMillis() - 
-				j.getStartDateTime().getTimeInMillis()) / (1000*60*60*24l)) >= ProgramConstants.MAX_JOB_OFFSET) {
-			throw new IllegalArgumentException("Job must not start more than " 
-				+ ProgramConstants.MAX_JOB_OFFSET + " days from now!");
-		}
-
-		jobID++;
+		int jobID = random.nextInt();
+		System.out.println("RANDOM NUM IS " + jobID);
 		j.setJobId(jobID);
 		jobsList.put(jobID, j);
 	}

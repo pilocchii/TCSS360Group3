@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class UserCollection {
+public class UserCollection implements Serializable {
 	
 	/**A HashMap that stores users based on a string key, represented
 	 * by email.*/
@@ -26,10 +26,6 @@ public class UserCollection {
 	}
 	
 	public User getUser(String email) {
-		User user = userList.get(email);
-		if (user == null) {
-			throw new NullPointerException("User " + user.toString() + " does not exist");
-		}
 		return userList.get(email);
 	}
 	
