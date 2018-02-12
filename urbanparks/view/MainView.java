@@ -222,7 +222,7 @@ public class MainView {
 		Job[] jobs = jobCollection.getSortedJobs();
 		for(int i = 0; i < jobCollection.getJobCollection().size(); i++) {
 			Job currJob = jobs[i];
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy.hh.mm");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 			System.out.println((i+1) + ". " + dateFormat.format(currJob.getStartDateTime().getTime()) +
                     " - " + currJob.getDescription());
 		}
@@ -283,8 +283,9 @@ public class MainView {
 		Job job - the job to show extra details for
 	*/
 	private void showJobDetails(Job job) {
-		System.out.println("Starting time: " + job.getStartDateTime());
-		System.out.println("Ending time: " + job.getEndDateTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+		System.out.println("Starting time: " + dateFormat.format(job.getStartDateTime().getTime()));
+		System.out.println("Ending time: " + dateFormat.format(job.getEndDateTime().getTime()));
 		System.out.println("Park name: " + job.getParkName());
 		System.out.println("Location: " + job.getLocation());
 		System.out.println("Job description: " + job.getDescription());
