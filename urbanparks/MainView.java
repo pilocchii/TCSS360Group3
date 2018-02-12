@@ -11,6 +11,8 @@ import urbanparks.Job;
 import urbanparks.JobCollection;
 import urbanparks.User;
 import urbanparks.UserCollection;
+import urbanparks.Volunteer.jobSignupTooLateException;
+import urbanparks.Volunteer.volunteerJobOverlapException;
 
 /***
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
@@ -195,54 +197,69 @@ public class MainView {
 		Signup for job
 		Volunteers can volunteer for jobs here.
 	*/
-	private void showSignupForJobMenu() {
+	private void showSignupForJobMenu(Volunteer volunteer) {
 
 		System.out.println("Select a job from the list below to sign up for.\n" +  
 			"Input the corresponding number, and press enter, or press '0' to go back.");
 
 		// display the list of jobs
-		for(int i = 0; i < jobCollection.size(); i++) { // TODO: JobCollection person, whatever your internal workings are, make them work here
-			// TODO: Job person, fill in whatever your field names are here
+		/**
+		 *  TODO: Make jobCollection sortable by start date with Comparator,
+		 *  sort it,
+		 *  then iterate each Job in it.
+		 */
+		// Temp code:
+		for(int i = 0; i < jobCollection.size(); i++) {
 			Job currJob = jobCollection.get(i);
-			System.out.println(i + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
+			System.out.println((i+1) + ". " + currJob.getStartDateTime() + " - " + currJob.getDescription());
 		}
-
+		
 		int choice = scanner.nextInt();
-
-		if (choice == 0) {
+		if (choice == '0') {
 			showMainMenu();
 		}
+		int jobIndex = choice - 1;
+		Job selectedJob = jobCollection.getJob(jobIndex);
+		showJobDetails(selectedJob);
+		System.out.println("0. Go back to jobs list");
+		System.out.println("1. Sign up for this job");
+		choice = scanner.nextInt();
+
+		// Needed? This feature isn't in other menus. The default case gives a similar result.
+		//List<String> validChoices = Arrays.asList('0', '1');
+		//validateJobMenuChoice(choice, validChoices);
 		
-		try {
-			Job selectedJob = jobCollection.getJob(choice);
-			showJobDetails(selectedJob);
-			System.out.println("0. Go back to jobs list");
-			System.out.println("1. Sign up for this job");
-			choice = scanner.nextInt();
+		switch (choice) {
+			case 0:
+				showSignupForJobMenu(volunteer);
+				break;
 
-			final List<Integer> validChoices = Arrays.asList(0, 1);
-			validateJobMenuChoice(choice, validChoices);
+			case 1:
+				//volunteersList = selectedJob.getVolunteersList();
+				
+				try {
+					volunteer.signUpForJob(selectedJob);
+					
+				} catch (volunteerJobOverlapException e) {
+					System.out.println("The job you selected overlaps with another job you are "
+							+ "signed up for. Please try another job.");
+					showSignupForJobMenu(volunteer);
+					
+				} catch (jobSignupTooLateException e) {
+					System.out.println("The job you selected starts too soon (less than " 
+							+ Volunteer.MIN_DAYS_BEFORE_SIGNUP + " than now. Please try another job.");
+					showSignupForJobMenu(volunteer);
+				}
+				
+				//volunteersList.add(user);
+				System.out.println("You are now signed up for job " + selectedJob.toString());
+				showMainMenu();
+				break;
 
-			switch (choice) {
-				case 0:
-					showSignupForJobMenu();
-					break;
-
-				case 1:
-					TreeSet volunteersList = selectedJob.getVolunteers();
-					volunteersList.add(user);
-					System.out.println("You are now signed up for job " + selectedJob.toString());
-					showMainMenu();
-					break;
-
-				default:
-					showSignupForJobMenu();
-			} // end switch
-
-		} catch (Exception e) { // TODO: Volunteer person, put the exception type here that triggers on business rule
-			System.out.println(e);
-		}
-		
+			default:
+				System.out.println("Invalid option. Please try again.");
+				showSignupForJobMenu(volunteer);
+		}	
 	} // end showSignupForJobMenu
 
 
