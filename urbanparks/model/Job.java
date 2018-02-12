@@ -17,6 +17,8 @@ public class Job implements Serializable {
 
 	private String myDescription;
 	
+	private Integer myJobId;
+	
 	private Calendar myStartDateTime;
 	
 	private Calendar myEndDateTime;
@@ -52,10 +54,11 @@ public class Job implements Serializable {
 	 * @param theHeavy the number of volunteers required for heavy workload.
 	 * @param theMinVolunteers the minimum number of volunteers required for this job.
 	 */
-	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
+	public Job(final Integer theJobId, final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
 			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
 			   final int theHeavy, final int theMinVolunteers) {
 		
+		setJobId(theJobId);
 		setDescription(theDescription);
 		setStartDateTime(theStartDateTime);
 		setEndDateTime(theEndDateTime);
@@ -67,6 +70,23 @@ public class Job implements Serializable {
 		myStatus = false;
 		myVolunteersList = new TreeSet<String>();
 		setMinimumVolunteers(theMinVolunteers);
+	}
+	/**
+	 * Return the job description.
+	 * 
+	 * @return job description.
+	 */
+	public Integer getJobId() {
+		return myJobId;
+	}
+	
+	/**
+	 * Return the job description.
+	 * 
+	 * @return job description.
+	 */
+	public void setJobId(final Integer theJobId) {
+		myJobId = theJobId;
 	}
 
 	/**
