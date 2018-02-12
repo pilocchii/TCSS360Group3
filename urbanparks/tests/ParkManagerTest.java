@@ -9,6 +9,8 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import model.Job;
+import model.ParkManager;
 import model.ParkManager.managerJobDaysException;
 import model.ParkManager.managerJobEndDaysException;
 import model.ParkManager.mangerPendingJobsException;
@@ -29,7 +31,7 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
 		myJob = new Job(1,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.createdANewJob(myJob);
+		myParkManager.createNewJob(myJob);
 		
 	}
 	
@@ -43,8 +45,8 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
 		myJob = new Job(2,"This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.isMaximumJobDays(myJob);
-
+		myParkManager.isJobTooLong(myJob);
+		
 	}
 	
 	/*Test for The specified job takes equal to the maximum number of days*/

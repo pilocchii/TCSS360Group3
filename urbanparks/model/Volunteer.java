@@ -65,7 +65,7 @@ public class Volunteer extends User {
 		 * Checks business rule "A volunteer may sign up only if the job begins
 		 *  at least a minimum number of calendar days after the current date"
 		 */
-		if (isSignupEarlyEnough(candidateJob)) {
+		if (!isSignupEarlyEnough(candidateJob)) {
 			throw new jobSignupTooLateException();
 		}
 		

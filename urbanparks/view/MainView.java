@@ -16,7 +16,7 @@ import model.Job;
 import model.JobCollection;
 import model.ParkManager;
 import model.ParkManager.jobTooLongException;
-import model.ParkManager.jobStartIsTooFarAwayException;
+import model.ParkManager.jobStartTooLongFromNowException;
 import model.ParkManager.numJobsAtMaximumException;
 import model.User;
 import model.UserCollection;
@@ -275,7 +275,7 @@ public class MainView {
 							 heavy, minimumVolunteers);
 		
 		try {
-			parkManager.createNewJob(newJob, jobCollection);
+			parkManager.createNewJob(newJob);
 
 		} catch (numJobsAtMaximumException e) {
 			System.out.println("The Job cannot be created as the maximum number of pending "
@@ -286,9 +286,12 @@ public class MainView {
 			System.out.println("Job must not span more than " + MAX_JOB_LENGTH + " days!");
 			showSubmitNewJobMenu(parkManager);
 		}
-		catch (jobStartIsTooFarAwayException e) {
+		catch (jobStartTooLongFromNowException e) {
 			System.out.println("Job must not start more than " + MAX_DAYS_BEFORE_JOB_START + " days from now!");
 			showSubmitNewJobMenu(parkManager);
+		} catch (NoSuchAlgorithmException e) {
+			System.out.println("Job ID generation failure.");
+			System.exit(0);
 		}
 
 		System.out.println("Your job has been created!");
