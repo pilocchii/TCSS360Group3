@@ -71,9 +71,7 @@ public class ParkManager extends User {
 	}
 	
 	public boolean doesJobStartTooLongFromNow(Job candidateJob) {
-		int daysBeforeJobStart = (int)(candidateJob.getStartDateTime().getTimeInMillis() 
-				- System.currentTimeMillis()) / MILLISECONDS_IN_DAY;
-		System.out.println("DAYS!!! " + daysBeforeJobStart);
+		int daysBeforeJobStart = Volunteer.daysBetweenNowAndDate(candidateJob.getStartDateTime());
 		return (daysBeforeJobStart >= ProgramConstants.MAX_DAYS_BEFORE_JOB_START);
 	}
 	

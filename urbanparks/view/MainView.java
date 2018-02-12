@@ -207,7 +207,6 @@ public class MainView {
 				break;
 
 			case 1:
-				System.out.println("\nSigning up for id # " + selectedJob.getJobId());
 				try {
 					volunteer.signUpForJob(selectedJob);
 					

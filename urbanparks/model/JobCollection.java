@@ -22,7 +22,7 @@ import static model.ProgramConstants.*;
 
 public class JobCollection implements Serializable {
 	
-	private static HashMap<Integer, Job> jobsList;
+	private static HashMap<Integer, Job> jobsList = new HashMap<Integer, Job>();
 	private static SecureRandom random;
 	
 	public JobCollection() throws NoSuchAlgorithmException {

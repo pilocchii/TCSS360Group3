@@ -117,4 +117,10 @@ public class Volunteer extends User {
 		long minDaysInMillis = MIN_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
 		return (diff <= minDaysInMillis);
 	}
+	
+	public static int daysBetweenNowAndDate(Calendar cal) {
+		Calendar now = Calendar.getInstance();
+		long diff = cal.getTimeInMillis() - now.getTimeInMillis();
+		return (int)(diff/MILLISECONDS_IN_DAY);
+	}
 }
