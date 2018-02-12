@@ -58,6 +58,7 @@ public class JobCollection {
 		}
 
 		jobID++;
+		j.setJobId(jobID);
 		jobsList.put(jobID, j);
 	}
 	
