@@ -1,4 +1,4 @@
-package tests;
+package urbanparks.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -10,14 +10,14 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-import model.Job;
-import model.ParkManager;
-import model.ParkManager.jobStartTooLongFromNowException;
-import model.ParkManager.jobTooLongException;
-import model.ParkManager.managerJobDaysException;
-import model.ParkManager.managerJobEndDaysException;
-import model.ParkManager.mangerPendingJobsException;
-import model.ParkManager.numJobsAtMaximumException;
+import urbanparks.model.Job;
+import urbanparks.model.ParkManager;
+import urbanparks.model.ParkManager.jobStartTooLongFromNowException;
+import urbanparks.model.ParkManager.jobTooLongException;
+import urbanparks.model.ParkManager.managerJobDaysException;
+import urbanparks.model.ParkManager.managerJobEndDaysException;
+import urbanparks.model.ParkManager.mangerPendingJobsException;
+import urbanparks.model.ParkManager.numJobsAtMaximumException;
 
 
 class ParkManagerTest {

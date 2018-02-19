@@ -1,4 +1,4 @@
-package tests;
+package urbanparks.tests;
 
 import static org.junit.Assert.*;
 
@@ -8,12 +8,12 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Job;
-import model.JobCollection;
-import model.Volunteer;
-import model.Volunteer.alreadySignedUpException;
-import model.Volunteer.jobSignupTooLateException;
-import model.Volunteer.volunteerJobOverlapException;
+import urbanparks.model.Job;
+import urbanparks.model.JobCollection;
+import urbanparks.model.Volunteer;
+import urbanparks.model.Volunteer.alreadySignedUpException;
+import urbanparks.model.Volunteer.jobSignupTooLateException;
+import urbanparks.model.Volunteer.volunteerJobOverlapException;
 
 
 /**

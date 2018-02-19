@@ -1,4 +1,4 @@
-package model;
+package urbanparks.model;
 
 public final class ProgramConstants {
 	

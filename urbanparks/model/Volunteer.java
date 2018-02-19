@@ -1,6 +1,6 @@
-package model;
+package urbanparks.model;
 
-import static model.ProgramConstants.*;
+import static urbanparks.model.ProgramConstants.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 

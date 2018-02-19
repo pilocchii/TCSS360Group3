@@ -1,4 +1,4 @@
-package tests;
+package urbanparks.tests;
 
 import static org.junit.Assert.*;
 
@@ -8,9 +8,9 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Job;
-import model.JobCollection;
-import static model.ProgramConstants.*;
+import urbanparks.model.Job;
+import urbanparks.model.JobCollection;
+import static urbanparks.model.ProgramConstants.*;
 
 /**There can be more than the maximum number of pending jobs at a time in the entire system,
 * default of 20

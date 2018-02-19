@@ -1,4 +1,4 @@
-package model;
+package urbanparks.model;
 
 import java.util.Set;
 import java.io.EOFException;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import static model.ProgramConstants.*;
+import static urbanparks.model.ProgramConstants.*;
 
 
 public class JobCollection implements Serializable {

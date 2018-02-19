@@ -1,12 +1,10 @@
-
-
-package model;
+package urbanparks.model;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import static model.ProgramConstants.*;
+import static urbanparks.model.ProgramConstants.*;
 
 
 /**
