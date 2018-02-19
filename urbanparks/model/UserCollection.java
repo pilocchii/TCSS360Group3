@@ -1,4 +1,4 @@
-package model;
+package urbanparks.model;
 
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import static model.ProgramConstants.*;
+import static urbanparks.model.ProgramConstants.*;
 
 public class UserCollection implements Serializable {
 	

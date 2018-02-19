@@ -1,7 +1,7 @@
-package view;
+package urbanparks.view;
 import java.security.NoSuchAlgorithmException;
 
-import view.MainView;
+import urbanparks.view.MainView;
 
 public class Main {
 

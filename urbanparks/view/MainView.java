@@ -1,4 +1,4 @@
-package view;
+package urbanparks.view;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.StringTokenizer;
 
-import model.Job;
-import model.JobCollection;
-import model.ParkManager;
-import model.ParkManager.jobTooLongException;
-import model.ParkManager.jobStartTooLongFromNowException;
-import model.ParkManager.numJobsAtMaximumException;
-import model.User;
-import model.UserCollection;
-import model.Volunteer;
-import model.Volunteer.jobSignupTooLateException;
-import model.Volunteer.alreadySignedUpException;
-import model.Volunteer.volunteerJobOverlapException;
-import static model.ProgramConstants.*;
+import urbanparks.model.Job;
+import urbanparks.model.JobCollection;
+import urbanparks.model.ParkManager;
+import urbanparks.model.ParkManager.jobTooLongException;
+import urbanparks.model.ParkManager.jobStartTooLongFromNowException;
+import urbanparks.model.ParkManager.numJobsAtMaximumException;
+import urbanparks.model.User;
+import urbanparks.model.UserCollection;
+import urbanparks.model.Volunteer;
+import urbanparks.model.Volunteer.jobSignupTooLateException;
+import urbanparks.model.Volunteer.alreadySignedUpException;
+import urbanparks.model.Volunteer.volunteerJobOverlapException;
+import static urbanparks.model.ProgramConstants.*;
 
 /***
 	The main view class for a terminal-based menu-driven interface for the Urban Parks system.
