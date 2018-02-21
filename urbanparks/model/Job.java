@@ -273,7 +273,7 @@ public class Job implements Serializable {
 		sb.append(symbol);
 //		sb.append(myVolunteersList.toString());
 //		sb.append(symbol);
-		sb.append(myMinimumVolunteers);
+//		sb.append(myMinimumVolunteers);
 		return sb.toString();
 	}
 //	@Override

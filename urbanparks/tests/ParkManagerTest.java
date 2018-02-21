@@ -2,21 +2,22 @@ package urbanparks.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 
+import org.junit.Test;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 
 import urbanparks.model.Job;
 import urbanparks.model.ParkManager;
 import urbanparks.model.ParkManager.jobStartTooLongFromNowException;
 import urbanparks.model.ParkManager.jobTooLongException;
-import urbanparks.model.ParkManager.managerJobDaysException;
-import urbanparks.model.ParkManager.managerJobEndDaysException;
-import urbanparks.model.ParkManager.mangerPendingJobsException;
+//import urbanparks.model.ParkManager.managerJobDaysException;
+//import urbanparks.model.ParkManager.managerJobEndDaysException;
+//import urbanparks.model.ParkManager.mangerPendingJobsException;
 import urbanparks.model.ParkManager.numJobsAtMaximumException;
 
 
@@ -62,7 +63,7 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 22, 14, 00);
 		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.isMaximumJobDays(myJob);
+//		myParkManager.isMaximumJobDays(myJob);
 
 	}
 	/*Test for The specified job takes one more than the maximum number of days*/
@@ -74,7 +75,7 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.JANUARY, 28, 14, 00);
 		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.isMaximumJobDays(myJob);
+//		myParkManager.isMaximumJobDays(myJob);
 
 	}
 	/*Test for The specified job takes one more than the maximum number of days*/
@@ -86,7 +87,7 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.JUNE, 28, 14, 00);
 		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.isMaximumEndDays(myJob);
+//		myParkManager.isMaximumEndDays(myJob);
 
 	}
 	/*Test for The specified job takes one more than the maximum number of days*/
@@ -98,7 +99,7 @@ class ParkManagerTest {
 		signedUpJobEnd.set(2018, Calendar.MARCH, 28, 14, 00);
 		myJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
 				"Park Name", "Park Location", 3, 4, 5, 20);
-		myParkManager.isMaximumEndDays(myJob);
+//		myParkManager.isMaximumEndDays(myJob);
 
 	}
 

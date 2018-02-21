@@ -10,6 +10,9 @@ public final class ProgramConstants {
 	//For signing up for job
 	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
 	public static final int MILLISECONDS_IN_DAY = 86400000;
+
+	//For un-volunteering for a job
+	public static final int MIN_DAYS_BEFORE_UNVOLUNTEER = 3;
 	
 	//For loading persistent data
 	public static final String JOB_DATA_FILE = "joblist.data";
