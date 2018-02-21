@@ -162,7 +162,8 @@ public class Volunteer extends User {
 	 */
 	public static boolean isSignupEarlyEnough(Job theCandidateJob) {
 		Calendar now = Calendar.getInstance();
-		long diff = theCandidateJob.getStartDateTime().getTimeInMillis() - now.getTimeInMillis();
+		long start = theCandidateJob.getStartDateTime().getTimeInMillis();
+		long diff = start - now.getTimeInMillis();
 		long minDaysInMillis = MIN_DAYS_BEFORE_SIGNUP * MILLISECONDS_IN_DAY;
 		return (diff <= minDaysInMillis);
 	}
