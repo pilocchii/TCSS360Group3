@@ -10,6 +10,7 @@ public class ParkManager extends User {
 
 	/**
 	 * Constructor for ParkManager
+	 * 
 	 * @param theFirstName
 	 * @param theLastName
 	 * @param theEmail
@@ -21,6 +22,7 @@ public class ParkManager extends User {
 
 	/**
 	 * Creates a new job
+	 * 
 	 * @param candidateJob The job to be created
 	 */
 	public void createNewJob(Job candidateJob, JobCollection jobCollection) {

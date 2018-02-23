@@ -18,6 +18,7 @@ public class ParkManagerMenu {
 	
 	/**
 	 * Constructor for ParkManagerMenu
+	 * 
 	 * @param mainMenu Instance of main menu
 	 * @param parkmanager The park manager user logged in
 	 * @param jobCollection Instance of job collection
@@ -53,7 +54,8 @@ public class ParkManagerMenu {
 	}
 	
 	/**
-	 * Shows the interface for creating a new job
+	 * Shows the interface for creating a new job.
+	 * and asks the user for every detail of the job they are creating
 	 */
 	private void showSubmitNewJobMenu() {
 		System.out.println("Please enter a start date and time for this job in " + 
@@ -102,6 +104,6 @@ public class ParkManagerMenu {
 							 heavy, minimumVolunteers);
 		parkManager.createNewJob(newJob, jobCollection);
 		System.out.println("Your job has been created!");
-		mainMenu.showMainMenu();
+		showParkManagerMenu();
 	}
 }

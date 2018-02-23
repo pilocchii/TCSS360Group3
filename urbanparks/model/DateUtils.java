@@ -15,6 +15,7 @@ import static urbanparks.model.Constants.*;
 		
 		/**
 		 * Calculates the days between a future date and now
+		 * 
 		 * @param cal The date to use. Can be any date.
 		 * @return The number of days between a future date and now, 
 		 * 			negative if that date is in the past
@@ -25,6 +26,7 @@ import static urbanparks.model.Constants.*;
 		
 		/**
 		 * Calculates the number of days between 2 dates.
+		 * 
 		 * @param cal1 The past date.
 		 * @param cal2 The future date.
 		 * @return The number of days between a the 2 dates, 

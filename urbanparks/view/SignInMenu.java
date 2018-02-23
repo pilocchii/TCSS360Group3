@@ -15,6 +15,7 @@ public class SignInMenu {
 	
 	/**
 	 * Constructor for SignInMenu
+	 * 
 	 * @param mainMenu Instance of main menu
 	 * @param userCollection Instance of user collection
 	 * @param jobCollection Instance of job collection

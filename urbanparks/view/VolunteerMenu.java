@@ -15,6 +15,7 @@ public class VolunteerMenu {
 	
 	/**
 	 * Constructor for VolunteerMenu
+	 * 
 	 * @param mainMenu Instance of main menu
 	 * @param volunteer The volunteer this menu is for managing
 	 * @param jobCollection Instance of job collection
@@ -48,6 +49,7 @@ public class VolunteerMenu {
 	
 	/**
 	 * Shows a list of jobs available (able to sign up for) to the volunteer
+	 * 
 	 * @param volunteer
 	 */
 	private void showAvailableJobs(Volunteer volunteer) {
@@ -84,6 +86,7 @@ public class VolunteerMenu {
 	
 	/**
 	 * Asks the volunteer if they want to sign up for a job
+	 * 
 	 * @param selectedJob A job that must be available to the volunteer
 	 */
 	private void showSignupConfirm(Job selectedJob) {
@@ -104,7 +107,7 @@ public class VolunteerMenu {
 			case 1:
 				volunteer.signUpForJob(selectedJob);
 				System.out.println("You are now signed up for job " + selectedJob.getDescription());
-				mainMenu.showMainMenu();
+				showVolunteerMenu();
 		}
 	}
 }

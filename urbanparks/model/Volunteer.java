@@ -40,6 +40,4 @@ public class Volunteer extends User {
 		}
 		return false;
 	}
-	
-
 }

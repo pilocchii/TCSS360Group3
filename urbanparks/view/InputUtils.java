@@ -12,8 +12,9 @@ import java.util.Locale;
 public class InputUtils {
 	
 	/**
+	 * Gets the first non-null, nonempty string the user types
 	 * 
-	 * @return the first non-null string the user types
+	 * @return the first non-null, nonempty string the user types
 	 */
 	public static String getStringInput() {
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,6 +30,7 @@ public class InputUtils {
 	}
 	
 	/**
+	 * Gets the first int the user types
 	 * 
 	 * @return the first int the user types
 	 */
@@ -46,6 +48,7 @@ public class InputUtils {
 	
 	/**
 	 * Gets a number from the user in a specified range
+	 * 
 	 * @param min The lowest the entered number can be
 	 * @param max The highest the entered number can be
 	 * @return An entered number in the specified range
@@ -66,7 +69,8 @@ public class InputUtils {
 	}
 
 	/**
-	 * pre: non
+	 * Gets a date from the user
+	 * 
 	 * @return Valid Calendar object the user typed
 	 */
 	public static Calendar getCalendarInput() {
@@ -83,6 +87,7 @@ public class InputUtils {
 	}
 	
 	/**
+	 * Shows the user a list of options and gets their choice
 	 * 
 	 * @param A list of choices the user can select
 	 * @return The index of the choice the user selected

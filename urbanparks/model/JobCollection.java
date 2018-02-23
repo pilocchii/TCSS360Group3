@@ -36,6 +36,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Checks if the number of pending jobs is at capacity
+	 * 
 	 * @return true if the number of pending jobs is at capacity, false otherwise.
 	 */
 	public boolean isNumJobsAtMaximum() {
@@ -46,6 +47,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Adds a job to the job hash map.
+	 * 
 	 * PRECONDITION: HASHMAP FULL? possible?
 	 * @param job The job to add.
 	 */
@@ -57,6 +59,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Finds a job in the hash map
+	 * 
 	 * @param id The ID of the job
 	 * @return The job that was found. Can be null to indicate an invalid ID.
 	 */
@@ -66,6 +69,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Gets a sorted list of jobs available for a specific volunteer to sign up for.
+	 * 
 	 * @param volunteer The volunteer to check availability for
 	 * @return The list of jobs that volunteer can sign up for
 	 */
@@ -87,6 +91,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Sorts a list of jobs by start date, descending.
+	 * 
 	 * @param jobs The jobs to sort
 	 */
 	private void sortJobsByStartDate(ArrayList<Job> jobs) {
@@ -101,6 +106,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Saves this job collection's data
+	 * 
 	 * @throws IOException
 	 */
 	public void saveData() throws IOException {
@@ -112,6 +118,7 @@ public class JobCollection implements Serializable {
 	
 	/**
 	 * Loads this job collection's data
+	 * 
 	 * @throws IOException 
 	 * @throws ClassNotFoundException */
 	@SuppressWarnings("unchecked")

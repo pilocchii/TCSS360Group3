@@ -15,6 +15,7 @@ public class RegisterUserMenu {
 	
 	/**
 	 * Constructor for RegisterUserMenu
+	 * 
 	 * @param mainMenu Instance of main menu
 	 * @param userCollection Instance of user collection
 	 */

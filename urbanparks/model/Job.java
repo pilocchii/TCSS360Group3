@@ -61,7 +61,6 @@ public class Job implements Serializable {
 	public Integer getJobId() {
 		return jobId;
 	}
-	
 	/**
 	 * Return the job description.
 	 * @return job description.
@@ -69,7 +68,6 @@ public class Job implements Serializable {
 	public void setJobId(final Integer theJobId) {
 		jobId = theJobId;
 	}
-
 	/**
 	 * Return the job start date and time.
 	 * @return the job start date and time.
@@ -77,7 +75,6 @@ public class Job implements Serializable {
 	public Calendar getStartDateTime() {
 		return startDateTime;
 	}
-
 	/**
 	 * Return the job end date and time.
 	 * @return the job end date and time.
@@ -85,7 +82,6 @@ public class Job implements Serializable {
 	public Calendar getEndDateTime() {
 		return endDateTime;
 	}
-	
 	/**
 	 * Gets the job's description
 	 * @return The job's description
@@ -93,7 +89,6 @@ public class Job implements Serializable {
 	public String getDescription() {
 		return description;
 	}
-
 	/**
 	 * Gets a temporary flag representing the job's availability to a volunteer
 	 * @return
@@ -101,7 +96,6 @@ public class Job implements Serializable {
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}
-	
 	/**
 	 * Sets a temporary flag representing the job's availability to a volunteer
 	 * @param isAvailable
@@ -109,9 +103,10 @@ public class Job implements Serializable {
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-
+	
 	/**
 	 * Determines if the start or end times of 2 jobs overlap
+	 * 
 	 * @param otherJob
 	 * @return
 	 */
