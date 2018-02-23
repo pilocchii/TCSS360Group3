@@ -50,10 +50,10 @@ public class MainMenu {
 				try {
 					userCollection.saveData();
 					jobCollection.saveData();
+					System.out.println("Data saved. Goodbye!");
 				} catch (IOException e) {
 					System.out.println("Could not save your data to disk: " + e.getMessage());
 				}
-				System.out.println("Data saved. Goodbye!");
 				System.exit(0);
 	
 			// sign in
