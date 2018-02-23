@@ -54,6 +54,7 @@ public class Job implements Serializable {
 		isAvailable = true;
 	}
 	
+	// Getters:
 	/**
 	 * Return the job description.
 	 * @return job description.
@@ -62,11 +63,11 @@ public class Job implements Serializable {
 		return jobId;
 	}
 	/**
-	 * Return the job description.
-	 * @return job description.
+	 * Gets the job's description
+	 * @return The job's description
 	 */
-	public void setJobId(final Integer theJobId) {
-		jobId = theJobId;
+	public String getDescription() {
+		return description;
 	}
 	/**
 	 * Return the job start date and time.
@@ -83,11 +84,46 @@ public class Job implements Serializable {
 		return endDateTime;
 	}
 	/**
-	 * Gets the job's description
-	 * @return The job's description
+	 * Gets the park name the job takes place in.
+	 * @return Job's park name
 	 */
-	public String getDescription() {
-		return description;
+	public String getParkName() {
+		return parkName;
+	}
+	/**
+	 * Gets the location the job takes place in.
+	 * @return Job's location
+	 */
+	public String getLocation() {
+		return location;
+	}
+	/**
+	 * Gets the maximum light workers for the job
+	 * @return Job's light workers maximum
+	 */
+	public int getMaxLightWorkers() {
+		return maxLightWorkers;
+	}
+	/**
+	 * Gets the maximum medium workers for the job
+	 * @return Job's medium workers maximum
+	 */
+	public int getMaxMediumWorkers() {
+		return maxMediumWorker;
+	}
+	/**
+	 * Gets the maximum heavy workers for the job
+	 * @return Job's heavy workers maximum
+	 */
+	public int getMaxheavyWorkers() {
+		return maxHeavyWorkers;
+	}
+	/**
+	 * Gets the minimum total volunteers required for the job.
+	 * @return Job's minimum total volunteers
+	 */
+	public int getMinTotalVolunteers() {
+		return minTotalVolunteers;
 	}
 	/**
 	 * Gets a temporary flag representing the job's availability to a volunteer
@@ -95,6 +131,15 @@ public class Job implements Serializable {
 	 */
 	public boolean getIsAvailable() {
 		return isAvailable;
+	}
+	
+	//Setters:
+	/**
+	 * Return the job description.
+	 * @return job description.
+	 */
+	public void setJobId(final Integer theJobId) {
+		jobId = theJobId;
 	}
 	/**
 	 * Sets a temporary flag representing the job's availability to a volunteer
