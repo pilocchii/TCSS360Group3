@@ -55,4 +55,12 @@ public abstract class User implements Serializable {
 	public String getEmail() {
 		return email;
 	}
+	
+	/**
+	 * Gets this user's phone number.
+	 * @return the phone number associated with this user
+	 */
+	public String getPhoneNum() {
+		return phoneNum;
+	}
 }
