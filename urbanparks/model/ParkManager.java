@@ -1,10 +1,6 @@
 package urbanparks.model;
 
 public class ParkManager extends User {
-
-	/**
-	 * Do we even need this class?
-	 */
 	
 	private static final long serialVersionUID = 3766166317518887283L;
 
