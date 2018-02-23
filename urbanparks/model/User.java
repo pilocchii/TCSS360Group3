@@ -9,13 +9,15 @@ import java.util.TreeSet;
  */
 public abstract class User implements Serializable {
 
+	private static final long serialVersionUID = -4751543109134325926L;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNum;
 
 	/** List of all jobs that user accepted or created. */
-	protected ArrayList<Integer> myJobsList;
+	protected ArrayList<Integer> associatedJobs;
 
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -30,7 +32,7 @@ public abstract class User implements Serializable {
 		setLastName(theLastName);
 		setEmail(theEmail);
 		setPhoneNumber(thePhone);
-		myJobsList = new ArrayList<Integer>();
+		associatedJobs = new ArrayList<Integer>();
 	}
 
 	/**
@@ -111,7 +113,7 @@ public abstract class User implements Serializable {
 	 * @param theJobKey the new job to be added to the list.
 	 */
 	public void addJob(int theJobKey) {
-		myJobsList.add(theJobKey);
+		associatedJobs.add(theJobKey);
 	}
 
 	/**
@@ -120,7 +122,7 @@ public abstract class User implements Serializable {
 	 * @return list of all jobs.
 	 */
 	public ArrayList<Integer> getJobsList() {
-		return myJobsList;
+		return associatedJobs;
 	}
 
 	/**
@@ -129,7 +131,7 @@ public abstract class User implements Serializable {
 	 * @return total number of jobs.
 	 */
 	public int getTotalJobs() {
-		return myJobsList.size();
+		return associatedJobs.size();
 	}
 
 }

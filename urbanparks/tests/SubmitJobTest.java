@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
-import static urbanparks.model.ProgramConstants.*;
+import static urbanparks.model.Constants.*;
 
 /**There can be more than the maximum number of pending jobs at a time in the entire system,
 * default of 20

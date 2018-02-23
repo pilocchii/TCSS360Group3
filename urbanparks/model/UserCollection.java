@@ -1,52 +1,66 @@
 package urbanparks.model;
 
-import java.io.EOFException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import static urbanparks.model.ProgramConstants.*;
+import static urbanparks.model.Constants.*;
 
 public class UserCollection implements Serializable {
+
+	private static final long serialVersionUID = -271344141538164296L;
 	
-	/**A HashMap that stores users based on a string key, represented
-	 * by email.*/
+	//A HashMap that stores users based on a string key, represented by email.
 	private HashMap<String, User> userList;
 	
+	/**
+	 * Default constructor for user collection
+	 */
 	public UserCollection() {
-		userList = new HashMap<String, User>(99);
+		userList = new HashMap<String, User>();
 	}
 	
+	/**
+	 * Retrieves an User object based on its email
+	 * @param email
+	 * @return
+	 */
 	public User getUser(String email) {
 		return userList.get(email);
 	}
 	
-	public void saveData() throws IOException {
-		FileOutputStream fos = new FileOutputStream(USER_DATA_FILE);
-		ObjectOutputStream ois = new ObjectOutputStream(fos);
-		ois.writeObject(userList);
-	}
-	
-	/**Makes a new user collection with a capacity of 99;
-	 * Reads in the serialized user objects and stores them in 
-	 * the collection.
-	 * @throws IOException 
-	 * @throws ClassNotFoundException */
-	public void loadData() throws IOException, ClassNotFoundException {
-		FileInputStream fis = new FileInputStream(USER_DATA_FILE);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		userList = (HashMap<String, User>)ois.readObject();
-	}
-	
+	/**
+	 * Adds an user to the collection
+	 * @param u
+	 */
 	public void addUser(User u) {
 		userList.put(u.getEmail(), u);
 	}
 	
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void saveData() throws IOException {
+		FileOutputStream fos = new FileOutputStream(USER_DATA_FILE);
+		ObjectOutputStream ois = new ObjectOutputStream(fos);
+		ois.writeObject(userList);
+		ois.close();
+	}
+	
+	/**
+	 * 
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	@SuppressWarnings("unchecked")
+	public void loadData() throws IOException, ClassNotFoundException {
+		FileInputStream fis = new FileInputStream(USER_DATA_FILE);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		userList = (HashMap<String, User>)ois.readObject();
+		ois.close();
+	}
 }
