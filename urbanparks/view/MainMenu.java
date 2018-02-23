@@ -64,7 +64,6 @@ public class MainMenu {
 			// register
 			case 2:
 				new RegisterUserMenu(this, userCollection);
-				break;
 		}
 	}
 }
