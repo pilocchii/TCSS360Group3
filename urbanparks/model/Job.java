@@ -1,6 +1,7 @@
 package urbanparks.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.TreeSet;
@@ -23,6 +24,8 @@ public class Job implements Serializable {
 	private int maxMediumWorker;
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
+	
+	private ArrayList<String> volunteers;
 	
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -49,6 +52,7 @@ public class Job implements Serializable {
 		setMedium(theMedium);
 		setHeavy(theHeavy);
 		setMinimumVolunteers(theMinVolunteers);
+		volunteers = new ArrayList<String>(theLight + theMedium + theHeavy);
 	}
 	
 	/**
@@ -67,6 +71,23 @@ public class Job implements Serializable {
 		setMedium(theMedium);
 		setHeavy(theHeavy);
 		setMinimumVolunteers(theMinVolunteers);
+		volunteers = new ArrayList<String>(theLight + theMedium + theHeavy);
+	}
+	
+	/**
+	 * Adds a volunteer to the list of signed up volunteers. 
+	 * Takes in a volunteer's email address, returns true if the volunteer
+	 * was signed up successfully, false otherwise.
+	 * @param theVolunteer the email address to sign-up
+	 * @return true if the volunteer was added successfully, false otherwise
+	 * @author Alec
+	 */
+	public boolean addVolunteer(String theVolunteer) {
+		volunteers.add(theVolunteer);
+		if(volunteers.contains(theVolunteer)) {
+			return true;
+		}
+		return false; //if arraylist didn't add it for some reason
 	}
 	
 	/**
@@ -273,7 +294,7 @@ public class Job implements Serializable {
 		sb.append(symbol);
 //		sb.append(myVolunteersList.toString());
 //		sb.append(symbol);
-		sb.append(myMinimumVolunteers);
+		sb.append(minTotalVolunteers);
 		return sb.toString();
 	}
 //	@Override
