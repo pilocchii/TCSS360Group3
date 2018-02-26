@@ -4,10 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -62,10 +59,12 @@ public class SignupPane extends GridPane {
         add(lastNameTextField, 0, 2);
         add(emailTextField, 0, 3);
         add(phoneNumberTextField, 0, 4);
-        add(signupButton, 0, 5);
-        add(volunteerRadioButton, 1, 2);
-        add(parkManagerRadioButton, 1, 3);
-        add(staffRadioButton, 1, 4);
+        add(new Separator(), 0, 5);
+        add(volunteerRadioButton, 0, 6);
+        add(parkManagerRadioButton, 0, 7);
+        add(staffRadioButton, 0, 8);
+        add(new Separator(), 0, 9);
+        add(signupButton, 0, 10);
 
     }
 
