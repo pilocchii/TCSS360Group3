@@ -22,7 +22,7 @@ public class ParkManager extends User {
 	 * @param candidateJob The job to be created
 	 */
 	public void createNewJob(Job candidateJob, JobCollection jobCollection) {
-		associatedJobs.add(candidateJob.getJobId());
-		new JobCollection().addJob(candidateJob);
+		myJobsList.add(candidateJob.getJobId());
+		jobCollection.addJob(candidateJob);
 	}
 }

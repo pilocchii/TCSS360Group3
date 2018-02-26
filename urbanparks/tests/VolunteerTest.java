@@ -61,7 +61,7 @@ public class VolunteerTest {
 		candidateJob.setJobId(5678);
 		jobcollection.addJob(candidateJob);
 		
-		assertFalse(volunteerNoJobs.doesNewJobOverlap(candidateJob));
+		assertFalse(volunteerNoJobs.doesJobOverlap(candidateJob));
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class VolunteerTest {
 		candidateJob.setJobId(5678);
 		jobcollection.addJob(candidateJob);
 
-		assertFalse(volunteerWithJobs.doesNewJobOverlap(candidateJob));
+		assertFalse(volunteerWithJobs.doesJobOverlap(candidateJob));
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class VolunteerTest {
 		candidateJob.setJobId(5678);
 		jobcollection.addJob(candidateJob);
 
-		assertTrue(volunteerWithJobs.doesNewJobOverlap(candidateJob));
+		assertTrue(volunteerWithJobs.doesJobOverlap(candidateJob));
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class VolunteerTest {
 		candidateJob.setJobId(5678);
 		jobcollection.addJob(candidateJob);
 
-		assertTrue(volunteerWithJobs.doesNewJobOverlap(candidateJob));
+		assertTrue(volunteerWithJobs.doesJobOverlap(candidateJob));
 	}
 
 	/**
