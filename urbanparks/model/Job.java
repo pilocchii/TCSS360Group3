@@ -3,8 +3,9 @@ package urbanparks.model;
 import static urbanparks.model.Constants.MIN_DAYS_BEFORE_SIGNUP;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class represents a job with its all information.
@@ -15,8 +16,8 @@ public class Job implements Serializable {
 
 	private Integer jobId;
 	private String description;
-	private Calendar startDateTime;
-	private Calendar endDateTime;
+	private LocalDateTime startDateTime;
+	private LocalDateTime endDateTime;
 	private String parkName;
 	private String location;
 	private int maxLightWorkers;
@@ -24,6 +25,8 @@ public class Job implements Serializable {
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
 	private boolean isAvailable;
+	
+	private ArrayList<String> volunteers;
 	
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -38,7 +41,7 @@ public class Job implements Serializable {
 	 * @param maxHeavyWorkers the number of volunteers required for heavy workload.
 	 * @param minTotalVolunteers the minimum number of volunteers required for this job.
 	 */
-	public Job(final String description, final Calendar startDateTime, final Calendar endDateTime, 
+	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
 			   final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
 			   final int maxHeavyWorkers, final int minTotalVolunteers) {
 		this.description = description;
@@ -51,8 +54,25 @@ public class Job implements Serializable {
 		this.maxHeavyWorkers = maxHeavyWorkers;
 		this.minTotalVolunteers = minTotalVolunteers;
 		
+		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
 	}
+
+/**
+ * Adds a volunteer to the list of signed up volunteers. 
+ * Takes in a volunteer's email address, returns true if the volunteer
+ * was signed up successfully, false otherwise.
+ * @param theVolunteer the email address to sign-up
+ * @return true if the volunteer was added successfully, false otherwise
+ * @author Alec
+ */
+public boolean addVolunteer(String theVolunteer) {
+	volunteers.add(theVolunteer);
+	if(volunteers.contains(theVolunteer)) {
+		return true;
+	}
+	return false;//if arraylist didn't add it for some reason
+}
 	
 	// Getters:
 	/**
@@ -73,14 +93,14 @@ public class Job implements Serializable {
 	 * Return the job start date and time.
 	 * @return the job start date and time.
 	 */
-	public Calendar getStartDateTime() {
+	public LocalDateTime getStartDateTime() {
 		return startDateTime;
 	}
 	/**
 	 * Return the job end date and time.
 	 * @return the job end date and time.
 	 */
-	public Calendar getEndDateTime() {
+	public LocalDateTime getEndDateTime() {
 		return endDateTime;
 	}
 	/**
@@ -188,9 +208,9 @@ public class Job implements Serializable {
 	 * precondition: All Job fields must be non-null
 	 */
 	public void showInfo() {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-		System.out.println("Starting time: " + dateFormat.format(startDateTime.getTime()));
-		System.out.println("Ending time: " + dateFormat.format(endDateTime.getTime()));
+	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
+		System.out.println("Starting time: " + startDateTime.format(dateFormat));
+		System.out.println("Ending time: " + endDateTime.format(dateFormat));
 		System.out.println("Park name: " + parkName);
 		System.out.println("Location: " + location);
 		System.out.println("Job description: " + description);

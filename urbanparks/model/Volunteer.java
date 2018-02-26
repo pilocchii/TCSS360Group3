@@ -12,15 +12,25 @@ public class Volunteer extends User {
 	}
 	
 	/**
-	 * Signs up this volunteer for a job
+	 * Signs up this volunteer for a job; returns a boolean value
+	 * true if the volunteer signed up successfully, false otherwise.
 	 * 
 	 * @param candidateJob the job to be signed up for
 	 * @throws volunteerJobOverlapException
 	 * @throws jobSignupTooLateException
 	 * @throws alreadySignedUpException 
+	 * @return true if the volunteer signed up successfully, false otherwise
 	 */
-	public void signUpForJob(Job candidateJob) {
-		associatedJobs.add(candidateJob.getJobId());
+	public boolean signUpForJob(Job candidateJob) {
+		boolean flag = false;
+		if(candidateJob.addVolunteer(this.getEmail())) {
+			associatedJobs.add(candidateJob.getJobId());
+			if(associatedJobs.contains(candidateJob.getJobId())) {
+				flag = true; //both job and volunteer added each other
+			}
+		}
+		return flag;
+
 	}
 	
 	/**
