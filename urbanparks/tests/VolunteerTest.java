@@ -131,7 +131,7 @@ public class VolunteerTest {
 	 * 			the minimum number of calendar days from the current.
 	 */
 	@Test
-	public void isSignupEarlyEnough_MoreThanMinimumDays_ShouldReturnTrue() {
+	public void isSignupEarlyEnough_MoreThanMinimumDays_true() {
 
 		Calendar startDateTime = Calendar.getInstance();
 		Calendar endDateTime = Calendar.getInstance();
@@ -150,7 +150,7 @@ public class VolunteerTest {
 	 * 			the minimum number of calendar days from the current date.
 	 */
 	@Test
-	public void isSignupEarlyEnough_ExactlyMinimumDays_ShouldReturnTrue() {
+	public void isSignupEarlyEnough_ExactlyMinimumDays_true() {
 
 		Calendar startDateTime = Calendar.getInstance();
 		Calendar endDateTime = Calendar.getInstance();
@@ -169,7 +169,7 @@ public class VolunteerTest {
 	 * 			the minimum number of calendar days from the current date.
 	 */
 	@Test
-	public void isSignupEarlyEnough_BeginsLessMinimumDays_ShouldReturnFalse() {
+	public void isSignupEarlyEnough_BeginsLessMinimumDays_false() {
 
 		Calendar startDateTime = Calendar.getInstance();
 		Calendar endDateTime = Calendar.getInstance();
@@ -189,7 +189,7 @@ public class VolunteerTest {
      *
      */
     @Test
-    public void isFewerThanMinDaysBeforeUnvolunteer_BeginsOnCurrentDay_ShouldReturnTrue() {
+    public void isFewerThanMinDaysBeforeUnvolunteer_BeginsOnCurrentDay_true() {
 
         Calendar startDateTime = Calendar.getInstance();
         Calendar endDateTime = Calendar.getInstance();

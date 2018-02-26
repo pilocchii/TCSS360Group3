@@ -27,6 +27,11 @@ public class MainApplication extends Application {
         launch(args);
     }
 
+    /**
+     * Creates the primary stage context on which the GUI is built.
+     * Adds the static components, such as menu bar and back button.
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
 
@@ -43,6 +48,10 @@ public class MainApplication extends Application {
     }
 
 
+    /**
+     * Creates the menu bar.
+     * @return MenuBar the menu bar
+     */
     public MenuBar constructMenuBar() {
 
         final MenuBar menuBar = new MenuBar();
@@ -59,7 +68,7 @@ public class MainApplication extends Application {
     }
 
 
-    /*
+    /**
      * Event handler for the "Sign in" button.
      * This will take the username that has been inputted and set the stage to
      * the appropriate menu page depending on the user's type
@@ -85,19 +94,6 @@ public class MainApplication extends Application {
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
             root.setCenter(new SignupPane());
-        }
-    }
-
-
-    /**
-     * Event handler for the "Sign up" button on the sign up page.
-     * This will take the input and create a new user, then set the stage to
-     * the appropriate .
-     */
-    public class SignupEventHandler implements EventHandler<ActionEvent> {
-
-        @Override
-        public void handle(ActionEvent event) {
         }
     }
 
@@ -142,49 +138,5 @@ public class MainApplication extends Application {
     }
 
 
-    /**
-     * Login and Signup prompt page.
-     * This is a splash page that enables the user to either login, or
-     * sign up if they do not have an account.
-     */
-    public class SignupPane extends GridPane {
 
-        public SignupPane() {
-            super();
-
-            // Login pane styles
-            setAlignment(Pos.CENTER);
-            setPadding(new Insets(5, 5, 5, 5));
-            setHgap(5);
-            setVgap(5);
-
-            // Components
-            Button signupButton = new Button("Sign up");
-            TextField firstNameTextField = new TextField();
-            TextField lastNameTextField = new TextField();
-            TextField emailTextField = new TextField();
-            TextField phoneNumberTextField = new TextField();
-
-            // This adds prompt text to the fields and makes them not focused by default
-            firstNameTextField.setPromptText("First name");
-            firstNameTextField.setFocusTraversable(false);
-            lastNameTextField.setPromptText("Last name");
-            lastNameTextField.setFocusTraversable(false);
-            emailTextField.setPromptText("Email");
-            emailTextField.setFocusTraversable(false);
-            phoneNumberTextField.setPromptText("Phone e.g. 4251234567");
-            phoneNumberTextField.setFocusTraversable(false);
-
-            signupButton.setOnAction(new SignupEventHandler());
-
-            // This allows the buttons to grow in size to match their container
-            signupButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-            add(firstNameTextField, 0, 1);
-            add(lastNameTextField, 0, 2);
-            add(emailTextField, 0, 3);
-            add(phoneNumberTextField, 0, 4);
-            add(signupButton, 0, 5);
-        }
-    }
 }
