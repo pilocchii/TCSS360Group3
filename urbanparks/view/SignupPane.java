@@ -5,17 +5,25 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
-/**
- * Signup page.
+/***
+ * Signup GUI component.
  * This is a splash page that enables the user to sign up for a new account.
+ *
+ * @author rrki@uw.edu
+ * @version 2/26/18
  *
  */
 public class SignupPane extends GridPane {
 
-    public SignupPane() {
+    BorderPane root;
+
+    public SignupPane(BorderPane root) {
         super();
+
+        this.root = root;
 
         // Login pane styles
         setAlignment(Pos.CENTER);
@@ -65,13 +73,12 @@ public class SignupPane extends GridPane {
         add(staffRadioButton, 0, 8);
         add(new Separator(), 0, 9);
         add(signupButton, 0, 10);
-
     }
 
     /**
      * Event handler for the "Sign up" button on the sign up page.
      * This will take the input and create a new user, then set the stage to
-     * the appropriate .
+     * the appropriate.
      */
     public class SignupEventHandler implements EventHandler<ActionEvent> {
 
