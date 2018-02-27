@@ -1,9 +1,11 @@
 package urbanparks.model;
 
+import static urbanparks.model.Constants.MIN_DAYS_BEFORE_SIGNUP;
+
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class represents a job with its all information.
@@ -14,270 +16,209 @@ public class Job implements Serializable {
 
 	private Integer jobId;
 	private String description;
-	private Calendar startDateTime;
-	private Calendar endDateTime;
+	private LocalDateTime startDateTime;
+	private LocalDateTime endDateTime;
 	private String parkName;
 	private String location;
-	
 	private int maxLightWorkers;
 	private int maxMediumWorker;
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
+	private boolean isAvailable;
+	
+	private ArrayList<String> volunteers;
 	
 	/**
 	 * Constructor to initialize all the fields for this job.
 	 * 
-	 * @param theDescription the job description.
-	 * @param theStartDateTime the job start date and time.
-	 * @param theEndDateTime the job end date and time.
-	 * @param theParkName the park name.
-	 * @param theLocation the job location.
-	 * @param theLight the number of volunteers required for light workload.
+	 * @param description the job description.
+	 * @param startDateTime the job start date and time.
+	 * @param endDateTime the job end date and time.
+	 * @param parkName the park name.
+	 * @param location the job location.
+	 * @param maxLightWorkers the number of volunteers required for light workload.
 	 * @param theMediumm the number of volunteers required for medium workload.
-	 * @param theHeavy the number of volunteers required for heavy workload.
-	 * @param theMinVolunteers the minimum number of volunteers required for this job.
+	 * @param maxHeavyWorkers the number of volunteers required for heavy workload.
+	 * @param minTotalVolunteers the minimum number of volunteers required for this job.
 	 */
-	public Job(final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
-			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
-			   final int theHeavy, final int theMinVolunteers) {
-		setDescription(theDescription);
-		setStartDateTime(theStartDateTime);
-		setEndDateTime(theEndDateTime);
-		setParkName(theParkName);
-		setLocation(theLocation);
-		setLight(theLight);
-		setMedium(theMedium);
-		setHeavy(theHeavy);
-		setMinimumVolunteers(theMinVolunteers);
+	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
+			   final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
+			   final int maxHeavyWorkers, final int minTotalVolunteers) {
+		this.description = description;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+		this.parkName = parkName;
+		this.location = location;
+		this.maxLightWorkers = maxLightWorkers;
+		this.maxMediumWorker = maxMediumWorker;
+		this.maxHeavyWorkers = maxHeavyWorkers;
+		this.minTotalVolunteers = minTotalVolunteers;
+		
+		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
+		isAvailable = true;
 	}
-	
-	/**
-	 * Constructor for Job with the job ID
-	 */
-	public Job(final int jobID, final String theDescription, final Calendar theStartDateTime, final Calendar theEndDateTime, 
-			   final String theParkName, final String theLocation, final int theLight, final int theMedium, 
-			   final int theHeavy, final int theMinVolunteers) {
-		setJobId(jobID);
-		setDescription(theDescription);
-		setStartDateTime(theStartDateTime);
-		setEndDateTime(theEndDateTime);
-		setParkName(theParkName);
-		setLocation(theLocation);
-		setLight(theLight);
-		setMedium(theMedium);
-		setHeavy(theHeavy);
-		setMinimumVolunteers(theMinVolunteers);
+
+/**
+ * Adds a volunteer to the list of signed up volunteers. 
+ * Takes in a volunteer's email address, returns true if the volunteer
+ * was signed up successfully, false otherwise.
+ * @param theVolunteer the email address to sign-up
+ * @return true if the volunteer was added successfully, false otherwise
+ * @author Alec
+ */
+public boolean addVolunteer(String theVolunteer) {
+	volunteers.add(theVolunteer);
+	if(volunteers.contains(theVolunteer)) {
+		return true;
 	}
+	return false;//if arraylist didn't add it for some reason
+}
 	
+	// Getters:
 	/**
 	 * Return the job description.
-	 * 
 	 * @return job description.
 	 */
 	public Integer getJobId() {
 		return jobId;
 	}
+	/**
+	 * Gets the job's description
+	 * @return The job's description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * Return the job start date and time.
+	 * @return the job start date and time.
+	 */
+	public LocalDateTime getStartDateTime() {
+		return startDateTime;
+	}
+	/**
+	 * Return the job end date and time.
+	 * @return the job end date and time.
+	 */
+	public LocalDateTime getEndDateTime() {
+		return endDateTime;
+	}
+	/**
+	 * Gets the park name the job takes place in.
+	 * @return Job's park name
+	 */
+	public String getParkName() {
+		return parkName;
+	}
+	/**
+	 * Gets the location the job takes place in.
+	 * @return Job's location
+	 */
+	public String getLocation() {
+		return location;
+	}
+	/**
+	 * Gets the maximum light workers for the job
+	 * @return Job's light workers maximum
+	 */
+	public int getMaxLightWorkers() {
+		return maxLightWorkers;
+	}
+	/**
+	 * Gets the maximum medium workers for the job
+	 * @return Job's medium workers maximum
+	 */
+	public int getMaxMediumWorkers() {
+		return maxMediumWorker;
+	}
+	/**
+	 * Gets the maximum heavy workers for the job
+	 * @return Job's heavy workers maximum
+	 */
+	public int getMaxheavyWorkers() {
+		return maxHeavyWorkers;
+	}
+	/**
+	 * Gets the minimum total volunteers required for the job.
+	 * @return Job's minimum total volunteers
+	 */
+	public int getMinTotalVolunteers() {
+		return minTotalVolunteers;
+	}
+	/**
+	 * Gets a temporary flag representing the job's availability to a volunteer
+	 * @return
+	 */
+	public boolean getIsAvailable() {
+		return isAvailable;
+	}
 	
+	//Setters:
 	/**
 	 * Return the job description.
-	 * 
 	 * @return job description.
 	 */
 	public void setJobId(final Integer theJobId) {
 		jobId = theJobId;
 	}
-
 	/**
-	 * Return the job description.
-	 * 
-	 * @return job description.
+	 * Sets a temporary flag representing the job's availability to a volunteer
+	 * @param isAvailable
 	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * Change the job description.
-	 * 
-	 * @param theDescription the job description.
-	 */
-	public void setDescription(final String theDescription) {
-		description = theDescription;
-	}
-
-	/**
-	 * Return the job start date and time.
-	 * 
-	 * @return the job start date and time.
-	 */
-	public Calendar getStartDateTime() {
-		return startDateTime;
-	}
-
-	/**
-	 * Change the job start date and time.
-	 * 
-	 * @param theDate the job start date and time.
-	 */
-	public void setStartDateTime(final Calendar theStartDateTime) {
-		startDateTime = theStartDateTime;
-	}
-
-	/**
-	 * Return the job end date and time.
-	 * 
-	 * @return the job end date and time.
-	 */
-	public Calendar getEndDateTime() {
-		return endDateTime;
-	}
-
-	/**
-	 * Change the job end date and time.
-	 * 
-	 * @param theDate the job end date and time.
-	 */
-	public void setEndDateTime(final Calendar theEndDateTime) {
-		endDateTime = theEndDateTime;
-	}
-
-	/**
-	 * Return the park name where the job will take a place.
-	 * 
-	 * @return the park name.
-	 */
-	public String getParkName() {
-		return parkName;
-	}
-
-	/**
-	 * Change the park name to the new given name.
-	 * 
-	 * @param theParkName the new park name
-	 */
-	public void setParkName(String theParkName) {
-		parkName = theParkName;
-	}
-
-	/**
-	 * The location where the job will take a place.
-	 * 
-	 * @return the location of the job.
-	 */
-	public String getLocation() {
-		return location;
-	}
-
-	/**
-	 * Change the location of the job to the given location.
-	 * 
-	 * @param theLocation
-	 */
-	public void setLocation(String theLocation) {
-		location = theLocation;
-	}
-
-	/**
-	 * The number of volunteers required for light workload.
-	 * 
-	 * @return the number of volunteers for the light workload.
-	 */
-	public int getLight() {
-		return maxLightWorkers;
-	}
-
-	/**
-	 * Change the number of volunteers that required for light workload.
-	 * 
-	 * @param theLight the number of volunteers to do the light workload.
-	 */
-	public void setLight(int theLight) {
-		maxLightWorkers = theLight;
-	}
-
-	/**
-	 * The number of volunteers required for medium workload.
-	 * 
-	 * @return the number of volunteers for the medium workload.
-	 */
-	public int getMedium() {
-		return maxMediumWorker;
-	}
-
-	/**
-	 * Change the number of volunteers that required for medium workload.
-	 * 
-	 * @param theLight the number of volunteers to do the medium workload.
-	 */
-	public void setMedium(int theMedium) {
-		maxMediumWorker = theMedium;
-	}
-
-	/**
-	 * The number of volunteers required for heavy workload.
-	 * 
-	 * @return the number of volunteers for the heavy workload.
-	 */
-	public int getHeavy() {
-		return maxHeavyWorkers;
-	}
-
-	/**
-	 * Change the number of volunteers that required for heavy workload.
-	 * 
-	 * @param theLight the number of volunteers to do the heavy workload.
-	 */
-	public void setHeavy(int theHeavy) {
-		maxHeavyWorkers = theHeavy;
-	}
-
-	/**
-	 * Return the minimum number of volunteers required for this job.
-	 * 
-	 * @return minimum number of volunteers.
-	 */
-	public int getMinimumVolunteers() {
-		return minTotalVolunteers;
-	}
-
-	/**
-	 * Change the minimum number of volunteers required for this job.
-	 * 
-	 * @param theMinimumVolunteers minimum number of volunteers.
-	 */
-	public void setMinimumVolunteers(final int theMinimumVolunteers) {
-		minTotalVolunteers = theMinimumVolunteers;
+	public void setIsAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
 	}
 	
-	@Override
-	public String toString() {
-		
-		String symbol = ", ";
-		
-		StringBuffer sb = new StringBuffer();
-		sb.append(description);
-		sb.append(symbol);
-		sb.append(startDateTime);
-		sb.append(symbol);
-		sb.append(endDateTime);
-		sb.append(symbol);
-		sb.append(parkName);
-		sb.append(symbol);
-		sb.append(location);
-		sb.append(symbol);
-		sb.append(maxLightWorkers);
-		sb.append(symbol);
-		sb.append(maxMediumWorker);
-		sb.append(symbol);
-		sb.append(maxHeavyWorkers);
-		sb.append(symbol);
-//		sb.append(myVolunteersList.toString());
-//		sb.append(symbol);
-//		sb.append(myMinimumVolunteers);
-		return sb.toString();
+	/**
+	 * Determines if the start or end times of 2 jobs overlap
+	 * 
+	 * @param otherJob
+	 * @return
+	 */
+	public boolean doJobsOverlap(Job otherJob) {
+		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getStartDateTime())) {
+			return true;
+		}
+		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getEndDateTime())) {
+			return true;
+		}
+		if (DateUtils.are2DatesOnSameDay(endDateTime,  otherJob.getEndDateTime())) {
+			return true;
+		}
+		return false;
 	}
-//	@Override
-//	public int compare(Job arg0, Job arg1) {
-//		return arg0.getStartDateTime().compareTo(arg1.getEndDateTime());
-//	}
+	
+	/**
+	 * Checks whether the time between now and the job start time is at least the minimum value,
+	 *  for job sign up.
+	 * 
+	 * @param theCandidateJob
+	 * @return true if there is enough time between now and when the job starts, false otherwise.
+	 */
+	public static boolean isSignupEarlyEnough(Job theCandidateJob) {
+		/**
+		 * A volunteer may sign up only if the job begins 
+		 * at least a minimum number of calendar days after the current date
+		 */
+		return DateUtils.daysBetweenNowAndDate(theCandidateJob.getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+	}
+	
+	/**
+	 * Shows job info
+	 * precondition: All Job fields must be non-null
+	 */
+	public void showInfo() {
+	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
+		System.out.println("Starting time: " + startDateTime.format(dateFormat));
+		System.out.println("Ending time: " + endDateTime.format(dateFormat));
+		System.out.println("Park name: " + parkName);
+		System.out.println("Location: " + location);
+		System.out.println("Job description: " + description);
+		System.out.println("Max volunteers for work levels: " 
+			+ "Light - " + maxLightWorkers
+			+ ", Medium - " + maxMediumWorker
+			+ ", Heavy - " + maxHeavyWorkers);
+		System.out.println("Min total volunteers: " + minTotalVolunteers);
+	}
+
 }

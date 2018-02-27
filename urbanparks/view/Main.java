@@ -1,13 +1,9 @@
 package urbanparks.view;
-import java.security.NoSuchAlgorithmException;
-
-import urbanparks.view.MainView;
 
 public class Main {
-
-	public static void main(String[] args) throws NoSuchAlgorithmException {
+	
+	public static void main(String[] args) {
 		// starts the program's user interface
-		new MainView();
+		new MainMenu();
 	}
-
 }
