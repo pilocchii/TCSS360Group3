@@ -2,15 +2,16 @@ package urbanparks.tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import urbanparks.model.Job;
+import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.ParkManager.jobStartTooLongFromNowException;
 import urbanparks.model.ParkManager.jobTooLongException;
@@ -130,6 +131,39 @@ class ParkManagerTest {
 				"Park Name", "Park Location", 3, 4, 5, 20);
 		assertTrue(myParkManager.isNumJobsAtMaximum());
 
+	}
+	
+	
+	/**
+	 * Testing if the job start date and time is not in the future.
+	 */
+	@Test
+	public void isInFuture_JobIsInPast_False() {
+		LocalDateTime dateTime = LocalDateTime.now();
+		dateTime = dateTime.minusDays(1);
+		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle", 2, 3, 4, 15);
+		assertFalse(job.isInFuture());
+	}
+	
+	/**
+	 * Testing if the park manager did not create the given job.
+	 */
+	@Test
+	public void isCreator_parkMangerIsNotCreatorOfJob_False() {
+		
+		ParkManager parkManager = new ParkManager("Abdul", "Tarabi", "a@a.com", "2063728223");
+		
+		Job job = new Job("Cleaning XYZ park", LocalDateTime.now(), LocalDateTime.now(), "XYZ", "Seattle", 2, 3, 4, 15);
+		job.setJobId(123654);
+
+		parkManager.createNewJob(job, new JobCollection());
+		
+		Job newJob = new Job("Cleaning XYZ park", LocalDateTime.now(), LocalDateTime.now(), "XYZ", "Seattle", 2, 3, 4, 15);
+		newJob.setJobId(8888);
+
+
+		assertFalse(parkManager.isCreator(newJob));
+		
 	}
 
 
