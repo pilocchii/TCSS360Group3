@@ -138,7 +138,7 @@ class ParkManagerTest {
 	 * Testing if the job start date and time is not in the future.
 	 */
 	@Test
-	public void isInFuture_JobisInPast_False() {
+	public void isInFuture_JobIsInPast_False() {
 		LocalDateTime dateTime = LocalDateTime.now();
 		dateTime = dateTime.minusDays(1);
 		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle", 2, 3, 4, 15);
