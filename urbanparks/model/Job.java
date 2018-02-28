@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
  * This class represents a job with its all information.
  */
 public class Job implements Serializable {
-	
+
 	private static final long serialVersionUID = 928850375626876361L;
 
 	private Integer jobId;
@@ -25,9 +25,9 @@ public class Job implements Serializable {
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
 	private boolean isAvailable;
-	
+
 	private ArrayList<String> volunteers;
-	
+
 	/**
 	 * Constructor to initialize all the fields for this job.
 	 * 
@@ -42,8 +42,8 @@ public class Job implements Serializable {
 	 * @param minTotalVolunteers the minimum number of volunteers required for this job.
 	 */
 	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
-			   final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
-			   final int maxHeavyWorkers, final int minTotalVolunteers) {
+			final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
+			final int maxHeavyWorkers, final int minTotalVolunteers) {
 		this.description = description;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
@@ -53,27 +53,27 @@ public class Job implements Serializable {
 		this.maxMediumWorker = maxMediumWorker;
 		this.maxHeavyWorkers = maxHeavyWorkers;
 		this.minTotalVolunteers = minTotalVolunteers;
-		
+
 		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
 	}
 
-/**
- * Adds a volunteer to the list of signed up volunteers. 
- * Takes in a volunteer's email address, returns true if the volunteer
- * was signed up successfully, false otherwise.
- * @param theVolunteer the email address to sign-up
- * @return true if the volunteer was added successfully, false otherwise
- * @author Alec
- */
-public boolean addVolunteer(String theVolunteer) {
-	volunteers.add(theVolunteer);
-	if(volunteers.contains(theVolunteer)) {
-		return true;
+	/**
+	 * Adds a volunteer to the list of signed up volunteers. 
+	 * Takes in a volunteer's email address, returns true if the volunteer
+	 * was signed up successfully, false otherwise.
+	 * @param theVolunteer the email address to sign-up
+	 * @return true if the volunteer was added successfully, false otherwise
+	 * @author Alec
+	 */
+	public boolean addVolunteer(String theVolunteer) {
+		volunteers.add(theVolunteer);
+		if(volunteers.contains(theVolunteer)) {
+			return true;
+		}
+		return false;//if arraylist didn't add it for some reason
 	}
-	return false;//if arraylist didn't add it for some reason
-}
-	
+
 	// Getters:
 	/**
 	 * Return the job description.
@@ -152,7 +152,7 @@ public boolean addVolunteer(String theVolunteer) {
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}
-	
+
 	//Setters:
 	/**
 	 * Return the job description.
@@ -168,7 +168,7 @@ public boolean addVolunteer(String theVolunteer) {
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	
+
 	/**
 	 * Determines if the start or end times of 2 jobs overlap
 	 * 
@@ -187,7 +187,7 @@ public boolean addVolunteer(String theVolunteer) {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Checks whether the time between now and the job start time is at least the minimum value,
 	 *  for job sign up.
@@ -202,22 +202,45 @@ public boolean addVolunteer(String theVolunteer) {
 		 */
 		return DateUtils.daysBetweenNowAndDate(theCandidateJob.getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
 	}
-	
+
+	/**
+	 * Check if this job is between the given two dates.
+	 * Precondition: the given two dates are not null.
+	 * 
+	 * @param startDate the start time to be compare with job start and end time.
+	 * @param endDate the end time to be compare with job start and end time.
+	 * @return true if this job is between the given two dates, false otherwise.
+	 */
+	public boolean isBetween2Dates(LocalDateTime startDate, LocalDateTime endDate) {
+		return startDateTime.compareTo(startDate) >= 0 && 
+				endDateTime.compareTo(endDate) <= 0;
+	}
+
+	/**
+	 * Check if the start date and time of this job is greater than or 
+	 * equal to today date and time.
+	 * 
+	 * @return true if this job in the future, false otherwise.
+	 */
+	public boolean isInFuture() {
+		return startDateTime.isAfter(LocalDateTime.now());
+	}
+
 	/**
 	 * Shows job info
 	 * precondition: All Job fields must be non-null
 	 */
 	public void showInfo() {
-	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
 		System.out.println("Starting time: " + startDateTime.format(dateFormat));
 		System.out.println("Ending time: " + endDateTime.format(dateFormat));
 		System.out.println("Park name: " + parkName);
 		System.out.println("Location: " + location);
 		System.out.println("Job description: " + description);
 		System.out.println("Max volunteers for work levels: " 
-			+ "Light - " + maxLightWorkers
-			+ ", Medium - " + maxMediumWorker
-			+ ", Heavy - " + maxHeavyWorkers);
+				+ "Light - " + maxLightWorkers
+				+ ", Medium - " + maxMediumWorker
+				+ ", Heavy - " + maxHeavyWorkers);
 		System.out.println("Min total volunteers: " + minTotalVolunteers);
 	}
 
