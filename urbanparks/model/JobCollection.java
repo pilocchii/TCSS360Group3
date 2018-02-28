@@ -1,6 +1,7 @@
 package urbanparks.model;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+
 import static urbanparks.model.Constants.*;
 
 public class JobCollection implements Serializable {
@@ -42,7 +45,12 @@ public class JobCollection implements Serializable {
 	public boolean isNumJobsAtMaximum() {
 		// TODO: not actually pending jobs...
 		int pendingJobs = jobsList.size();
-		return pendingJobs >= Constants.MAX_PENDING_JOBS;
+		try {
+			Constants.loadData();
+		} catch (FileNotFoundException e) {
+			Constants.setDefaultMaxPendingJobs();
+		}
+		return pendingJobs >= Constants.getMaxPendingJobs();
 	}
 	
 	/**
@@ -84,6 +92,44 @@ public class JobCollection implements Serializable {
 			}
 			j.setIsAvailable(isAvailable);
 			availableJobs.add(j);
+		}
+		sortJobsByStartDate(availableJobs);
+		return availableJobs;
+	}
+	
+	/**
+	 * Gets a sorted list of jobs available for a specific park manager to sign up for.
+	 * 
+	 * @param volunteer The volunteer to check availability for
+	 * @return The list of jobs that volunteer can sign up for
+	 */
+	public ArrayList<Job> getAvilableJobs(ParkManager parkManager) {
+		ArrayList<Job> availableJobs = new ArrayList<Job>();
+		
+		for(Map.Entry<Integer, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			if (parkManager.isCreator(job) && job.isInFuture()) {
+				availableJobs.add(job);
+			}
+			
+		}
+		sortJobsByStartDate(availableJobs);
+		return availableJobs;
+	}
+	
+	/**
+	 * Gets all available jobs between two given dates.
+	 * Precondition: the given two dates must not be null.
+	 * 
+	 * @return The list of jobs that is between two dates.
+	 */
+	public ArrayList<Job> getJobsBetween2Dates(LocalDateTime start, LocalDateTime end) throws Exception {
+		final ArrayList<Job> availableJobs = new ArrayList<Job>();
+		for(Map.Entry<Integer, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			if (job.isBetween2Dates(start, end)) {
+				availableJobs.add(job);
+			}
 		}
 		sortJobsByStartDate(availableJobs);
 		return availableJobs;
