@@ -32,6 +32,46 @@ public class Volunteer extends User {
 		return flag;
 
 	}
+
+
+	/**
+	 * Unvolunteers a volunteer from a job
+	 *
+	 * @param candidateJob the job to be unvolunteered from
+	 * @throws jobBeginsTooSoonToUnvolunteerException
+     * @throws jobDateHasPassedException
+	 */
+	public void unvolunteerForJob(Job candidateJob) {
+//			throws jobBeginsTooSoonToUnvolunteerException, jobDateHasPassedException {
+//
+//        int daysBetweenNowAndCandidate = daysBetweenNowAndDate(candidateJob.getStartDateTime());
+//
+//        /**
+//         * Checks if the candidate job starts on the current day
+//         */
+//		if (daysBetweenNowAndCandidate == 0) {
+//            throw new jobBeginsTooSoonToUnvolunteerException("Cannot unvolunteer, job begins today");
+//        }
+//
+//        /**
+//         * Checks if the candidate job starts fewer than the minumum number of days in the future
+//         */
+//        if (daysBetweenNowAndCandidate <= MIN_DAYS_BEFORE_UNVOLUNTEER
+//                && daysBetweenNowAndCandidate > 0) {
+//            throw new jobBeginsTooSoonToUnvolunteerException("Cannot unvolunteer, job begins fewer than "
+//            + MIN_DAYS_BEFORE_UNVOLUNTEER + " from now");
+//        }
+//
+//		/**
+//		 * Checks if the candidate job is multiple days, and starts prior to the current day
+//		 */
+//		if (daysBetweenNowAndCandidate < 0) {
+//            throw new jobDateHasPassedException("Job start date has already passed");
+//		}
+//
+//		myJobsList.remove(candidateJob.getJobId());
+	}
+
 	
 	/**
 	 * Checks if a candidate job's start/end days equal those of any other 
