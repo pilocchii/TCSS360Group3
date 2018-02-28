@@ -38,16 +38,6 @@ public class MainApplication extends Application {
 	 * @param args
 	 */
     public MainApplication(String[] args) {
-    	
-		jobCollection = new JobCollection();
-		userCollection = new UserCollection();
-		try {
-			jobCollection.loadData();
-			userCollection.loadData();
-		} catch (Exception e) {
-			MessageBoxUtils.showDataLoadError(e.getMessage());
-		}
-    	
         launch(args);
     }
 
@@ -58,6 +48,16 @@ public class MainApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+    	
+		jobCollection = new JobCollection();
+		userCollection = new UserCollection();
+		try {
+			jobCollection.loadData();
+			userCollection.loadData();
+		} catch (Exception e) {
+			MessageBoxUtils.showDataLoadError(e.getMessage());
+			MessageBoxUtils.showEmptyDataUsed();
+		}
 
         // Stage init
         primaryStage.setTitle(title);
