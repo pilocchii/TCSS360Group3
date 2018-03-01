@@ -22,10 +22,22 @@ import javafx.scene.layout.BorderPane;
  * Main entry point for Urban Parks application GUI
  */
 public class MainApplication extends Application {
+	
+	public class Test extends BorderPane {
+	    private Button backButton;
+		private JobCollection jobCollection;
+		private UserCollection userCollection;
+		
+		public Test(Button backButton, JobCollection jobCollection, UserCollection userCollection) {
+			this.backButton = backButton;
+			this.jobCollection = jobCollection;
+			this.userCollection = userCollection;
+		}
+	}
 
     private final String title = "Urban Parks";
-    BorderPane root;
-    Button backButton;
+    private BorderPane root;
+    private Button backButton;
 	private static JobCollection jobCollection;
 	private static UserCollection userCollection;
 
@@ -64,7 +76,6 @@ public class MainApplication extends Application {
         root = new BorderPane();
         MenuBar menuBar = constructMenuBar();
         backButton = new Button();
-        //backButton.setOnAction(new BackButtonEventHandler());
         root.setTop(new BorderPane(null, menuBar, null, backButton, null));
         root.setCenter(new MainMenuPane(root, userCollection, backButton));
         primaryStage.setScene(new Scene(root, 500, 500));

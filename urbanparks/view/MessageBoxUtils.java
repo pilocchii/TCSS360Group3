@@ -54,4 +54,21 @@ public class MessageBoxUtils {
         alert.setHeaderText("An empty data set (users and jobs) has been loaded.");
         alert.showAndWait();
     }
+    
+    public static void showEmailAlreadyRegistered() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("That email is already in use!");
+        alert.setContentText("Please register using a different email.");
+        alert.showAndWait();
+    }
+    
+    
+    public static void newUserRegistered(String userType, String firstName) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You are now registered as " + userType + ", " + firstName + "!");
+        alert.setContentText("You will now be signed in.");
+        alert.showAndWait();
+    }
 }

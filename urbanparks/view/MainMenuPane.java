@@ -61,8 +61,9 @@ public class MainMenuPane extends GridPane {
         add(loginButton, 0, 2, 2, 1);
         add(signupButton, 0, 3, 2, 1);
         
-        backButton.setText("Back (exit program)");
-        backButton.setOnAction(new BackButtonEventHandler());
+        backButton.setText("Back");
+        backButton.setDisable(true);
+        //backButton.setOnAction(new BackButtonEventHandler());
     }
 
 
@@ -78,6 +79,7 @@ public class MainMenuPane extends GridPane {
             Object eventSource = event.getSource();
             String userName = userNameTextField.getText();
             if (!userName.isEmpty()) {
+            	backButton.setDisable(false);
             	root.setCenter(new LoginPane(root, userCollection, userName, mainMenu, backButton));
             }
         }
@@ -94,7 +96,8 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
-            root.setCenter(new SignupPane(root, backButton, mainMenu));
+            backButton.setDisable(false);
+            root.setCenter(new SignupPane(root, backButton, mainMenu, userCollection));
         }
     }
     
