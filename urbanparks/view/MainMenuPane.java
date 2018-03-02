@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 
+
 /**
  * Login and Signup prompt pane.
  * This is a splash page that enables the user to either login, or
@@ -17,19 +18,26 @@ import urbanparks.model.UserCollection;
  */
 public class MainMenuPane extends GridPane {
 
-    BorderPane root;
-    UserCollection userCollection;
-    TextField userNameTextField;
+    /* A reference to the application window */
+    MainApplication root;
     MainMenuPane mainMenu;
-    Button backButton;
 
-    public MainMenuPane(BorderPane root, UserCollection userCollection, Button backButton) {
+    /* References from root */
+    UserCollection userCollection;
+    Button backButton;
+    BorderPane centerPane;
+
+    TextField userNameTextField;
+
+    public MainMenuPane(MainApplication root) {
         super();
 
         this.root = root;
-        this.userCollection = userCollection;
         mainMenu = this;
-        this.backButton = backButton;
+
+        this.userCollection = root.getUserCollection();
+        this.backButton = root.getBackButton();
+        this.centerPane = root.getCenterPane();
         
         show();
     }
@@ -78,7 +86,7 @@ public class MainMenuPane extends GridPane {
             Object eventSource = event.getSource();
             String userName = userNameTextField.getText();
             if (!userName.isEmpty()) {
-            	root.setCenter(new LoginPane(root, userCollection, userName, mainMenu, backButton));
+            	root.setCenter(new LoginPane(root, userName, mainMenu));
             }
         }
     }
@@ -94,7 +102,7 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
-            root.setCenter(new SignupPane(root, backButton, mainMenu));
+            root.setCenter(new SignupPane(root, mainMenu));
         }
     }
     

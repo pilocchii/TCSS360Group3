@@ -16,20 +16,22 @@ import urbanparks.model.UserCollection;
 
 public class LoginPane extends GridPane {
 
-    BorderPane root;
+    /* A reference to the root application */
+    MainApplication root;
+
     UserCollection userCollection;
     String email;
     MainMenuPane back;
     Button backButton;
     
-    public LoginPane(BorderPane root, UserCollection userCollection, String email, MainMenuPane back, Button backButton) {
+    public LoginPane(MainApplication root, String email, MainMenuPane back) {
         super();
 
         this.root = root;
-        this.userCollection = userCollection;
+        this.userCollection = root.getUserCollection();
         this.email = email;
         this.back = back;
-        this.backButton = backButton;
+        this.backButton = root.getBackButton();
  
         show();
     }
@@ -64,7 +66,10 @@ public class LoginPane extends GridPane {
         }
     }
 
-    
+    /**
+     * Event handler for the "Back" button in the context of the Login Pane.
+     * This sets the center element of the application and shows it.
+     */
     public class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {

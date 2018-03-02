@@ -19,20 +19,23 @@ import urbanparks.view.LoginPane.BackButtonEventHandler;
  */
 public class SignupPane extends GridPane {
 
-    BorderPane root;
+    /* A reference to the root application. */
+    MainApplication root;
+
     Button backButton;
     MainMenuPane back;
 
-    public SignupPane(BorderPane root, Button backButton, MainMenuPane back) {
+    public SignupPane(MainApplication root, MainMenuPane back) {
         super();
 
         this.root = root;
-        this.backButton = backButton;
+
+        this.backButton = root.getBackButton();
         this.back = back;
         
         show();
     }
-    
+
     public void show() {
         // Login pane styles
         setAlignment(Pos.CENTER);
@@ -86,9 +89,12 @@ public class SignupPane extends GridPane {
         backButton.setText("Back (to main menu)");
         backButton.setOnAction(new BackButtonEventHandler());
     }
-    
-    
-    
+
+
+    /**
+     * Event handler for the "Back" button in the context of the Signup Pane.
+     * This sets the center element of the application and shows it.
+     */
     public class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
