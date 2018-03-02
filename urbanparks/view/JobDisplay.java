@@ -34,7 +34,7 @@ import javafx.scene.layout.Priority;
 
 public class JobDisplay extends GridPane {
 	
-	private BorderPane root;
+	private MainApplication root;
 	
 	private Button backButton_Volunteer;
 	private Button backButton_parkManager;
@@ -48,35 +48,35 @@ public class JobDisplay extends GridPane {
 	private User currentUser;
 	
 	
-	public JobDisplay(BorderPane root, Button backButton_Volunteer, VolunteerPane back_Volunteer) {
+	public JobDisplay(MainApplication root, VolunteerPane back_Volunteer) {
 		this.root = root;
-		this.backButton_Volunteer = backButton_Volunteer;
+		this.backButton_Volunteer = root.getBackButton();
 		this.back_Volunteer = back_Volunteer;
 		this.backButton_Volunteer.setText("Back to volunteer menu");
 		this.backButton_Volunteer.setOnAction(new BackButton_Volunteer_Handler());
 	}
 	
-	public JobDisplay(BorderPane root, Button backButton_parkManager, ParkManagerPane back_parkManager) {
+	public JobDisplay(MainApplication root, ParkManagerPane back_parkManager) {
 		this.root = root;
-		this.backButton_parkManager = backButton_parkManager;
+		this.backButton_parkManager = root.getBackButton();
 		this.back_parkManager = back_parkManager;
 		this.backButton_parkManager.setText("Back to park manager menu");
 		this.backButton_parkManager.setOnAction(new BackButton_ParkManager_Handler());
 	}
 	
-	public JobDisplay(BorderPane root, Button backButton_UPStaff, UrbanParksStaffPane back_UPStaff) {
+	public JobDisplay(MainApplication root, UrbanParksStaffPane back_UPStaff) {
 		this.root = root;
-		this.backButton_UPStaff = backButton_UPStaff;
+		this.backButton_UPStaff = root.getBackButton();
 		this.back_UPStaff = back_UPStaff;
 		this.backButton_UPStaff.setText("Back to Urban Parks Staff menu");
 		this.backButton_UPStaff.setOnAction(new BackButton_UPStaff_Handler());
 	}
 	
-	public void showVolunteerAvailJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+	public void showVolunteerAvailJobs(Volunteer volunteer) {
 
 		currentUser = volunteer;
 		String tableTitle = "\t\t\t\tAvailable Jobs";
-        ArrayList<Job> jobsToShow = jobCollection.getAvilableJobs(volunteer);
+        ArrayList<Job> jobsToShow = root.getJobCollection().getAvilableJobs(volunteer);
 		
         Button signUpButton = new Button();
         signUpButton.setText("sign up for this job");
@@ -92,10 +92,10 @@ public class JobDisplay extends GridPane {
 		root.setCenter(vbox);
 	}
 	
-	public void showVolunteerPendingJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+	public void showVolunteerPendingJobs(Volunteer volunteer) {
 		currentUser = volunteer;
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
-        ArrayList<Job> jobsToShow = volunteer.getSignedUpJobs(jobCollection);
+        ArrayList<Job> jobsToShow = volunteer.getSignedUpJobs(root.getJobCollection());
 		
         Button unvolunteerButton = new Button();
         unvolunteerButton.setText("unvolunteer from this job");
@@ -111,7 +111,7 @@ public class JobDisplay extends GridPane {
 		root.setCenter(vbox);
 	}
 	
-	public void showParkManagerCreatedJobs(ParkManager parkManager, JobCollection jobCollection, BorderPane root) {
+	public void showParkManagerCreatedJobs(ParkManager parkManager) {
 		currentUser = parkManager;
 		String tableTitle = "\t\t\t\tJobs You Created";
         ArrayList<Job> jobsToShow = createsometestjobs();
@@ -130,7 +130,7 @@ public class JobDisplay extends GridPane {
 		root.setCenter(vbox);
 	}
 	
-	public void showStaffJobsBetweenDates(UrbanParksStaff parksStaff, JobCollection jobCollection, BorderPane root) {
+	public void showStaffJobsBetweenDates(UrbanParksStaff parksStaff) {
 		currentUser = parksStaff;
 		String tableTitle = "\t\t\t\tJobs Between X & Y";
         ArrayList<Job> jobsToShow = createsometestjobs();

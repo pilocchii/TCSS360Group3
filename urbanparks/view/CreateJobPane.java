@@ -42,7 +42,7 @@ public class CreateJobPane extends GridPane {
 	private static final String STYLE_FIELD_VALID = "-fx-text-fill: green;";
 	private static final String STYLE_FIELD_INVALID = "-fx-text-fill: red;";
 	
-    private BorderPane root;
+    private MainApplication root;
     private Button backButton;
     private MainMenuPane back;
     private ParkManager parkManager;
@@ -60,15 +60,15 @@ public class CreateJobPane extends GridPane {
     private TextField parkNameField;
     private TextField jobLocationField;
 
-    public CreateJobPane(BorderPane root, Button backButton, MainMenuPane back, ParkManager parkManager, UserCollection userCollection, JobCollection jobCollection) {
+    public CreateJobPane(MainApplication root, MainMenuPane back, ParkManager parkManager) {
         super();
 
         this.root = root;
-        this.backButton = backButton;
+        this.backButton = root.getBackButton();
         this.back = back;
         this.parkManager = parkManager;
-        this.userCollection = userCollection;
-        this.jobCollection = jobCollection;
+        this.userCollection = root.getUserCollection();
+        this.jobCollection = root.getJobCollection();
         
         descriptionSatisfied = false;
         parkNameSatisfied = false;
@@ -220,7 +220,7 @@ public class CreateJobPane extends GridPane {
         		Job newJob = new Job(description, startTime, endTime, parkName, location, 111111, 11111, 11111, 1111111);
 				parkManager.createNewJob(newJob, jobCollection);
 				MessageBoxUtils.showJobCreated(description);
-				root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, back, backButton, parkManager));
+				root.setCenter(new ParkManagerPane(root, back, parkManager));
         	}
         }
     }

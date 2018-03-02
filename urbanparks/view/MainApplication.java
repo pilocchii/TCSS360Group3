@@ -5,16 +5,12 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import urbanparks.model.Constants.*;
-//import urbanparks.view.LoginPane.BackButtonEventHandler;
 import urbanparks.model.JobCollection;
 import urbanparks.model.UserCollection;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.BorderPane;
 
 
@@ -36,9 +32,12 @@ public class MainApplication extends Application {
 	}
 
     private final String title = "Urban Parks";
-    private BorderPane root;
+
+    private MainApplication root = this;
     private Button backButton;
-	private static JobCollection jobCollection;
+    private BorderPane centerPane;
+    private static JobCollection jobCollection;
+
 	private static UserCollection userCollection;
 
 
@@ -73,12 +72,14 @@ public class MainApplication extends Application {
 
         // Stage init
         primaryStage.setTitle(title);
-        root = new BorderPane();
+        centerPane = new BorderPane();
         MenuBar menuBar = constructMenuBar();
         backButton = new Button();
-        root.setTop(new BorderPane(null, menuBar, null, backButton, null));
-        root.setCenter(new MainMenuPane(root, userCollection, jobCollection, backButton));
-        primaryStage.setScene(new Scene(root, 500, 500));
+
+        centerPane.setTop(new BorderPane(null, menuBar, null, backButton, null));
+        centerPane.setCenter(new MainMenuPane(root));
+        primaryStage.setScene(new Scene(centerPane, 500, 500));
+
         primaryStage.show();
     }
 
@@ -118,6 +119,49 @@ public class MainApplication extends Application {
         fileMenu.getItems().addAll(saveMenuItem, new SeparatorMenuItem(), exitMenuItem);
         menuBar.getMenus().addAll(fileMenu);
         return menuBar;
+    }
+
+
+    /**
+     * Returns a reference to this application's back button.
+     * The back button's behavior should be changed at each state change.
+     * @return Button a reference to the application's back button
+     */
+    public Button getBackButton() {
+        return backButton;
+    }
+
+    /**
+     * Returns a reference to this application's job collection.
+     * @return JobCollection a reference to the application's job collection
+     */
+    public JobCollection getJobCollection() {
+        return jobCollection;
+    }
+
+    /**
+     * Returns a reference to this application's user collection.
+     * @return UserCollection a reference to the application's user collection
+     */
+    public UserCollection getUserCollection() {
+        return userCollection;
+    }
+
+    /**
+     * Returns a reference to this application's central border pane.
+     * This allows the application's context to be changed.
+     * @return BorderPane a reference to the application's central border pane
+     */
+    public BorderPane getCenterPane() {
+        return centerPane;
+    }
+
+    /**
+     * Sets the center pane of this application to the provided Pane.
+     * @param pane the pane with to replace the current pane with
+     */
+    public void setCenter(Pane pane) {
+        centerPane.setCenter(pane);
     }
     
 }

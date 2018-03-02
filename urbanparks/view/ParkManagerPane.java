@@ -15,21 +15,21 @@ import urbanparks.model.Volunteer;
 public class ParkManagerPane extends GridPane {
 	
 	private ParkManagerPane parkManagerPane = this;
-    private BorderPane root;
+    private MainApplication root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
     private MainMenuPane back;
     private Button backButton;
     ParkManager parkManager;
     
-    public ParkManagerPane(BorderPane root, UserCollection userCollection, JobCollection jobCollection, MainMenuPane back, Button backButton, ParkManager parkManager) {
+    public ParkManagerPane(MainApplication root, MainMenuPane back, ParkManager parkManager) {
         super();
 
         this.root = root;
-        this.userCollection = userCollection;
-        this.jobCollection = jobCollection;
+        this.userCollection = root.getUserCollection();
+        this.jobCollection = root.getJobCollection();
         this.back = back;
-        this.backButton = backButton;
+        this.backButton = root.getBackButton();
         this.parkManager = parkManager;
  
         show();
@@ -61,8 +61,8 @@ public class ParkManagerPane extends GridPane {
     private class viewSubmittedEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root, backButton, parkManagerPane);
-        	jobDisplay.showParkManagerCreatedJobs(parkManager, jobCollection, root);
+        	JobDisplay jobDisplay = new JobDisplay(root, parkManagerPane);
+        	jobDisplay.showParkManagerCreatedJobs(parkManager);
         }
     }
     
@@ -70,7 +70,7 @@ public class ParkManagerPane extends GridPane {
     private class createJobEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	 root.setCenter(new CreateJobPane(root, backButton, back, parkManager, userCollection, jobCollection));
+        	 root.setCenter(new CreateJobPane(root, back, parkManager));
         }
     }
     

@@ -54,20 +54,23 @@ public class SignupPane extends GridPane {
 	private boolean lastNameSatisfied;
 	private boolean phoneSatisfied;
 
-    private BorderPane root;
-    private Button backButton;
-    private MainMenuPane back;
-    private UserCollection userCollection;
-    private JobCollection jobCollection;
+    /* A reference to the root application. */
+    MainApplication root;
 
-    public SignupPane(BorderPane root, Button backButton, MainMenuPane back, UserCollection userCollection, JobCollection jobCollection) {
+    Button backButton;
+    MainMenuPane back;
+    UserCollection userCollection;
+    JobCollection jobCollection;
+
+    public SignupPane(MainApplication root, MainMenuPane back) {
         super();
 
         this.root = root;
-        this.backButton = backButton;
+
+        this.backButton = root.getBackButton();
         this.back = back;
-        this.userCollection = userCollection;
-        this.jobCollection = jobCollection;
+        this.userCollection = root.getUserCollection();
+        this.jobCollection = root.getJobCollection();
         
         emailSatisfied = false;
         firstNameSatisfied = false;
@@ -76,7 +79,7 @@ public class SignupPane extends GridPane {
         
         show();
     }
-    
+
     public void show() {
     	// set up back button
         backButton.setText("Back (to main menu)");
@@ -202,6 +205,11 @@ public class SignupPane extends GridPane {
         setVgap(5);
     }
 
+
+    /**
+     * Event handler for the "Back" button in the context of the Signup Pane.
+     * This sets the center element of the application and shows it.
+     */
     public class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -230,13 +238,13 @@ public class SignupPane extends GridPane {
     				Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
     				userCollection.addUser(newVolunteer);
     				MessageBoxUtils.newUserRegistered("a volunteer", firstName);
-    				root.setCenter(new VolunteerPane(root, userCollection, jobCollection, back, backButton, newVolunteer));
+    				root.setCenter(new VolunteerPane(root, back, newVolunteer));
     				
         		} else if (selectedRadioButton == parkManagerRadioButton) {
         			ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
         			userCollection.addUser(newParkManager);
         			MessageBoxUtils.newUserRegistered("a park manager", firstName);
-        			root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, back, backButton, newParkManager));
+        			root.setCenter(new ParkManagerPane(root, back, newParkManager));
         			
         		} else if (selectedRadioButton == staffRadioButton) {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);

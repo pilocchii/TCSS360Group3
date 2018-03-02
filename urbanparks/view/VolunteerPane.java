@@ -23,21 +23,21 @@ import urbanparks.model.UserCollection;
 public class VolunteerPane extends GridPane {
 
 	private VolunteerPane volunteerPane = this;
-    private BorderPane root;
+    private MainApplication root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
     private MainMenuPane back;
     private Button backButton;
     private Volunteer volunteer;
     
-    public VolunteerPane(BorderPane root, UserCollection userCollection, JobCollection jobCollection, MainMenuPane back, Button backButton, Volunteer volunteer) {
+    public VolunteerPane(MainApplication root,MainMenuPane back, Volunteer volunteer) {
         super();
 
         this.root = root;
-        this.userCollection = userCollection;
-        this.jobCollection = jobCollection;
+        this.userCollection = root.getUserCollection();
+        this.jobCollection = root.getJobCollection();
         this.back = back;
-        this.backButton = backButton;
+        this.backButton = root.getBackButton();
         this.volunteer = volunteer;
  
         show();
@@ -69,8 +69,8 @@ public class VolunteerPane extends GridPane {
     private class viewPendingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root,  backButton, volunteerPane);
-        	jobDisplay.showVolunteerPendingJobs(volunteer, jobCollection, root);
+        	JobDisplay jobDisplay = new JobDisplay(root, volunteerPane);
+        	jobDisplay.showVolunteerPendingJobs(volunteer);
         }
     }
     
@@ -78,8 +78,8 @@ public class VolunteerPane extends GridPane {
     private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root,  backButton, volunteerPane);
-        	jobDisplay.showVolunteerAvailJobs(volunteer, jobCollection, root);
+        	JobDisplay jobDisplay = new JobDisplay(root, volunteerPane);
+        	jobDisplay.showVolunteerAvailJobs(volunteer);
         }
     }
 

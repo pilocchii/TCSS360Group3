@@ -15,6 +15,7 @@ import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 
+
 /**
  * Login and Signup prompt pane.
  * This is a splash page that enables the user to either login, or
@@ -22,21 +23,27 @@ import urbanparks.model.UrbanParksStaff;
  */
 public class MainMenuPane extends GridPane {
 
-    BorderPane root;
-    UserCollection userCollection;
-    JobCollection jobCollection;
-    TextField userNameTextField;
+    /* A reference to the application window */
+    MainApplication root;
     MainMenuPane mainMenu;
+
+    /* References from root */
+    UserCollection userCollection;
     Button backButton;
+    BorderPane centerPane;
 
-    public MainMenuPane(BorderPane root, UserCollection userCollection,  JobCollection jobCollection, Button backButton) {
+    TextField userNameTextField;
+
+
+    public MainMenuPane(MainApplication root) {
         super();
-
         this.root = root;
-        this.userCollection = userCollection;
-        this.jobCollection = jobCollection;
+
         mainMenu = this;
-        this.backButton = backButton;
+
+        this.userCollection = root.getUserCollection();
+        this.backButton = root.getBackButton();
+        this.centerPane = root.getCenterPane();
         
         show();
     }
@@ -84,6 +91,7 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
+
             String email = userNameTextField.getText();
             if (!email.isEmpty()) {
 
@@ -92,10 +100,10 @@ public class MainMenuPane extends GridPane {
 					MessageBoxUtils.emailNotExist(email);
 				} else {
 					if (user instanceof Volunteer) {
-						root.setCenter(new VolunteerPane(root, userCollection, jobCollection, mainMenu, backButton, (Volunteer)user));
+						root.setCenter(new VolunteerPane(root, mainMenu, (Volunteer)user));
 						backButton.setDisable(false);
 					} else if (user instanceof ParkManager) {
-						root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, mainMenu, backButton, (ParkManager)user));
+						root.setCenter(new ParkManagerPane(root, mainMenu, (ParkManager)user));
 						backButton.setDisable(false);
 					} else if (user instanceof UrbanParksStaff) {
 						//new UrbanParksStaffMenu();
@@ -118,8 +126,9 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
+
             backButton.setDisable(false);
-            root.setCenter(new SignupPane(root, backButton, mainMenu, userCollection, jobCollection));
+            root.setCenter(new SignupPane(root, mainMenu));
         }
     }
     
