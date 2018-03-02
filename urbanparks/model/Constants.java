@@ -35,6 +35,8 @@ public final class Constants {
 	public static final int MAX_WORKERS_FLOOR = 0;
 	public static final int MAX_WORKERS_CEILING = Integer.MAX_VALUE;
 	
+	public static final int RANDOM_NEXTINT = 100;
+	
 	
 	private Constants() {
 		//shouldn't ever happen
