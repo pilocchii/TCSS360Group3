@@ -30,12 +30,19 @@ public class CreateJobPane extends GridPane {
 
 	private static final String INVALID_DATE_STYLE = "-fx-background-color: red;";
 	private static final String VALID_DATE_STYLE = "-fx-background-color: green;";
+	private static final String STYLE_FIELD_EDIT = "-fx-text-fill: black;";
+	private static final String STYLE_FIELD_VALID = "-fx-text-fill: green;";
+	private static final String STYLE_FIELD_INVALID = "-fx-text-fill: red;";
 	
     private BorderPane root;
     private Button backButton;
     private MainMenuPane back;
     private UserCollection userCollection;
     private JobCollection jobCollection;
+    
+    private boolean descriptionSatisfied;
+    private boolean parkNameSatisfied;
+    private boolean jobLocationSatisfied;
 
     public CreateJobPane(BorderPane root, Button backButton, MainMenuPane back, UserCollection userCollection, JobCollection jobCollection) {
         super();
@@ -45,6 +52,10 @@ public class CreateJobPane extends GridPane {
         this.back = back;
         this.userCollection = userCollection;
         this.jobCollection = jobCollection;
+        
+        descriptionSatisfied = false;
+        parkNameSatisfied = false;
+        jobLocationSatisfied = false;
         
         show();
     }
@@ -98,11 +109,65 @@ public class CreateJobPane extends GridPane {
         endDatePicker.setDayCellFactory(endDateCallback);
         
         
+        TextField descriptionField = new TextField();
+        descriptionField.setPromptText("Job description");
+        descriptionField.setFocusTraversable(false);
+        descriptionField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        	// focus gained
+        	if (newValue) {
+        		descriptionField.setStyle(STYLE_FIELD_EDIT);
+        		descriptionSatisfied = false;
+        	// focus lost
+        	} else {
+        		// any non-empty value is ok
+        		descriptionField.setStyle(STYLE_FIELD_VALID);
+        		descriptionSatisfied = true;
+            }
+        });
+        
+        
+        TextField parkNameField = new TextField();
+        parkNameField.setPromptText("Park name");
+        parkNameField.setFocusTraversable(false);
+        parkNameField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        	// focus gained
+        	if (newValue) {
+        		parkNameField.setStyle(STYLE_FIELD_EDIT);
+        		parkNameSatisfied = false;
+        	// focus lost
+        	} else {
+        		// any non-empty value is ok
+        		parkNameField.setStyle(STYLE_FIELD_VALID);
+        		parkNameSatisfied = true;
+            }
+        });
+        
+        TextField jobLocationField = new TextField();
+        jobLocationField.setPromptText("Job's location");
+        jobLocationField.setFocusTraversable(false);
+        jobLocationField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        	// focus gained
+        	if (newValue) {
+        		jobLocationField.setStyle(STYLE_FIELD_EDIT);
+        		jobLocationSatisfied = false;
+        	// focus lost
+        	} else {
+        		// any non-empty value is ok
+        		jobLocationField.setStyle(STYLE_FIELD_VALID);
+        		jobLocationSatisfied = true;
+            }
+        });
+        
+        
         add(new Label("Job Start Date"), 0, 0);
         add(startDatePicker, 0, 1);
         add(new Separator(), 0, 2);
         add(new Label("Job End Date"), 0, 3);
         add(endDatePicker, 0, 4);
+        add(descriptionField, 0, 5);
+        add(parkNameField, 0, 7);
+        add(jobLocationField, 0, 9);
+        add(new TextField("TODO job times"), 0, 10);
         
         // styles
         setAlignment(Pos.CENTER);
