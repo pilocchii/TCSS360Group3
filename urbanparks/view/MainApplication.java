@@ -135,7 +135,7 @@ public class MainApplication extends Application {
      * Returns a reference to this application's job collection.
      * @return JobCollection a reference to the application's job collection
      */
-    public static JobCollection getJobCollection() {
+    public JobCollection getJobCollection() {
         return jobCollection;
     }
 
@@ -143,7 +143,7 @@ public class MainApplication extends Application {
      * Returns a reference to this application's user collection.
      * @return UserCollection a reference to the application's user collection
      */
-    public static UserCollection getUserCollection() {
+    public UserCollection getUserCollection() {
         return userCollection;
     }
 
