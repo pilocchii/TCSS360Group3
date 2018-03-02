@@ -15,8 +15,6 @@ public class Job implements Serializable {
 
 	private static final long serialVersionUID = 928850375626876361L;
 	
-	private static final int RANDOM_MAX = 100;
-
 	private long jobId;
 	private String description;
 	private LocalDateTime startDateTime;
@@ -71,7 +69,7 @@ public class Job implements Serializable {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		Random random = new Random();
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
-		String number = dateFormat.format(currentDateTime) + random.nextInt(RANDOM_MAX);
+		String number = dateFormat.format(currentDateTime) + random.nextInt(Constants.RANDOM_NEXTINT);
 		return Long.parseLong(number);
 	}
 
