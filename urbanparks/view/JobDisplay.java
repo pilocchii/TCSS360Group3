@@ -2,6 +2,9 @@ package urbanparks.view;
 
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
+import urbanparks.model.ParkManager;
+import urbanparks.model.UrbanParksStaff;
+import urbanparks.model.Volunteer;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -31,16 +34,77 @@ import javafx.scene.layout.Priority;
 public class JobDisplay extends GridPane {
 	
 	private Job selectedJob;
+	
+	public void showVolunteerAvailJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+		String tableTitle = "\t\t\t\tAvailable Jobs";
+        ArrayList<Job> jobsToShow = createsometestjobs();
+		
+        Button signUpButton = new Button();
+        signUpButton.setText("sign up for this job");
+        signUpButton.setOnAction(new SignupJobButtonHandler());
+		signUpButton.setDisable(true);
+		
+        TableColumn<Job, String> canSignUp = new TableColumn<Job, String>("Can sign up");
+        canSignUp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
+		
+		VBox vbox = make(jobsToShow, tableTitle, canSignUp, true, signUpButton, true);
+		vbox.getChildren().add(signUpButton);
+		
+		root.setCenter(vbox);
+	}
+	
+	public void showVolunteerPendingJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+		String tableTitle = "\t\t\t\tYour Pending Jobs";
+        ArrayList<Job> jobsToShow = createsometestjobs();
+		
+        Button unvolunteerButton = new Button();
+        unvolunteerButton.setText("unvolunteer from this job");
+        unvolunteerButton.setOnAction(new UnvolunteerButtonHandler());
+		unvolunteerButton.setDisable(true);
+		
+        TableColumn<Job, String> canUnvolunteer = new TableColumn<Job, String>("Can unvolunteer");
+        canUnvolunteer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
+		
+		VBox vbox = make(jobsToShow, tableTitle, canUnvolunteer, true, unvolunteerButton, true);
+		vbox.getChildren().add(unvolunteerButton);
+		
+		root.setCenter(vbox);
+	}
+	
+	public void showParkManagerCreatedJobs(ParkManager parkManager, JobCollection jobCollection, BorderPane root) {
+		String tableTitle = "\t\t\t\tJobs You Created";
+        ArrayList<Job> jobsToShow = createsometestjobs();
+		
+        Button uncreateButton = new Button();
+        uncreateButton.setText("unvolunteer from this job");
+        uncreateButton.setOnAction(new UncreateJobButtonHandler());
+		uncreateButton.setDisable(true);
+		
+        TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can uncreate");
+        canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
+		
+		VBox vbox = make(jobsToShow, tableTitle, canUncreate, true, uncreateButton, true);
+		vbox.getChildren().add(uncreateButton);
+		
+		root.setCenter(vbox);
+	}
+	
+	public void showStaffJobsBetweenDates(UrbanParksStaff parksStaff, JobCollection jobCollection, BorderPane root) {
+		String tableTitle = "\t\t\t\tJobs Between X & Y";
+        ArrayList<Job> jobsToShow = createsometestjobs();
+		
+        TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can uncreate");
+        canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
+		
+		VBox vbox = make(jobsToShow, tableTitle, canUncreate, false, null, false);
+		
+		root.setCenter(vbox);
+	}
 
-	public Node make(JobCollection jobCollection, ArrayList<Job> jobsToShow, boolean showCancelled, boolean showAvailable, Button action1) {
-		
-        Label tableTitle = new Label("\t\t\t\tAvailable Jobs");
-        tableTitle.setFont(new Font("Arial", 18));
-		
-        Button action = new Button();
-        action.setText("sign up for this job");
-        action.setOnAction(new SignupJobButtonHandler());
-		action.setDisable(true);
+	
+	public VBox make(ArrayList<Job> jobsToShow, String tableTitle, TableColumn<Job, String> lastColumn, boolean showLastColumn, Button mainButton, boolean showMainButton) {
+        Label titleLabel = new Label(tableTitle);
+        titleLabel.setFont(new Font("Arial", 18));
 		
 		// Create job info area
         Label jobInfoHeader = new Label("Job Info:");
@@ -57,6 +121,9 @@ public class JobDisplay extends GridPane {
         
         TableColumn<Job, String> descriptionColumn = new TableColumn<Job, String>("Description");
         descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
+        
+        TableColumn<Job, String> cancelledColumn = new TableColumn<Job, String>("Cancelled");
+        cancelledColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsCancelledFormatted()));
 
         // create job table
         TableView<Job> jobsTable = new TableView<Job>();
@@ -68,13 +135,19 @@ public class JobDisplay extends GridPane {
                         	+ "\nDescription:\t" + newValue.getDescription()
                         	+ "\nPark name:\t" + newValue.getParkName()
                         	+ "\nLocation:\t\t" + newValue.getLocation() );
-                        action.setDisable(false);
+                        if (showMainButton) {
+                        	mainButton.setDisable(false);
+                        }
                         selectedJob = newValue;
                     }
                 });
         jobsTable.getColumns().add(startTimeColumn);
         jobsTable.getColumns().add(parkNameColumn);
         jobsTable.getColumns().add(descriptionColumn);
+        jobsTable.getColumns().add(cancelledColumn);
+        if (showLastColumn ) {
+        	jobsTable.getColumns().add(lastColumn);
+        }
 
         // add jobs to table
         for (Job j : jobsToShow) {
@@ -85,11 +158,24 @@ public class JobDisplay extends GridPane {
         VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.getChildren().add(tableTitle);
+        vbox.getChildren().add(titleLabel);
         vbox.getChildren().add(jobsTable);
         vbox.getChildren().add(jobInfoBox);
-        vbox.getChildren().add(action);
         return vbox;
+	}
+	
+	
+	public static ArrayList<Job> createsometestjobs() {
+        ArrayList<Job> jobsToShow = new ArrayList<Job>();
+        Job testjob1 = new Job("This job starts on 1/20/2018.", LocalDateTime.of(2018, Month.JULY, 29, 17, 30), LocalDateTime.now(), "Park Name", "Park Location", 3, 4, 5, 20);
+        Job testjob2 = new Job("This job starts on 1/20/2018.", LocalDateTime.of(2018, Month.JULY, 27, 19, 30), LocalDateTime.now(), "Park Name", "Park Location", 3, 4, 5, 20);
+        Job testjob3 = new Job("This job starts on 1/20/2001.", LocalDateTime.of(2015, Month.JULY, 4, 12, 30), LocalDateTime.now(), "Park Name", "Park Location", 3, 4, 5, 20);
+        Job testjob4 = new Job("This job starts on 1/20/2019.", LocalDateTime.of(2015, Month.JULY, 5, 2, 30), LocalDateTime.now(), "Park Name", "Park Location", 3, 4, 5, 20);
+        jobsToShow.add(testjob1);
+        jobsToShow.add(testjob2);
+        jobsToShow.add(testjob3);
+        jobsToShow.add(testjob4);
+        return jobsToShow;
 	}
 	
 	
@@ -98,6 +184,24 @@ public class JobDisplay extends GridPane {
         public void handle(ActionEvent event) {
         	if (selectedJob != null) {
         		System.out.println("YOU ARE SIGNED UP FOR JOB " + selectedJob.getStartDateFormatted());
+        	}
+        }
+    }
+    
+    public class UnvolunteerButtonHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	if (selectedJob != null) {
+        		System.out.println("YOU ARE UNVOLUNTEERED FROM JOB " + selectedJob.getStartDateFormatted());
+        	}
+        }
+    }
+    
+    public class UncreateJobButtonHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	if (selectedJob != null) {
+        		System.out.println("YOU UNCREATED THE JOB " + selectedJob.getStartDateFormatted());
         	}
         }
     }

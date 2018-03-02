@@ -236,7 +236,7 @@ public class SignupPane extends GridPane {
         			ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
         			userCollection.addUser(newParkManager);
         			MessageBoxUtils.newUserRegistered("a park manager", firstName);
-        			// todo login
+        			root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, back, backButton, newParkManager));
         			
         		} else if (selectedRadioButton == staffRadioButton) {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);

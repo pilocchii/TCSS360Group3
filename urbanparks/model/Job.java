@@ -25,6 +25,7 @@ public class Job implements Serializable {
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
 	private boolean isAvailable;
+	private boolean isCancelled;
 
 	private ArrayList<String> volunteers;
 
@@ -56,6 +57,7 @@ public class Job implements Serializable {
 
 		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
+		isCancelled = false;
 	}
 
 	/**
@@ -188,6 +190,22 @@ public class Job implements Serializable {
 	public String getEndDateFormatted() {
 		return DateUtils.formatDateTime(endDateTime);
 	}
+	
+	public String getIsCancelledFormatted() {
+		if (isCancelled) {
+			return "Yes";
+		} else {
+			return "No";
+		}
+	}
+	
+	public String getIsAvailableFormatted() {
+		if (isAvailable) {
+			return "Yes";
+		} else {
+			return "No";
+		}
+	}
 
 	/**
 	 * Determines if the start or end times of 2 jobs overlap
@@ -246,22 +264,21 @@ public class Job implements Serializable {
 		return startDateTime.isAfter(LocalDateTime.now());
 	}
 
-	/**
-	 * Shows job info
-	 * precondition: All Job fields must be non-null
-	 */
-	public void showInfo() {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
-		System.out.println("Starting time: " + startDateTime.format(dateFormat));
-		System.out.println("Ending time: " + endDateTime.format(dateFormat));
-		System.out.println("Park name: " + parkName);
-		System.out.println("Location: " + location);
-		System.out.println("Job description: " + description);
-		System.out.println("Max volunteers for work levels: " 
-				+ "Light - " + maxLightWorkers
-				+ ", Medium - " + maxMediumWorker
-				+ ", Heavy - " + maxHeavyWorkers);
-		System.out.println("Min total volunteers: " + minTotalVolunteers);
-	}
-
+//	/**
+//	 * Shows job info
+//	 * precondition: All Job fields must be non-null
+//	 */
+//	public void showInfo() {
+//		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
+//		System.out.println("Starting time: " + startDateTime.format(dateFormat));
+//		System.out.println("Ending time: " + endDateTime.format(dateFormat));
+//		System.out.println("Park name: " + parkName);
+//		System.out.println("Location: " + location);
+//		System.out.println("Job description: " + description);
+//		System.out.println("Max volunteers for work levels: " 
+//				+ "Light - " + maxLightWorkers
+//				+ ", Medium - " + maxMediumWorker
+//				+ ", Heavy - " + maxHeavyWorkers);
+//		System.out.println("Min total volunteers: " + minTotalVolunteers);
+//	}
 }

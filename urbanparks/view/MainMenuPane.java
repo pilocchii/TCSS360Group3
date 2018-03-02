@@ -95,7 +95,7 @@ public class MainMenuPane extends GridPane {
 						root.setCenter(new VolunteerPane(root, userCollection, jobCollection, mainMenu, backButton, (Volunteer)user));
 						backButton.setDisable(false);
 					} else if (user instanceof ParkManager) {
-						//new ParkManagerMenu(mainMenu, (ParkManager)user, jobCollection);
+						root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, mainMenu, backButton, (ParkManager)user));
 						backButton.setDisable(false);
 					} else if (user instanceof UrbanParksStaff) {
 						//new UrbanParksStaffMenu();

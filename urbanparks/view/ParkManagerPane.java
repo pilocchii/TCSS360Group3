@@ -1,35 +1,26 @@
 package urbanparks.view;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
-import urbanparks.model.UrbanParksStaff;
-import urbanparks.model.User;
-import urbanparks.model.Volunteer;
-import urbanparks.view.MainMenuPane.BackButtonEventHandler;
 import urbanparks.model.UserCollection;
+import urbanparks.model.Volunteer;
 
-public class VolunteerPane extends GridPane {
-
+public class ParkManagerPane extends GridPane {
     private BorderPane root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
     private MainMenuPane back;
     private Button backButton;
-    private Volunteer volunteer;
+    ParkManager parkManager;
     
-    public VolunteerPane(BorderPane root, UserCollection userCollection, JobCollection jobCollection, MainMenuPane back, Button backButton, Volunteer volunteer) {
+    public ParkManagerPane(BorderPane root, UserCollection userCollection, JobCollection jobCollection, MainMenuPane back, Button backButton, ParkManager parkManager) {
         super();
 
         this.root = root;
@@ -37,11 +28,11 @@ public class VolunteerPane extends GridPane {
         this.jobCollection = jobCollection;
         this.back = back;
         this.backButton = backButton;
-        this.volunteer = volunteer;
+        this.parkManager = parkManager;
  
         show();
     }
-
+    
     private void show() {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
@@ -52,34 +43,33 @@ public class VolunteerPane extends GridPane {
         setHgap(5);
         setVgap(5);
         
-        Button viewPendingButton = new Button("View your pending jobs");
-        viewPendingButton.setOnAction(new viewPendingEventHandler());
-        viewPendingButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        Button viewSubmittedButton = new Button("View your submitted jobs");
+        viewSubmittedButton.setOnAction(new viewSubmittedEventHandler());
+        viewSubmittedButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
-        Button viewAvailableButton = new Button("View jobs available for signup");
-        viewAvailableButton.setOnAction(new viewAvailableEventHandler());
-        viewAvailableButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        Button createJobButton = new Button("Create a new job");
+        createJobButton.setOnAction(new createJobEventHandler());
+        createJobButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
-        add(viewPendingButton, 0, 0);
-        add(viewAvailableButton, 0, 1);
+        add(viewSubmittedButton, 0, 0);
+        add(createJobButton, 0, 1);
     }
     
     
-    private class viewPendingEventHandler implements EventHandler<ActionEvent> {
+    private class viewSubmittedEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	
+        	new JobDisplay().showParkManagerCreatedJobs(parkManager, jobCollection, root);
         }
     }
     
     
-    private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
+    private class createJobEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	new JobDisplay().showVolunteerAvailJobs(volunteer, jobCollection, root);
+        	 root.setCenter(new CreateJobPane(root, backButton, back, userCollection, jobCollection));
         }
     }
-
     
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
