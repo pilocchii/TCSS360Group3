@@ -56,7 +56,7 @@ public class Volunteer extends User {
 	
 	public ArrayList<Job> getSignedUpJobs(JobCollection jobCollection) {
 	    ArrayList<Job> signedUpJobs = new ArrayList<Job>();
-		for (Integer i : associatedJobs) {
+		for (long i : associatedJobs) {
 			signedUpJobs.add(jobCollection.findJob(i));
 		}
 		return signedUpJobs;
