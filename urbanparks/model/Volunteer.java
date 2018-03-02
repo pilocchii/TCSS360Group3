@@ -1,5 +1,7 @@
 package urbanparks.model;
 
+import java.util.ArrayList;
+
 public class Volunteer extends User {
 
 	private static final long serialVersionUID = 8513473946371713321L;
@@ -49,5 +51,14 @@ public class Volunteer extends User {
 			}
 		}
 		return false;
+	}
+	
+	
+	public ArrayList<Job> getSignedUpJobs(JobCollection jobCollection) {
+	    ArrayList<Job> signedUpJobs = new ArrayList<Job>();
+		for (Integer i : associatedJobs) {
+			signedUpJobs.add(jobCollection.findJob(i));
+		}
+		return signedUpJobs;
 	}
 }

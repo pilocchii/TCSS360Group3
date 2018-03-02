@@ -4,6 +4,7 @@ import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
+import urbanparks.model.User;
 import urbanparks.model.Volunteer;
 
 import java.time.LocalDateTime;
@@ -33,11 +34,49 @@ import javafx.scene.layout.Priority;
 
 public class JobDisplay extends GridPane {
 	
+	private BorderPane root;
+	
+	private Button backButton_Volunteer;
+	private Button backButton_parkManager;
+	private Button backButton_UPStaff;
+
+	private VolunteerPane back_Volunteer;
+	private ParkManagerPane back_parkManager;
+	private UrbanParksStaffPane back_UPStaff;
+
 	private Job selectedJob;
+	private User currentUser;
+	
+	
+	public JobDisplay(BorderPane root, Button backButton_Volunteer, VolunteerPane back_Volunteer) {
+		this.root = root;
+		this.backButton_Volunteer = backButton_Volunteer;
+		this.back_Volunteer = back_Volunteer;
+		this.backButton_Volunteer.setText("Back to volunteer menu");
+		this.backButton_Volunteer.setOnAction(new BackButton_Volunteer_Handler());
+	}
+	
+	public JobDisplay(BorderPane root, Button backButton_parkManager, ParkManagerPane back_parkManager) {
+		this.root = root;
+		this.backButton_parkManager = backButton_parkManager;
+		this.back_parkManager = back_parkManager;
+		this.backButton_parkManager.setText("Back to park manager menu");
+		this.backButton_parkManager.setOnAction(new BackButton_ParkManager_Handler());
+	}
+	
+	public JobDisplay(BorderPane root, Button backButton_UPStaff, UrbanParksStaffPane back_UPStaff) {
+		this.root = root;
+		this.backButton_UPStaff = backButton_UPStaff;
+		this.back_UPStaff = back_UPStaff;
+		this.backButton_UPStaff.setText("Back to Urban Parks Staff menu");
+		this.backButton_UPStaff.setOnAction(new BackButton_UPStaff_Handler());
+	}
 	
 	public void showVolunteerAvailJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+
+		currentUser = volunteer;
 		String tableTitle = "\t\t\t\tAvailable Jobs";
-        ArrayList<Job> jobsToShow = createsometestjobs();
+        ArrayList<Job> jobsToShow = jobCollection.getAvilableJobs(volunteer);
 		
         Button signUpButton = new Button();
         signUpButton.setText("sign up for this job");
@@ -54,8 +93,9 @@ public class JobDisplay extends GridPane {
 	}
 	
 	public void showVolunteerPendingJobs(Volunteer volunteer, JobCollection jobCollection, BorderPane root) {
+		currentUser = volunteer;
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
-        ArrayList<Job> jobsToShow = createsometestjobs();
+        ArrayList<Job> jobsToShow = volunteer.getSignedUpJobs(jobCollection);
 		
         Button unvolunteerButton = new Button();
         unvolunteerButton.setText("unvolunteer from this job");
@@ -72,12 +112,13 @@ public class JobDisplay extends GridPane {
 	}
 	
 	public void showParkManagerCreatedJobs(ParkManager parkManager, JobCollection jobCollection, BorderPane root) {
+		currentUser = parkManager;
 		String tableTitle = "\t\t\t\tJobs You Created";
         ArrayList<Job> jobsToShow = createsometestjobs();
 		
         Button uncreateButton = new Button();
         uncreateButton.setText("unvolunteer from this job");
-        uncreateButton.setOnAction(new UncreateJobButtonHandler());
+        uncreateButton.setOnAction(new UnsubmitJobButtonHandler());
 		uncreateButton.setDisable(true);
 		
         TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can uncreate");
@@ -90,6 +131,7 @@ public class JobDisplay extends GridPane {
 	}
 	
 	public void showStaffJobsBetweenDates(UrbanParksStaff parksStaff, JobCollection jobCollection, BorderPane root) {
+		currentUser = parksStaff;
 		String tableTitle = "\t\t\t\tJobs Between X & Y";
         ArrayList<Job> jobsToShow = createsometestjobs();
 		
@@ -182,8 +224,10 @@ public class JobDisplay extends GridPane {
     public class SignupJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	if (selectedJob != null) {
-        		System.out.println("YOU ARE SIGNED UP FOR JOB " + selectedJob.getStartDateFormatted());
+        	if (selectedJob != null && selectedJob.getIsAvailable()) {
+        		Volunteer volunteer = (Volunteer)currentUser;
+        		volunteer.signUpForJob(selectedJob);
+        		MessageBoxUtils.showSignupUpForJob(selectedJob.getDescription());
         	}
         }
     }
@@ -192,17 +236,41 @@ public class JobDisplay extends GridPane {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null) {
-        		System.out.println("YOU ARE UNVOLUNTEERED FROM JOB " + selectedJob.getStartDateFormatted());
+        		System.out.println("TODO UNVOLUNTEER " + selectedJob.getStartDateFormatted());
         	}
         }
     }
     
-    public class UncreateJobButtonHandler implements EventHandler<ActionEvent> {
+    public class UnsubmitJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null) {
-        		System.out.println("YOU UNCREATED THE JOB " + selectedJob.getStartDateFormatted());
+        		System.out.println("TODO UNSUBMIT " + selectedJob.getStartDateFormatted());
         	}
+        }
+    }
+    
+
+    // back button handlers
+    private class BackButton_Volunteer_Handler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	root.setCenter(back_Volunteer);
+        	back_Volunteer.show();
+        }
+    }    
+    private class BackButton_ParkManager_Handler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	root.setCenter(back_parkManager);
+        	back_parkManager.show();
+        }
+    }
+    private class BackButton_UPStaff_Handler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	//root.setCenter(back_UPStaff);
+        	//back_UPStaff.show();
         }
     }
 }

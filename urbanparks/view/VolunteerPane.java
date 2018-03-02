@@ -22,6 +22,7 @@ import urbanparks.model.UserCollection;
 
 public class VolunteerPane extends GridPane {
 
+	private VolunteerPane volunteerPane = this;
     private BorderPane root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
@@ -42,7 +43,7 @@ public class VolunteerPane extends GridPane {
         show();
     }
 
-    private void show() {
+    public void show() {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
 
@@ -68,7 +69,8 @@ public class VolunteerPane extends GridPane {
     private class viewPendingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	
+        	JobDisplay jobDisplay = new JobDisplay(root,  backButton, volunteerPane);
+        	jobDisplay.showVolunteerPendingJobs(volunteer, jobCollection, root);
         }
     }
     
@@ -76,7 +78,8 @@ public class VolunteerPane extends GridPane {
     private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	new JobDisplay().showVolunteerAvailJobs(volunteer, jobCollection, root);
+        	JobDisplay jobDisplay = new JobDisplay(root,  backButton, volunteerPane);
+        	jobDisplay.showVolunteerAvailJobs(volunteer, jobCollection, root);
         }
     }
 

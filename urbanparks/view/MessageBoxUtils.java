@@ -81,5 +81,21 @@ public class MessageBoxUtils {
         alert.showAndWait();
     }
     
+    public static void showJobCreated(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Your job has been created: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the park manager menu.");
+        alert.showAndWait();
+    }
+    
+    
+    public static void showSignupUpForJob(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You are now signed up for the job: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the volunteer menu.");
+        alert.showAndWait();
+    }
     
 }

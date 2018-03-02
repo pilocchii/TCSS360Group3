@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,9 +23,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import urbanparks.model.DateUtils;
+import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
+import urbanparks.model.ParkManager;
+import urbanparks.model.UrbanParksStaff;
 import urbanparks.model.UserCollection;
+import urbanparks.model.Volunteer;
 import urbanparks.view.SignupPane.BackButtonEventHandler;
+import urbanparks.view.SignupPane.SignupEventHandler;
+
 import static urbanparks.model.Constants.*;
 
 public class CreateJobPane extends GridPane {
@@ -37,19 +45,28 @@ public class CreateJobPane extends GridPane {
     private BorderPane root;
     private Button backButton;
     private MainMenuPane back;
+    private ParkManager parkManager;
     private UserCollection userCollection;
     private JobCollection jobCollection;
     
     private boolean descriptionSatisfied;
     private boolean parkNameSatisfied;
     private boolean jobLocationSatisfied;
+    
+    //fields
+    private DatePicker startDatePicker;
+    private DatePicker endDatePicker;
+    private TextField descriptionField;
+    private TextField parkNameField;
+    private TextField jobLocationField;
 
-    public CreateJobPane(BorderPane root, Button backButton, MainMenuPane back, UserCollection userCollection, JobCollection jobCollection) {
+    public CreateJobPane(BorderPane root, Button backButton, MainMenuPane back, ParkManager parkManager, UserCollection userCollection, JobCollection jobCollection) {
         super();
 
         this.root = root;
         this.backButton = backButton;
         this.back = back;
+        this.parkManager = parkManager;
         this.userCollection = userCollection;
         this.jobCollection = jobCollection;
         
@@ -63,29 +80,32 @@ public class CreateJobPane extends GridPane {
     public void show() {
         backButton.setText("Temp...");
         
-        DatePicker startDatePicker = new DatePicker();
-        DatePicker endDatePicker = new DatePicker();
+        startDatePicker = new DatePicker();
+        endDatePicker = new DatePicker();
 
         // start date picker
         startDatePicker.setValue(LocalDate.now());
         startDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
         	validateDates(startDatePicker, endDatePicker);
         });
-//        Callback<DatePicker, DateCell> startDateCallBack = new Callback<DatePicker, DateCell>() {
-//        	@Override
-//        	public DateCell call(DatePicker datePicker) {
-//        		return new DateCell() {
-//        			@Override
-//        			public void updateItem(LocalDate tempStart, boolean empty) {
-//        				super.updateItem(tempStart, empty);
+        Callback<DatePicker, DateCell> startDateCallBack = new Callback<DatePicker, DateCell>() {
+        	@Override
+        	public DateCell call(DatePicker datePicker) {
+        		return new DateCell() {
+        			@Override
+        			public void updateItem(LocalDate tempStart, boolean empty) {
+        				super.updateItem(tempStart, empty);
 //        				if (doesViolateBizRule(tempStart, endDatePicker.getValue())) {
 //        					setDisable(true);
 //        				}
-//        			}
-//        		};
-//        	}
-//        };
-//        startDatePicker.setDayCellFactory(startDateCallBack);
+        				if (tempStart.isBefore(LocalDate.now())) {
+        					setDisable(true);
+        				}
+        			}
+        		};
+        	}
+        };
+        startDatePicker.setDayCellFactory(startDateCallBack);
         
         // end date picker
         endDatePicker.setValue(LocalDate.now());
@@ -109,7 +129,7 @@ public class CreateJobPane extends GridPane {
         endDatePicker.setDayCellFactory(endDateCallback);
         
         
-        TextField descriptionField = new TextField();
+        descriptionField = new TextField();
         descriptionField.setPromptText("Job description");
         descriptionField.setFocusTraversable(false);
         descriptionField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
@@ -126,7 +146,7 @@ public class CreateJobPane extends GridPane {
         });
         
         
-        TextField parkNameField = new TextField();
+        parkNameField = new TextField();
         parkNameField.setPromptText("Park name");
         parkNameField.setFocusTraversable(false);
         parkNameField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
@@ -142,7 +162,7 @@ public class CreateJobPane extends GridPane {
             }
         });
         
-        TextField jobLocationField = new TextField();
+        jobLocationField = new TextField();
         jobLocationField.setPromptText("Job's location");
         jobLocationField.setFocusTraversable(false);
         jobLocationField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
@@ -159,6 +179,12 @@ public class CreateJobPane extends GridPane {
         });
         
         
+        Button createJobButton = new Button("Create Job");
+        createJobButton.setOnAction(new CreateJobButtonHandler());
+        // Allows it to grow in size to match their container
+        createJobButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
+        
         add(new Label("Job Start Date"), 0, 0);
         add(startDatePicker, 0, 1);
         add(new Separator(), 0, 2);
@@ -168,12 +194,35 @@ public class CreateJobPane extends GridPane {
         add(parkNameField, 0, 7);
         add(jobLocationField, 0, 9);
         add(new TextField("TODO job times"), 0, 10);
-        
+        add(createJobButton, 0, 11);
+ 
         // styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
         setVgap(5);
+    }
+    
+    
+    
+    public class CreateJobButtonHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	if (descriptionSatisfied && parkNameSatisfied && jobLocationSatisfied) {
+        			
+        		//TODO: add times for dates
+        		LocalDateTime startTime = startDatePicker.getValue().atStartOfDay();
+        		LocalDateTime endTime = endDatePicker.getValue().atStartOfDay();
+        	    String description = descriptionField.getText();
+        	    String parkName = parkNameField.getText();
+        	    String location = jobLocationField.getText();
+        		
+        		Job newJob = new Job(description, startTime, endTime, parkName, location, 111111, 11111, 11111, 1111111);
+				parkManager.createNewJob(newJob, jobCollection);
+				MessageBoxUtils.showJobCreated(description);
+				root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, back, backButton, parkManager));
+        	}
+        }
     }
     
     
