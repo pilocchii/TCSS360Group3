@@ -54,4 +54,48 @@ public class MessageBoxUtils {
         alert.setHeaderText("An empty data set (users and jobs) has been loaded.");
         alert.showAndWait();
     }
+    
+    public static void showEmailAlreadyRegistered() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("That email is already in use!");
+        alert.setContentText("Please register using a different email.");
+        alert.showAndWait();
+    }
+    
+    
+    public static void newUserRegistered(String userType, String firstName) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You are now registered as " + userType + ", " + firstName + "!");
+        alert.setContentText("You will now be signed in.");
+        alert.showAndWait();
+    }
+    
+    
+    public static void emailNotExist(String email) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Email not valid");
+        alert.setHeaderText("There is not account registered for the email " + email + "!");
+        alert.setContentText("If you do not have an account, please create one.");
+        alert.showAndWait();
+    }
+    
+    public static void showJobCreated(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Your job has been created: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the park manager menu.");
+        alert.showAndWait();
+    }
+    
+    
+    public static void showSignupUpForJob(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You are now signed up for the job: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the volunteer menu.");
+        alert.showAndWait();
+    }
+    
 }

@@ -9,6 +9,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
+import urbanparks.model.User;
+import urbanparks.model.Volunteer;
+import urbanparks.model.JobCollection;
+import urbanparks.model.ParkManager;
+import urbanparks.model.UrbanParksStaff;
 
 /**
  * Login and Signup prompt pane.
@@ -19,15 +24,17 @@ public class MainMenuPane extends GridPane {
 
     BorderPane root;
     UserCollection userCollection;
+    JobCollection jobCollection;
     TextField userNameTextField;
     MainMenuPane mainMenu;
     Button backButton;
 
-    public MainMenuPane(BorderPane root, UserCollection userCollection, Button backButton) {
+    public MainMenuPane(BorderPane root, UserCollection userCollection,  JobCollection jobCollection, Button backButton) {
         super();
 
         this.root = root;
         this.userCollection = userCollection;
+        this.jobCollection = jobCollection;
         mainMenu = this;
         this.backButton = backButton;
         
@@ -61,8 +68,9 @@ public class MainMenuPane extends GridPane {
         add(loginButton, 0, 2, 2, 1);
         add(signupButton, 0, 3, 2, 1);
         
-        backButton.setText("Back (exit program)");
-        backButton.setOnAction(new BackButtonEventHandler());
+        backButton.setText("Back");
+        backButton.setDisable(true);
+        //backButton.setOnAction(new BackButtonEventHandler());
     }
 
 
@@ -76,9 +84,25 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
-            String userName = userNameTextField.getText();
-            if (!userName.isEmpty()) {
-            	root.setCenter(new LoginPane(root, userCollection, userName, mainMenu, backButton));
+            String email = userNameTextField.getText();
+            if (!email.isEmpty()) {
+
+            	User user = userCollection.getUser(email);
+				if (user == null) {
+					MessageBoxUtils.emailNotExist(email);
+				} else {
+					if (user instanceof Volunteer) {
+						root.setCenter(new VolunteerPane(root, userCollection, jobCollection, mainMenu, backButton, (Volunteer)user));
+						backButton.setDisable(false);
+					} else if (user instanceof ParkManager) {
+						root.setCenter(new ParkManagerPane(root, userCollection, jobCollection, mainMenu, backButton, (ParkManager)user));
+						backButton.setDisable(false);
+					} else if (user instanceof UrbanParksStaff) {
+						//new UrbanParksStaffMenu();
+						backButton.setDisable(false);
+					}
+				}
+            	//root.setCenter(new LoginPane(root, userCollection, userName, mainMenu, backButton));
             }
         }
     }
@@ -94,7 +118,8 @@ public class MainMenuPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
             Object eventSource = event.getSource();
-            root.setCenter(new SignupPane(root, backButton, mainMenu));
+            backButton.setDisable(false);
+            root.setCenter(new SignupPane(root, backButton, mainMenu, userCollection, jobCollection));
         }
     }
     
