@@ -73,7 +73,7 @@ public class Job implements Serializable {
 		}
 		return false;//if arraylist didn't add it for some reason
 	}
-
+	
 	// Getters:
 	/**
 	 * Return the job description.
@@ -96,6 +96,7 @@ public class Job implements Serializable {
 	public LocalDateTime getStartDateTime() {
 		return startDateTime;
 	}
+	
 	/**
 	 * Return the job end date and time.
 	 * @return the job end date and time.
@@ -167,6 +168,25 @@ public class Job implements Serializable {
 	 */
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
+	}
+	
+	
+	// Others:
+	
+	/**
+	 * Gets a the start time of a Job as a string
+	 * @return The start time of this job formatted as a string
+	 */
+	public String getStartDateFormatted() {
+		return DateUtils.formatDateTime(startDateTime);
+	}
+	
+	/**
+	 * Gets a the end time of a Job as a string
+	 * @return The end time of this job formatted as a string
+	 */
+	public String getEndDateFormatted() {
+		return DateUtils.formatDateTime(endDateTime);
 	}
 
 	/**

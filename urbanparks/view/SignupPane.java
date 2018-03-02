@@ -12,9 +12,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
+import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
-import urbanparks.view.LoginPane.BackButtonEventHandler;
+//import urbanparks.view.LoginPane.BackButtonEventHandler;
 
 /***
  * Signup GUI component.
@@ -57,14 +58,16 @@ public class SignupPane extends GridPane {
     private Button backButton;
     private MainMenuPane back;
     private UserCollection userCollection;
+    private JobCollection jobCollection;
 
-    public SignupPane(BorderPane root, Button backButton, MainMenuPane back, UserCollection userCollection) {
+    public SignupPane(BorderPane root, Button backButton, MainMenuPane back, UserCollection userCollection, JobCollection jobCollection) {
         super();
 
         this.root = root;
         this.backButton = backButton;
         this.back = back;
         this.userCollection = userCollection;
+        this.jobCollection = jobCollection;
         
         emailSatisfied = false;
         firstNameSatisfied = false;
@@ -213,7 +216,6 @@ public class SignupPane extends GridPane {
      * the appropriate.
      */
     public class SignupEventHandler implements EventHandler<ActionEvent> {
-
         @Override
         public void handle(ActionEvent event) {
         	if (emailSatisfied && firstNameSatisfied && lastNameSatisfied && phoneSatisfied) {
@@ -228,18 +230,20 @@ public class SignupPane extends GridPane {
     				Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
     				userCollection.addUser(newVolunteer);
     				MessageBoxUtils.newUserRegistered("a volunteer", firstName);
+    				root.setCenter(new VolunteerPane(root, userCollection, jobCollection, back, backButton, newVolunteer));
     				
         		} else if (selectedRadioButton == parkManagerRadioButton) {
         			ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
         			userCollection.addUser(newParkManager);
         			MessageBoxUtils.newUserRegistered("a park manager", firstName);
+        			// todo login
         			
-        		} else if (selectedRadioButton == parkManagerRadioButton) {
+        		} else if (selectedRadioButton == staffRadioButton) {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);
         			userCollection.addUser(newUrbanParksStaff);
         			MessageBoxUtils.newUserRegistered("an Urban Parks staff", firstName);
+        			// todo login
         		}
-        		// log them in
         	}
         }
     }

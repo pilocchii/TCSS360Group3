@@ -71,4 +71,15 @@ public class MessageBoxUtils {
         alert.setContentText("You will now be signed in.");
         alert.showAndWait();
     }
+    
+    
+    public static void emailNotExist(String email) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Email not valid");
+        alert.setHeaderText("There is not account registered for the email " + email + "!");
+        alert.setContentText("If you do not have an account, please create one.");
+        alert.showAndWait();
+    }
+    
+    
 }

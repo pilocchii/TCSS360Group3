@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import urbanparks.model.Constants.*;
-import urbanparks.view.LoginPane.BackButtonEventHandler;
+//import urbanparks.view.LoginPane.BackButtonEventHandler;
 import urbanparks.model.JobCollection;
 import urbanparks.model.UserCollection;
 import javafx.scene.layout.GridPane;
@@ -77,7 +77,7 @@ public class MainApplication extends Application {
         MenuBar menuBar = constructMenuBar();
         backButton = new Button();
         root.setTop(new BorderPane(null, menuBar, null, backButton, null));
-        root.setCenter(new MainMenuPane(root, userCollection, backButton));
+        root.setCenter(new MainMenuPane(root, userCollection, jobCollection, backButton));
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
     }

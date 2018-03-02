@@ -1,6 +1,8 @@
 package urbanparks.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static urbanparks.model.Constants.*;
 
 	public class DateUtils {
@@ -37,5 +39,11 @@ import static urbanparks.model.Constants.*;
 			int daysDiff = ld2.getDayOfYear() - ld1.getDayOfYear();
 			int totalDiff = yearDiff + daysDiff;
 			return totalDiff;
+		}
+		
+		
+		public static String formatDateTime(LocalDateTime ldt) {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	        return ldt.format(formatter);
 		}
 }
