@@ -4,6 +4,7 @@ import static urbanparks.model.Constants.MIN_DAYS_BEFORE_SIGNUP;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,8 +14,10 @@ import java.time.format.DateTimeFormatter;
 public class Job implements Serializable {
 
 	private static final long serialVersionUID = 928850375626876361L;
+	
+	private static final int RANDOM_MAX = 100;
 
-	private Integer jobId;
+	private long jobId;
 	private String description;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
@@ -44,6 +47,7 @@ public class Job implements Serializable {
 	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
 			final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
 			final int maxHeavyWorkers, final int minTotalVolunteers) {
+		this.jobId = generateJobID();
 		this.description = description;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
@@ -56,6 +60,19 @@ public class Job implements Serializable {
 
 		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
+	}
+	
+	/**
+	 * Generate jobID using the current data, time and random number.
+	 *  
+	 * @return generated JobID
+	 */
+	private long generateJobID() {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		Random random = new Random();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
+		String number = dateFormat.format(currentDateTime) + random.nextInt(RANDOM_MAX);
+		return Long.parseLong(number);
 	}
 
 	/**
@@ -76,10 +93,10 @@ public class Job implements Serializable {
 
 	// Getters:
 	/**
-	 * Return the job description.
-	 * @return job description.
+	 * Return the jobID.
+	 * @return job ID.
 	 */
-	public Integer getJobId() {
+	public long getJobId() {
 		return jobId;
 	}
 	/**
@@ -155,13 +172,6 @@ public class Job implements Serializable {
 
 	//Setters:
 	/**
-	 * Return the job description.
-	 * @return job description.
-	 */
-	public void setJobId(final Integer theJobId) {
-		jobId = theJobId;
-	}
-	/**
 	 * Sets a temporary flag representing the job's availability to a volunteer
 	 * @param isAvailable
 	 */
@@ -204,7 +214,7 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Check if this job is between the given two dates.
+	 * Checks weather this job is between the given two date and time..
 	 * Precondition: the given two dates are not null.
 	 * 
 	 * @param startDate the start time to be compare with job start and end time.

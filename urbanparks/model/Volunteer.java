@@ -42,7 +42,7 @@ public class Volunteer extends User {
 	 * @return
 	 */
 	public boolean doesJobOverlap(Job candidateJob, JobCollection jobCollection) {
-		for (int i : associatedJobs) {
+		for (long i : associatedJobs) {
 			Job j = jobCollection.findJob(i);
 			if (j.doJobsOverlap(candidateJob)) {
 				return true;

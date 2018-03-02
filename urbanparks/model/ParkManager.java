@@ -33,8 +33,8 @@ public class ParkManager extends User {
 	 * @return true if the job was created by the park manager, false otherwise.
 	 */
 	public boolean isCreator(Job theJob) {
-		for (int job : associatedJobs) {
-			if (job == theJob.getJobId()) {
+		for (long jobID : associatedJobs) {
+			if (jobID == theJob.getJobId()) {
 				return true;
 			}
 		}

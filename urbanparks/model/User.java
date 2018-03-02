@@ -16,7 +16,7 @@ public abstract class User implements Serializable {
 	private String phoneNum;
 
 	/** List of all jobs that user accepted or created. */
-	protected ArrayList<Integer> associatedJobs;
+	protected ArrayList<Long> associatedJobs;
 
 	/**
 	 * Constructor to initialize all the fields for this job.
@@ -31,7 +31,7 @@ public abstract class User implements Serializable {
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNum = phone;
-		this.associatedJobs = new ArrayList<Integer>();
+		this.associatedJobs = new ArrayList<Long>();
 	}
 	
 	/**
