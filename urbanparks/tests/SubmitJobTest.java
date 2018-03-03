@@ -13,14 +13,12 @@ import urbanparks.model.Constants;
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 
-/**
- * There can be more than the maximum number of pending jobs at a time in the entire system,
- * default of 20
- * i)The system has far fewer than the maximum number of pending jobs
- * ii)The system has one fewer than the maximum number of pending jobs
- * iii)The system has exactly the maximum number of pending jobs
- * */
 
+/**There can be more than the maximum number of pending jobs at a time in the entire system,
+* 
+* i)The system has far fewer than the maximum number of pending jobs
+* ii)The system has one fewer than the maximum number of pending jobs
+* iii)The system has exactly the maximum number of pending jobs*/
 public class SubmitJobTest {
 
 	
