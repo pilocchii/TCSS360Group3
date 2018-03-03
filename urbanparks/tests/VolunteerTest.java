@@ -15,7 +15,7 @@ import urbanparks.model.Volunteer;
 
 
 /**
- * JUnit testing to test sign up for job using all possible acceptance test.
+ * JUnit testing to test volunteer functionality using all possible acceptance test.
  */
 public class VolunteerTest {
 
