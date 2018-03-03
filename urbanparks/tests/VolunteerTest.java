@@ -2,18 +2,16 @@ package urbanparks.tests;
 
 import static org.junit.Assert.*;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import urbanparks.model.Constants;
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 import urbanparks.model.Volunteer;
-import urbanparks.model.Volunteer.alreadySignedUpException;
-import urbanparks.model.Volunteer.jobSignupTooLateException;
-import urbanparks.model.Volunteer.volunteerJobOverlapException;
 
 
 /**
@@ -23,159 +21,126 @@ public class VolunteerTest {
 
 	private Volunteer volunteerNoJobs;
 	private Volunteer volunteerWithJobs;
-	private JobCollection jobcollection;
+	private JobCollection jobCollection;
+
+	/* test jobs with various lengths, name scheme "testJob_{start date}_{end date}"  */
+	private Job testJob_minDaysInFuture_minDaysInFuture;
+    private Job testJob_minDaysInFuture_minDaysInFuturePlusOne;
+    private Job testJob_minDaysInFuture_minDaysInFuturePlusMaxJobLength;
+    private Job testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne;
 
 	@Before
-	public final void setUpTestVolunteers() 
-			throws volunteerJobOverlapException, jobSignupTooLateException, alreadySignedUpException, NoSuchAlgorithmException {
+	public final void setUpTestVolunteers() {
 
-		jobcollection = new JobCollection();
-		
-		// create a volunteer with no signed up jobs
-		volunteerNoJobs = new Volunteer("First", "Last", "email@email.com", "(123)-456-7890");
-		
-		//create a volunteer with 1 signed up job
-		Calendar signedUpJobStart = Calendar.getInstance();
-		Calendar signedUpJobEnd = Calendar.getInstance();
-		signedUpJobStart.set(2018, Calendar.JANUARY, 20, 12, 00);
-		signedUpJobEnd.set(2018, Calendar.JANUARY, 21, 14, 00);
-		Job signedUpJob = new Job("This job starts on 1/20/2018.", signedUpJobStart, signedUpJobEnd, 
-				"Park Name", "Park Location", 3, 4, 5, 20);
-		signedUpJob.setJobId(1234);
-		jobcollection.addJob(signedUpJob);
-		volunteerWithJobs = new Volunteer("First", "Last", "email@email.com", "(123)-456-7890");
-		volunteerWithJobs.signUpForJob(signedUpJob);
+        volunteerNoJobs = new Volunteer("NoJobs", "Volunteer",
+                "test1@test.test", "1234567890");
+
+        volunteerWithJobs = new Volunteer("HasJobs", "Volunteer",
+                "test2@test.test", "0987654321");
+
+        LocalDateTime MinDaysInFuture = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP);
+        LocalDateTime MinDaysInFuturePlusOne = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP + 1);
+        LocalDateTime minDaysInFuturePlusMaxJobLength = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP + Constants.MAX_JOB_LENGTH);
+
+        jobCollection = new JobCollection();
+
+        testJob_minDaysInFuture_minDaysInFuture = new Job("A test job", MinDaysInFuture, MinDaysInFuture,
+                "Gasworks", "Seattle");
+        testJob_minDaysInFuture_minDaysInFuturePlusOne = new Job("A test job", MinDaysInFuture, MinDaysInFuturePlusOne,
+                "Gasworks", "Seattle");
+        testJob_minDaysInFuture_minDaysInFuturePlusMaxJobLength = new Job("A test job", MinDaysInFuture, minDaysInFuturePlusMaxJobLength, "Gasworks", "Seattle");
+        testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne = new Job("A test job", MinDaysInFuturePlusOne, MinDaysInFuturePlusOne,
+                "Gasworks", "Seattle");
 	}
 
-	/**
-	 * Volunteer has no jobs already signed up for
-	 */
+
+    /**
+     * Volunteer has no jobs already signed up for.
+     */
 	@Test
-	public void isSameDay_VolunteerNoJobsYet_false() {
-		Calendar candidateStart = Calendar.getInstance();
-		Calendar candidateEnd = Calendar.getInstance();
-		candidateStart.set(2018, Calendar.JANUARY, 30, 9, 30);
-		candidateEnd.set(2018, Calendar.JANUARY, 30, 11, 30);
-		Job candidateJob = new Job("This job is on 1/30/2018.", candidateStart, candidateEnd, 
-				"Park Name", "Park Location", 3, 4, 5, 20);
-		candidateJob.setJobId(5678);
-		jobcollection.addJob(candidateJob);
-		
-		assertFalse(volunteerNoJobs.doesJobOverlap(candidateJob));
-	}
+	public void signUpForJob_NoCurrentJobs_true() {
+	    assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture));
+    }
 
-	/**
-	 * Volunteer has jobs already signed up for, 
-	 * this job does not extend across any days as jobs already signed up for
-	 */
-	@Test
-	public void isSameDay_VolunteerHasJobsNoOverlap_false() 
-			throws volunteerJobOverlapException, jobSignupTooLateException {
-				
-		Calendar candidateStart = Calendar.getInstance();
-		Calendar candidateEnd = Calendar.getInstance();
-		candidateStart.set(2018, Calendar.JANUARY, 30, 9, 30);
-		candidateEnd.set(2018, Calendar.JANUARY, 30, 11, 30);
-		Job candidateJob = new Job("This job is on 1/30/2018.", candidateStart, candidateEnd, 
-				"Park Name", "Park Location", 3, 4, 5, 20);
-		candidateJob.setJobId(5678);
-		jobcollection.addJob(candidateJob);
 
-		assertFalse(volunteerWithJobs.doesJobOverlap(candidateJob));
-	}
+    /**
+     * Volunteer has jobs already signed up for,
+     * this job does not extend across any days as jobs already signed up for.
+     */
+    @Test
+    public void signUpForJob_HasCurrentJobs_true() {
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
+        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne));
+    }
+
 
 	/**
 	 * Volunteer has jobs already signed up for, 
-	 * this job starts the same day as the end of some job already signed up for
+	 * this job starts the same day as the end of some job already signed up for.
 	 */
 	@Test
-	public void isSameDay_CurrentJobEndIsNewJobStart_true() 
-			throws volunteerJobOverlapException, jobSignupTooLateException {
-		
-		Calendar candidateStart = Calendar.getInstance();
-		Calendar candidateEnd = Calendar.getInstance();
-		candidateStart.set(2018, Calendar.JANUARY, 21, 9, 30);
-		candidateEnd.set(2018, Calendar.JANUARY, 21, 10, 30);
-		Job candidateJob = new Job("This job is on 1/21/2018.", candidateStart, candidateEnd, 
-				"Park Name", "Park Location", 3, 4, 5, 20);
-		candidateJob.setJobId(5678);
-		jobcollection.addJob(candidateJob);
+	public void doesJobOverlap_CurrentJobEndIsNewJobStart_true() {
+        jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuturePlusOne);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne);
+        assertTrue(volunteerNoJobs.doesJobOverlap(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne,
+                jobCollection));
+    }
 
-		assertTrue(volunteerWithJobs.doesJobOverlap(candidateJob));
-	}
 
 	/**
 	 * Volunteer has jobs already signed up for, 
-	 * this job ends the same day as the start of some job already signed up for
+	 * this job ends the same day as the start of some job already signed up for.
 	 */
 	@Test
-	public void isSameDay_CurrentJobStartIsNewJobEnd_true() 
-			throws volunteerJobOverlapException, jobSignupTooLateException {
-		
-		Calendar candidateStart = Calendar.getInstance();
-		Calendar candidateEnd = Calendar.getInstance();
-		candidateStart.set(2018, Calendar.JANUARY, 19, 9, 30);
-		candidateEnd.set(2018, Calendar.JANUARY, 20, 18, 15);
-		Job candidateJob = new Job("This job is on 1/19/2018.", candidateStart, candidateEnd, 
-				"Park Name", "Park Location", 3, 4, 5, 20);
-		candidateJob.setJobId(5678);
-		jobcollection.addJob(candidateJob);
+	public void doesJobOverlap_CurrentJobStartIsNewJobEnd_true() {
+        jobCollection.addJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne);
+        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne));
+    }
 
-		assertTrue(volunteerWithJobs.doesJobOverlap(candidateJob));
-	}
 
-	/**
-	 * Testing: the volunteer can sign for a job that begins much more than 
-	 * 			the minimum number of calendar days from the current.
-	 */
-	@Test
-	public void signUpForJob_MoreThanMinimumDays_ShouldReturnTrue() {
+    /**
+     * Volunteer has a job already signed up for, and the job is successfully removed.
+     */
+    @Test
+    public void unVolunteerFromJob_JobIsInAssociatedJobs_JobIsRemoved() {
+        jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuture);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
+        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture);
+        assertFalse(volunteerNoJobs.getSignedUpJobs(jobCollection).contains(testJob_minDaysInFuture_minDaysInFuture));
+    }
 
-		Calendar startDateTime = Calendar.getInstance();
-		Calendar endDateTime = Calendar.getInstance();
 
-		startDateTime.add(Calendar.DAY_OF_MONTH, 10);
-		endDateTime.add(Calendar.DAY_OF_MONTH, 10);
+    /**
+     * Volunteer tries to unvolunteer from a job that doesn't exist.
+     * ArrayList remains unchanged, as per ArrayList.remove()
+     */
+    @Test
+    public void unVolunteerFromJob_JobIsNotInAssociatedJobs_ListUnchanged() {
+        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture);
+        assertFalse(volunteerNoJobs.getSignedUpJobs(jobCollection).contains(testJob_minDaysInFuture_minDaysInFuture));
+    }
 
-		Job condidateJob = new Job("Cleaning the xyz park", startDateTime, endDateTime, 
-				"Park Name", "Park Location", 3, 1, 10, 12);
 
-		assertTrue(Volunteer.isSignupEarlyEnough(condidateJob));
-	}
+    /**
+     * Gets a list of jobs containing one existing job from a volunteer.
+     */
+    @Test
+    public void getSignedUpJobs_ListHasJobs_GetJobList() {
+        jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuture);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
+        ArrayList<Job> jobsList = volunteerNoJobs.getSignedUpJobs(jobCollection);
+        assertTrue(jobsList.contains(testJob_minDaysInFuture_minDaysInFuture));
+    }
 
-	/**
-	 * Testing: the volunteer can sign for a job that begins exactly 
-	 * 			the minimum number of calendar days from the current date.
-	 */
-	@Test
-	public void signUpForJob_ExactlyMinimumDays_ShouldReturnTrue() {
 
-		Calendar startDateTime = Calendar.getInstance();
-		Calendar endDateTime = Calendar.getInstance();
-
-		startDateTime.add(Calendar.DAY_OF_MONTH, 2);
-		endDateTime.add(Calendar.DAY_OF_MONTH, 2);
-
-		Job condidateJob = new Job("Cleaning the xyz park", startDateTime, endDateTime, 
-				"Park Name", "Park Location", 3, 1, 10, 12);
-
-		assertTrue(Volunteer.isSignupEarlyEnough(condidateJob));
-	}
-
-	/**
-	 * Testing: the volunteer cannot sign up for a job that begins less than 
-	 * 			the minimum number of calendar days from the current date.
-	 */
-	@Test
-	public void signUpForJob_BeginsLessMinimumDays_ShouldReturnFalse() {
-
-		Calendar startDateTime = Calendar.getInstance();
-		Calendar endDateTime = Calendar.getInstance();
-
-		Job condidateJob = new Job("Cleaning the xyz park", startDateTime, endDateTime, 
-				"Park Name", "Park Location", 3, 1, 10, 12);
-
-		assertFalse(Volunteer.isSignupEarlyEnough(condidateJob));
-	}
+    /**
+     * Gets a list with no existing jobs from a volunteer.
+     */
+    @Test
+    public void getSignedUpJobs_ListHasNoJobs_GetEmptyJobList() {
+        ArrayList<Job> jobsList = volunteerNoJobs.getSignedUpJobs(jobCollection);
+        assertEquals(jobsList.size(), 0);
+    }
 
 }
