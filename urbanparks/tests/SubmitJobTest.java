@@ -32,7 +32,7 @@ public class SubmitJobTest {
 		JobCollection jc = new JobCollection();
 		Job j;
 		for(int i = 1; i < Constants.getMaxPendingJobs(); i++) {
-			j = new Job("decription of job # " + i, LocalDateTime.now(), LocalDateTime.now(), "XYZ Park", "2343 23rd Ave N", 2, 3, 4, 10);
+			j = new Job("decription of job # " + i, LocalDateTime.now(), LocalDateTime.now(), "XYZ Park", "2343 23rd Ave N");
 			jc.addJob(j);
 		}
 		assertEquals(jc.size(), Constants.getMaxPendingJobs() - 1);
@@ -43,7 +43,7 @@ public class SubmitJobTest {
 		JobCollection jc = new JobCollection();
 		Job j;
 		for(int i = 1; i <= Constants.getMaxPendingJobs(); i++) {
-			j = new Job("decription of job # " + i, LocalDateTime.now(), LocalDateTime.now(), "XYZ Park", "2343 23rd Ave N", 2, 3, 4, 10);
+			j = new Job("decription of job # " + i, LocalDateTime.now(), LocalDateTime.now(), "XYZ Park", "2343 23rd Ave N");
 			jc.addJob(j);
 		}
 		assertEquals(jc.size(), Constants.getMaxPendingJobs());

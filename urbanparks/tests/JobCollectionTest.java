@@ -40,7 +40,7 @@ public class JobCollectionTest {
 	@Test 
 	public void isNumJobsAtMaximum_JobCollectionIsNotAtMaximum_False() throws FileNotFoundException {
 		LocalDateTime dateTime = LocalDateTime.now();
-		jobCollection.addJob(new Job("job # 1", dateTime, dateTime, "Park", "Seattle", 2, 3, 4, 10));
+		jobCollection.addJob(new Job("job", dateTime, dateTime, "Park", "Seattle"));
 		assertFalse(jobCollection.isNumJobsAtMaximum());
 	}
 
@@ -50,10 +50,11 @@ public class JobCollectionTest {
 	 */
 	@Test 
 	public void isNumJobsAtMaximum_JobCollectionIsAtMaximum_True() throws FileNotFoundException {
-		Constants.loadData();
 		LocalDateTime dateTime = LocalDateTime.now();
-		for(int i = 1; i <= Constants.getMaxPendingJobs(); i++) {
-			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park", "Seattle", 2, 3, 4, 10));
+		Constants.setDefaultMaxPendingJobs();
+		Constants.setDefaultJobId();
+		for(int i = jobCollection.size(); i < Constants.getMaxPendingJobs(); i++) {
+			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
 		}
 		assertTrue(jobCollection.isNumJobsAtMaximum());
 	}
