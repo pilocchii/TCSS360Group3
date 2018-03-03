@@ -11,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.User;
 import urbanparks.model.Volunteer;
+import urbanparks.view.parkmanager.ParkManagerMenu;
+import urbanparks.view.volunteer.VolunteerMenu;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
@@ -97,13 +99,13 @@ public class MainMenuPane extends GridPane {
 
             	User user = userCollection.getUser(email);
 				if (user == null) {
-					MessageBoxUtils.emailNotExist(email);
+					AlertUtils.emailNotExist(email);
 				} else {
 					if (user instanceof Volunteer) {
-						root.setCenter(new VolunteerPane(root, mainMenu, (Volunteer)user));
+						root.setCenter(new VolunteerMenu(root, mainMenu, (Volunteer)user));
 						backButton.setDisable(false);
 					} else if (user instanceof ParkManager) {
-						root.setCenter(new ParkManagerPane(root, mainMenu, (ParkManager)user));
+						root.setCenter(new ParkManagerMenu(root, mainMenu, (ParkManager)user));
 						backButton.setDisable(false);
 					} else if (user instanceof UrbanParksStaff) {
 						//new UrbanParksStaffMenu();

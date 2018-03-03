@@ -1,4 +1,4 @@
-package urbanparks.view;
+package urbanparks.view.parkmanager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +29,9 @@ import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
+import urbanparks.view.AlertUtils;
+import urbanparks.view.MainApplication;
+import urbanparks.view.MainMenuPane;
 import urbanparks.view.SignupPane.BackButtonEventHandler;
 import urbanparks.view.SignupPane.SignupEventHandler;
 
@@ -217,10 +220,10 @@ public class CreateJobPane extends GridPane {
         	    String parkName = parkNameField.getText();
         	    String location = jobLocationField.getText();
         		
-        		Job newJob = new Job(description, startTime, endTime, parkName, location, 111111, 11111, 11111, 1111111);
+        		Job newJob = new Job(description, startTime, endTime, parkName, location);
 				parkManager.createNewJob(newJob, jobCollection);
-				MessageBoxUtils.showJobCreated(description);
-				root.setCenter(new ParkManagerPane(root, back, parkManager));
+				AlertUtils.showJobCreated(description);
+				root.setCenter(new ParkManagerMenu(root, back, parkManager));
         	}
         }
     }

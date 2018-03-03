@@ -26,18 +26,7 @@ public class ParkManager extends User {
 		jobCollection.addJob(candidateJob);
 	}
 	
-	/**
-	 * Check if the park manager created the given job.
-	 * 
-	 * @param theJob the given job.
-	 * @return true if the job was created by the park manager, false otherwise.
-	 */
-	public boolean isCreator(Job theJob) {
-		for (long jobID : associatedJobs) {
-			if (jobID == theJob.getJobId()) {
-				return true;
-			}
-		}
-		return false;
+	public void unSubmitJob(Job job) {
+		job.setIsCancelled(true);
 	}
 }

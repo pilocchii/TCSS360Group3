@@ -1,6 +1,6 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.MIN_DAYS_BEFORE_SIGNUP;
+import static urbanparks.model.Constants.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,24 +38,15 @@ public class Job implements Serializable {
 	 * @param endDateTime the job end date and time.
 	 * @param parkName the park name.
 	 * @param location the job location.
-	 * @param maxLightWorkers the number of volunteers required for light workload.
-	 * @param theMediumm the number of volunteers required for medium workload.
-	 * @param maxHeavyWorkers the number of volunteers required for heavy workload.
-	 * @param minTotalVolunteers the minimum number of volunteers required for this job.
 	 */
 	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
-			final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
-			final int maxHeavyWorkers, final int minTotalVolunteers) {
+			final String parkName, final String location) {
 		this.jobId = generateJobID();
 		this.description = description;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
 		this.parkName = parkName;
 		this.location = location;
-		this.maxLightWorkers = maxLightWorkers;
-		this.maxMediumWorker = maxMediumWorker;
-		this.maxHeavyWorkers = maxHeavyWorkers;
-		this.minTotalVolunteers = minTotalVolunteers;
 
 		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
@@ -81,7 +72,6 @@ public class Job implements Serializable {
 	 * was signed up successfully, false otherwise.
 	 * @param theVolunteer the email address to sign-up
 	 * @return true if the volunteer was added successfully, false otherwise
-	 * @author Alec
 	 */
 	public boolean addVolunteer(String theVolunteer) {
 		volunteers.add(theVolunteer);
@@ -89,6 +79,10 @@ public class Job implements Serializable {
 			return true;
 		}
 		return false;//if arraylist didn't add it for some reason
+	}
+	
+	public int getVolunteerCount() {
+		return volunteers.size();
 	}
 	
 	// Getters:
@@ -136,39 +130,15 @@ public class Job implements Serializable {
 		return location;
 	}
 	/**
-	 * Gets the maximum light workers for the job
-	 * @return Job's light workers maximum
-	 */
-	public int getMaxLightWorkers() {
-		return maxLightWorkers;
-	}
-	/**
-	 * Gets the maximum medium workers for the job
-	 * @return Job's medium workers maximum
-	 */
-	public int getMaxMediumWorkers() {
-		return maxMediumWorker;
-	}
-	/**
-	 * Gets the maximum heavy workers for the job
-	 * @return Job's heavy workers maximum
-	 */
-	public int getMaxheavyWorkers() {
-		return maxHeavyWorkers;
-	}
-	/**
-	 * Gets the minimum total volunteers required for the job.
-	 * @return Job's minimum total volunteers
-	 */
-	public int getMinTotalVolunteers() {
-		return minTotalVolunteers;
-	}
-	/**
 	 * Gets a temporary flag representing the job's availability to a volunteer
 	 * @return
 	 */
 	public boolean getIsAvailable() {
 		return isAvailable;
+	}
+	
+	public boolean getIsCancelled() {
+		return isCancelled;
 	}
 
 	//Setters:
@@ -178,6 +148,10 @@ public class Job implements Serializable {
 	 */
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
+	}
+	
+	public void setIsCancelled(boolean isCancelled) {
+		this.isCancelled = isCancelled;
 	}
 	
 	
@@ -241,12 +215,30 @@ public class Job implements Serializable {
 	 * @param theCandidateJob
 	 * @return true if there is enough time between now and when the job starts, false otherwise.
 	 */
-	public static boolean isSignupEarlyEnough(Job theCandidateJob) {
+	public boolean isSignupEarlyEnough() {
 		/**
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		return DateUtils.daysBetweenNowAndDate(theCandidateJob.getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+		return DateUtils.daysBetweenNowAndDate(getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+	}
+	
+	public boolean isUnvolunteerEarlyEnough() {
+		/**
+		 * A volunteer can unvolunteer only if the job starts 
+		 * at least a minumum number of days in the future..
+		 */
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
+	}
+	
+	public boolean isUnsubmitEarlyEnough() {
+		/**
+		 * A job can be unsubmitted only if the job starts 
+		 * at least a minumum number of days in the future.
+		 */
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART;
 	}
 
 	/**

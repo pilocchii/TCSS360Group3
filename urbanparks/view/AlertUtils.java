@@ -4,7 +4,7 @@ import javafx.scene.control.Alert;
 import urbanparks.model.Constants;
 import javafx.embed.swing.JFXPanel;
 
-public class MessageBoxUtils {
+public class AlertUtils {
 
     /**
      * Shows upon successful data save.
@@ -98,4 +98,19 @@ public class MessageBoxUtils {
         alert.showAndWait();
     }
     
+    public static void showUnvolunteered(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You are now unvolunteered from the job: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the volunteer menu.");
+        alert.showAndWait();
+    }
+    
+    public static void showJobUnsubmitted(String description) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("You have unsubmitted (cancelled) the job: \"" + description + "\"");
+        alert.setContentText("You will now be taken to the park manager menu.");
+        alert.showAndWait();
+    }
 }

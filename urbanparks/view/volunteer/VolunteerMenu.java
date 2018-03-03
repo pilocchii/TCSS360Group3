@@ -1,4 +1,4 @@
-package urbanparks.view;
+package urbanparks.view.volunteer;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -17,12 +17,14 @@ import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 import urbanparks.model.User;
 import urbanparks.model.Volunteer;
+import urbanparks.view.MainApplication;
+import urbanparks.view.MainMenuPane;
 import urbanparks.view.MainMenuPane.BackButtonEventHandler;
 import urbanparks.model.UserCollection;
 
-public class VolunteerPane extends GridPane {
+public class VolunteerMenu extends GridPane {
 
-	private VolunteerPane volunteerPane = this;
+	private VolunteerMenu volunteerPane = this;
     private MainApplication root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
@@ -30,7 +32,7 @@ public class VolunteerPane extends GridPane {
     private Button backButton;
     private Volunteer volunteer;
     
-    public VolunteerPane(MainApplication root,MainMenuPane back, Volunteer volunteer) {
+    public VolunteerMenu(MainApplication root,MainMenuPane back, Volunteer volunteer) {
         super();
 
         this.root = root;
@@ -69,8 +71,8 @@ public class VolunteerPane extends GridPane {
     private class viewPendingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root, volunteerPane);
-        	jobDisplay.showVolunteerPendingJobs(volunteer);
+        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteerPane);
+        	volunteerJobDisplay.showVolunteerPendingJobs(volunteer);
         }
     }
     
@@ -78,8 +80,8 @@ public class VolunteerPane extends GridPane {
     private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root, volunteerPane);
-        	jobDisplay.showVolunteerAvailJobs(volunteer);
+        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteerPane);
+        	volunteerJobDisplay.showVolunteerAvailJobs(volunteer);
         }
     }
 

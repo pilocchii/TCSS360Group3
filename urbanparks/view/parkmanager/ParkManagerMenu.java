@@ -1,4 +1,4 @@
-package urbanparks.view;
+package urbanparks.view.parkmanager;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,10 +11,12 @@ import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
+import urbanparks.view.MainApplication;
+import urbanparks.view.MainMenuPane;
 
-public class ParkManagerPane extends GridPane {
+public class ParkManagerMenu extends GridPane {
 	
-	private ParkManagerPane parkManagerPane = this;
+	private ParkManagerMenu parkManagerPane = this;
     private MainApplication root;
     private UserCollection userCollection;
     private JobCollection jobCollection;
@@ -22,7 +24,7 @@ public class ParkManagerPane extends GridPane {
     private Button backButton;
     ParkManager parkManager;
     
-    public ParkManagerPane(MainApplication root, MainMenuPane back, ParkManager parkManager) {
+    public ParkManagerMenu(MainApplication root, MainMenuPane back, ParkManager parkManager) {
         super();
 
         this.root = root;
@@ -61,8 +63,8 @@ public class ParkManagerPane extends GridPane {
     private class viewSubmittedEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobDisplay jobDisplay = new JobDisplay(root, parkManagerPane);
-        	jobDisplay.showParkManagerCreatedJobs(parkManager);
+        	JobsDisplay parkManagerJobDisplay = new JobsDisplay(root, parkManagerPane);
+        	parkManagerJobDisplay.showParkManagerCreatedJobs(parkManager);
         }
     }
     

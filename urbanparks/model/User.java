@@ -63,4 +63,14 @@ public abstract class User implements Serializable {
 	public String getPhoneNum() {
 		return phoneNum;
 	}
+	
+	
+	public boolean isAssociatedWithJob(Job job) {
+		for (long jobID : associatedJobs) {
+			if (jobID == job.getJobId()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
