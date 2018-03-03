@@ -16,10 +16,10 @@ import urbanparks.view.MainApplication;
 
 public class JobsDisplay extends JobsTableView {
 	
-	private VolunteerPane back;
+	private VolunteerMenu back;
 	private Volunteer volunteer;
 	
-	public JobsDisplay(MainApplication root, VolunteerPane back) {
+	public JobsDisplay(MainApplication root, VolunteerMenu back) {
 		this.root = root;
 		this.back = back;
 		
