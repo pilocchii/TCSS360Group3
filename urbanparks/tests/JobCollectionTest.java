@@ -52,7 +52,7 @@ public class JobCollectionTest {
 	public void isNumJobsAtMaximum_JobCollectionIsAtMaximum_True() throws FileNotFoundException {
 		LocalDateTime dateTime = LocalDateTime.now();
 		Constants.setDefaultMaxPendingJobs();
-		Constants.setDefaultJobId();
+		JobCollection.setDefaultJobId();
 		for(int i = jobCollection.size(); i < Constants.getMaxPendingJobs(); i++) {
 			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
 		}

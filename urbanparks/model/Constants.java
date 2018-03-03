@@ -16,7 +16,6 @@ public final class Constants {
 	private static final int DEFAULT_MAX_PENDING_JOBS = 20;
 	private static int maxPendingJobs;
 	public static final int MAX_DAYS_BEFORE_JOB_ENDS = 60;
-	private static int currentJobId;
 	private static final int DEFAULT_JOB_ID = 0;
 	
 	//For signing up for job
@@ -59,7 +58,6 @@ public final class Constants {
 	public static void loadData() throws FileNotFoundException {
 		Scanner scanner = new Scanner(new File(fileName));
 		maxPendingJobs = scanner.nextInt();
-		currentJobId = scanner.nextInt();
 		scanner.close();
 	}
 	
@@ -71,7 +69,6 @@ public final class Constants {
 	public static void saveData() throws FileNotFoundException {
 		PrintStream printStream = new PrintStream(new File(fileName));
 		printStream.print(maxPendingJobs);
-		printStream.print(currentJobId);
 		printStream.close();
 	}
 
@@ -94,16 +91,9 @@ public final class Constants {
 		maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
 	}
 	
-	public static int getCurrentJobId() {
-		return currentJobId;
-	}
 	
-	public static void setDefaultJobId() {
-		currentJobId = DEFAULT_JOB_ID;
-	}
-	
-	public static void incrementCurrentJobId() {
-		currentJobId++;
+	public static int getDefaultJobId() {
+		return DEFAULT_JOB_ID;
 	}
 	
 }

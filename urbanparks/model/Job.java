@@ -55,8 +55,8 @@ public class Job implements Serializable {
 	 * @return generated JobID
 	 */
 	private long generateJobID() {
-		Constants.incrementCurrentJobId();
-		return Constants.getCurrentJobId();
+		JobCollection.incrementCurrentJobId();
+		return JobCollection.getCurrentJobId();
 	}
 
 	/**

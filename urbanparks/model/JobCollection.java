@@ -2,12 +2,14 @@ package urbanparks.model;
 
 import static urbanparks.model.Constants.JOB_DATA_FILE;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.Map;
 public class JobCollection implements Serializable {
 	
 	private static final long serialVersionUID = -5732921162292711504L;
+
+	private static int currentJobId;
 	
 	private HashMap<Long, Job> jobsList;
 	
@@ -196,7 +200,20 @@ public class JobCollection implements Serializable {
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		Object object = ois.readObject();
 		jobsList = (HashMap<Long, Job>) object;
+		currentJobId = jobsList.size();
 		ois.close();
 	}
 	
+	public static int getCurrentJobId() {
+		return currentJobId;
+	}
+
+	public static void incrementCurrentJobId() {
+		currentJobId++;
+	}
+	
+	public static void setDefaultJobId() {
+		currentJobId = Constants.getDefaultJobId();
+	}
+
 }
