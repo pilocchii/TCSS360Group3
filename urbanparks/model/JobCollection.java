@@ -80,17 +80,35 @@ public class JobCollection implements Serializable {
 	 * @param volunteer The volunteer to check availability for
 	 * @return The list of jobs that volunteer can sign up for
 	 */
-	public ArrayList<Job> getAvilableJobs(Volunteer volunteer) {
+	public ArrayList<Job> getAvailableForSignup(Volunteer volunteer) {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
-			Job j = entry.getValue();
+			Job job = entry.getValue();
 			// check the signing up for job business rules
-			boolean isAvailable = true;
-			if (volunteer.doesJobOverlap(j, this) || !Job.isSignupEarlyEnough(j)) {
-				isAvailable = false;
+			if (!job.getIsCancelled() && !volunteer.doesJobOverlap(job, this) && job.isSignupEarlyEnough()) {
+				job.setIsAvailable(true);
+			} else {
+				job.setIsAvailable(false);
 			}
-			j.setIsAvailable(isAvailable);
-			availableJobs.add(j);
+			availableJobs.add(job);
+		}
+		sortJobsByStartDate(availableJobs);
+		return availableJobs;
+	}
+	
+	public ArrayList<Job> getAvailableForUnvolunteer(Volunteer volunteer) {
+		ArrayList<Job> availableJobs = new ArrayList<Job>();
+		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			// check the unvolunteer from job business rules
+			if (volunteer.isAssociatedWithJob(job)) {
+				if (!job.getIsCancelled() && job.isUnvolunteerEarlyEnough()) {
+					job.setIsAvailable(true);
+				} else {
+					job.setIsAvailable(false);
+				}
+				availableJobs.add(job);
+			}
 		}
 		sortJobsByStartDate(availableJobs);
 		return availableJobs;
@@ -103,15 +121,19 @@ public class JobCollection implements Serializable {
 	 * @param parkManager The park manager.
 	 * @return The list of jobs that park manager created.
 	 */
-	public ArrayList<Job> getAvilableJobs(ParkManager parkManager) {
+	public ArrayList<Job> getAvailableForUnsubmit(ParkManager parkManager) {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
-		
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if (parkManager.isCreator(job) && job.isInFuture()) {
+			// check unsubmitting job business rules
+			if (parkManager.isAssociatedWithJob(job)) {
+				if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
+					job.setIsAvailable(true);
+				} else {
+					job.setIsAvailable(false);
+				}
 				availableJobs.add(job);
 			}
-			
 		}
 		sortJobsByStartDate(availableJobs);
 		return availableJobs;
@@ -135,6 +157,7 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
+	// TODO: CHECK IF NEEDED WITH NEW GUI
 	/**
 	 * Sorts a list of jobs by start date, descending.
 	 * 

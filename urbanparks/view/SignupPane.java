@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
+import urbanparks.view.parkmanager.ParkManagerMenu;
+import urbanparks.view.volunteer.VolunteerPane;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
@@ -103,7 +105,7 @@ public class SignupPane extends GridPane {
                     	emailSatisfied = true;
             		} else {
             			emailTextField.setStyle(STYLE_FIELD_INVALID);
-            			MessageBoxUtils.showEmailAlreadyRegistered();
+            			AlertUtils.showEmailAlreadyRegistered();
             		}
                 } else {
                 	emailTextField.setStyle(STYLE_FIELD_INVALID);
@@ -237,19 +239,19 @@ public class SignupPane extends GridPane {
         		if (selectedRadioButton == volunteerRadioButton) {
     				Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
     				userCollection.addUser(newVolunteer);
-    				MessageBoxUtils.newUserRegistered("a volunteer", firstName);
+    				AlertUtils.newUserRegistered("a volunteer", firstName);
     				root.setCenter(new VolunteerPane(root, back, newVolunteer));
     				
         		} else if (selectedRadioButton == parkManagerRadioButton) {
         			ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
         			userCollection.addUser(newParkManager);
-        			MessageBoxUtils.newUserRegistered("a park manager", firstName);
-        			root.setCenter(new ParkManagerPane(root, back, newParkManager));
+        			AlertUtils.newUserRegistered("a park manager", firstName);
+        			root.setCenter(new ParkManagerMenu(root, back, newParkManager));
         			
         		} else if (selectedRadioButton == staffRadioButton) {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);
         			userCollection.addUser(newUrbanParksStaff);
-        			MessageBoxUtils.newUserRegistered("an Urban Parks staff", firstName);
+        			AlertUtils.newUserRegistered("an Urban Parks staff", firstName);
         			// todo login
         		}
         	}

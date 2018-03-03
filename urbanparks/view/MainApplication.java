@@ -66,8 +66,8 @@ public class MainApplication extends Application {
 			jobCollection.loadData();
 			userCollection.loadData();
 		} catch (Exception e) {
-			MessageBoxUtils.showDataLoadError(e.getMessage());
-			MessageBoxUtils.showEmptyDataUsed();
+			AlertUtils.showDataLoadError(e.getMessage());
+			AlertUtils.showEmptyDataUsed();
 		}
 
         // Stage init
@@ -78,7 +78,7 @@ public class MainApplication extends Application {
 
         centerPane.setTop(new BorderPane(null, menuBar, null, backButton, null));
         centerPane.setCenter(new MainMenuPane(root));
-        primaryStage.setScene(new Scene(centerPane, 500, 500));
+        primaryStage.setScene(new Scene(centerPane, 550, 500));
 
         primaryStage.show();
     }
@@ -100,10 +100,10 @@ public class MainApplication extends Application {
 				try {
 					userCollection.saveData();
 					jobCollection.saveData();
-					MessageBoxUtils.showDataSaveSuccess();
+					AlertUtils.showDataSaveSuccess();
 					
 				} catch (IOException e) {
-					MessageBoxUtils.showDataSaveError(e.getMessage());
+					AlertUtils.showDataSaveError(e.getMessage());
 				}
             }
         }); 

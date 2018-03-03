@@ -32,7 +32,10 @@ public class Volunteer extends User {
 			}
 		}
 		return flag;
-
+	}
+	
+	public void unVolunteerFromJob(Job job) {
+		associatedJobs.remove(job.getJobId());
 	}
 	
 	/**
