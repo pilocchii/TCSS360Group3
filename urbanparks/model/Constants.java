@@ -29,11 +29,20 @@ public final class Constants {
 	// for DateUtils
 	public final static int DAYS_IN_YEAR = 365;
 	
+	// for park manager unsubmitting a job
+	// TODO: find out what this is supposed to be! (value is not in requirements)
+	public final static int MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART = 3;
+	
+	//or unvolunteering from job
+	public final static int MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART = 3;
+	
 	//for ParkManagerMenu
-	public static final int MIN_WORKERS_FLOOR = 1;
-	public static final int MIN_WORKERS_CEILING = Integer.MAX_VALUE;
-	public static final int MAX_WORKERS_FLOOR = 0;
-	public static final int MAX_WORKERS_CEILING = Integer.MAX_VALUE;
+//	public static final int MIN_WORKERS_FLOOR = 1;
+//	public static final int MIN_WORKERS_CEILING = Integer.MAX_VALUE;
+//	public static final int MAX_WORKERS_FLOOR = 0;
+//	public static final int MAX_WORKERS_CEILING = Integer.MAX_VALUE;
+	
+	public static final int RANDOM_NEXTINT = 100;
 	
 	
 	private Constants() {

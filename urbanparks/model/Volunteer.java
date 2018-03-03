@@ -1,5 +1,7 @@
 package urbanparks.model;
 
+import java.util.ArrayList;
+
 public class Volunteer extends User {
 
 	private static final long serialVersionUID = 8513473946371713321L;
@@ -30,7 +32,10 @@ public class Volunteer extends User {
 			}
 		}
 		return flag;
-
+	}
+	
+	public void unVolunteerFromJob(Job job) {
+		associatedJobs.remove(job.getJobId());
 	}
 	
 	/**
@@ -42,12 +47,21 @@ public class Volunteer extends User {
 	 * @return
 	 */
 	public boolean doesJobOverlap(Job candidateJob, JobCollection jobCollection) {
-		for (int i : associatedJobs) {
+		for (long i : associatedJobs) {
 			Job j = jobCollection.findJob(i);
 			if (j.doJobsOverlap(candidateJob)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	
+	public ArrayList<Job> getSignedUpJobs(JobCollection jobCollection) {
+	    ArrayList<Job> signedUpJobs = new ArrayList<Job>();
+		for (long i : associatedJobs) {
+			signedUpJobs.add(jobCollection.findJob(i));
+		}
+		return signedUpJobs;
 	}
 }

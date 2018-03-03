@@ -1,9 +1,10 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.MIN_DAYS_BEFORE_SIGNUP;
+import static urbanparks.model.Constants.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,8 +14,8 @@ import java.time.format.DateTimeFormatter;
 public class Job implements Serializable {
 
 	private static final long serialVersionUID = 928850375626876361L;
-
-	private Integer jobId;
+	
+	private long jobId;
 	private String description;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
@@ -25,6 +26,7 @@ public class Job implements Serializable {
 	private int maxHeavyWorkers;
 	private int minTotalVolunteers;
 	private boolean isAvailable;
+	private boolean isCancelled;
 
 	private ArrayList<String> volunteers;
 
@@ -36,26 +38,32 @@ public class Job implements Serializable {
 	 * @param endDateTime the job end date and time.
 	 * @param parkName the park name.
 	 * @param location the job location.
-	 * @param maxLightWorkers the number of volunteers required for light workload.
-	 * @param theMediumm the number of volunteers required for medium workload.
-	 * @param maxHeavyWorkers the number of volunteers required for heavy workload.
-	 * @param minTotalVolunteers the minimum number of volunteers required for this job.
 	 */
 	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
-			final String parkName, final String location, final int maxLightWorkers, final int maxMediumWorker, 
-			final int maxHeavyWorkers, final int minTotalVolunteers) {
+			final String parkName, final String location) {
+		this.jobId = generateJobID();
 		this.description = description;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
 		this.parkName = parkName;
 		this.location = location;
-		this.maxLightWorkers = maxLightWorkers;
-		this.maxMediumWorker = maxMediumWorker;
-		this.maxHeavyWorkers = maxHeavyWorkers;
-		this.minTotalVolunteers = minTotalVolunteers;
 
 		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
 		isAvailable = true;
+		isCancelled = false;
+	}
+	
+	/**
+	 * Generate jobID using the current data, time and random number.
+	 *  
+	 * @return generated JobID
+	 */
+	private long generateJobID() {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		Random random = new Random();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
+		String number = dateFormat.format(currentDateTime) + random.nextInt(Constants.RANDOM_NEXTINT);
+		return Long.parseLong(number);
 	}
 
 	/**
@@ -64,7 +72,6 @@ public class Job implements Serializable {
 	 * was signed up successfully, false otherwise.
 	 * @param theVolunteer the email address to sign-up
 	 * @return true if the volunteer was added successfully, false otherwise
-	 * @author Alec
 	 */
 	public boolean addVolunteer(String theVolunteer) {
 		volunteers.add(theVolunteer);
@@ -73,13 +80,17 @@ public class Job implements Serializable {
 		}
 		return false;//if arraylist didn't add it for some reason
 	}
-
+	
+	public int getVolunteerCount() {
+		return volunteers.size();
+	}
+	
 	// Getters:
 	/**
-	 * Return the job description.
-	 * @return job description.
+	 * Return the jobID.
+	 * @return job ID.
 	 */
-	public Integer getJobId() {
+	public long getJobId() {
 		return jobId;
 	}
 	/**
@@ -96,6 +107,7 @@ public class Job implements Serializable {
 	public LocalDateTime getStartDateTime() {
 		return startDateTime;
 	}
+	
 	/**
 	 * Return the job end date and time.
 	 * @return the job end date and time.
@@ -118,55 +130,63 @@ public class Job implements Serializable {
 		return location;
 	}
 	/**
-	 * Gets the maximum light workers for the job
-	 * @return Job's light workers maximum
-	 */
-	public int getMaxLightWorkers() {
-		return maxLightWorkers;
-	}
-	/**
-	 * Gets the maximum medium workers for the job
-	 * @return Job's medium workers maximum
-	 */
-	public int getMaxMediumWorkers() {
-		return maxMediumWorker;
-	}
-	/**
-	 * Gets the maximum heavy workers for the job
-	 * @return Job's heavy workers maximum
-	 */
-	public int getMaxheavyWorkers() {
-		return maxHeavyWorkers;
-	}
-	/**
-	 * Gets the minimum total volunteers required for the job.
-	 * @return Job's minimum total volunteers
-	 */
-	public int getMinTotalVolunteers() {
-		return minTotalVolunteers;
-	}
-	/**
 	 * Gets a temporary flag representing the job's availability to a volunteer
 	 * @return
 	 */
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}
+	
+	public boolean getIsCancelled() {
+		return isCancelled;
+	}
 
 	//Setters:
-	/**
-	 * Return the job description.
-	 * @return job description.
-	 */
-	public void setJobId(final Integer theJobId) {
-		jobId = theJobId;
-	}
 	/**
 	 * Sets a temporary flag representing the job's availability to a volunteer
 	 * @param isAvailable
 	 */
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
+	}
+	
+	public void setIsCancelled(boolean isCancelled) {
+		this.isCancelled = isCancelled;
+	}
+	
+	
+	// Others:
+	
+	/**
+	 * Gets a the start time of a Job as a string
+	 * @return The start time of this job formatted as a string
+	 */
+	public String getStartDateFormatted() {
+		return DateUtils.formatDateTime(startDateTime);
+	}
+	
+	/**
+	 * Gets a the end time of a Job as a string
+	 * @return The end time of this job formatted as a string
+	 */
+	public String getEndDateFormatted() {
+		return DateUtils.formatDateTime(endDateTime);
+	}
+	
+	public String getIsCancelledFormatted() {
+		if (isCancelled) {
+			return "Yes";
+		} else {
+			return "No";
+		}
+	}
+	
+	public String getIsAvailableFormatted() {
+		if (isAvailable) {
+			return "Yes";
+		} else {
+			return "No";
+		}
 	}
 
 	/**
@@ -195,16 +215,34 @@ public class Job implements Serializable {
 	 * @param theCandidateJob
 	 * @return true if there is enough time between now and when the job starts, false otherwise.
 	 */
-	public static boolean isSignupEarlyEnough(Job theCandidateJob) {
+	public boolean isSignupEarlyEnough() {
 		/**
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		return DateUtils.daysBetweenNowAndDate(theCandidateJob.getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+		return DateUtils.daysBetweenNowAndDate(getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+	}
+	
+	public boolean isUnvolunteerEarlyEnough() {
+		/**
+		 * A volunteer can unvolunteer only if the job starts 
+		 * at least a minumum number of days in the future..
+		 */
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
+	}
+	
+	public boolean isUnsubmitEarlyEnough() {
+		/**
+		 * A job can be unsubmitted only if the job starts 
+		 * at least a minumum number of days in the future.
+		 */
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART;
 	}
 
 	/**
-	 * Check if this job is between the given two dates.
+	 * Checks weather this job is between the given two date and time..
 	 * Precondition: the given two dates are not null.
 	 * 
 	 * @param startDate the start time to be compare with job start and end time.
@@ -226,22 +264,21 @@ public class Job implements Serializable {
 		return startDateTime.isAfter(LocalDateTime.now());
 	}
 
-	/**
-	 * Shows job info
-	 * precondition: All Job fields must be non-null
-	 */
-	public void showInfo() {
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
-		System.out.println("Starting time: " + startDateTime.format(dateFormat));
-		System.out.println("Ending time: " + endDateTime.format(dateFormat));
-		System.out.println("Park name: " + parkName);
-		System.out.println("Location: " + location);
-		System.out.println("Job description: " + description);
-		System.out.println("Max volunteers for work levels: " 
-				+ "Light - " + maxLightWorkers
-				+ ", Medium - " + maxMediumWorker
-				+ ", Heavy - " + maxHeavyWorkers);
-		System.out.println("Min total volunteers: " + minTotalVolunteers);
-	}
-
+//	/**
+//	 * Shows job info
+//	 * precondition: All Job fields must be non-null
+//	 */
+//	public void showInfo() {
+//		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
+//		System.out.println("Starting time: " + startDateTime.format(dateFormat));
+//		System.out.println("Ending time: " + endDateTime.format(dateFormat));
+//		System.out.println("Park name: " + parkName);
+//		System.out.println("Location: " + location);
+//		System.out.println("Job description: " + description);
+//		System.out.println("Max volunteers for work levels: " 
+//				+ "Light - " + maxLightWorkers
+//				+ ", Medium - " + maxMediumWorker
+//				+ ", Heavy - " + maxHeavyWorkers);
+//		System.out.println("Min total volunteers: " + minTotalVolunteers);
+//	}
 }
