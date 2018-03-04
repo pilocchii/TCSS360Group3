@@ -16,20 +16,18 @@ import urbanparks.view.MainApplication;
 
 public class JobsDisplay extends JobsTableView {
 
-	private ParkManagerMenu back;
 	private ParkManager parkManager;
 	
-	public JobsDisplay(MainApplication root, ParkManagerMenu back) {
+	public JobsDisplay(MainApplication root, ParkManager parkManager) {
 		this.root = root;
-		this.back = back;
+		this.parkManager = parkManager;
 		
 		Button backButton = root.getBackButton();
 		backButton.setText("Back to park manager menu");
 		backButton.setOnAction(new BackButton_ParkManager_Handler());
 	}
     
-	public void showParkManagerCreatedJobs(ParkManager parkManager) {
-		this.parkManager = parkManager;
+	public void showParkManagerCreatedJobs() {
 		String tableTitle = "\t\t\t\tJobs You Created";
         ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForUnsubmit(parkManager);
 		
@@ -45,13 +43,13 @@ public class JobsDisplay extends JobsTableView {
 		vbox.getChildren().add(uncreateButton);
 		
 		root.setCenter(vbox);
+		root.setTitle("View Submitted Jobs - " + parkManager.getEmail());
 	}
 	
     private class BackButton_ParkManager_Handler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(back);
-        	back.show();
+        	root.setCenter(new ParkManagerMenu(root, parkManager));
         }
     }
     
@@ -59,9 +57,13 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		parkManager.unSubmitJob(selectedJob);
-        		AlertUtils.showJobUnsubmitted(selectedJob.getDescription());
-        		root.setCenter(back);
+        		if (AlertUtils.askJobUnsubmit(selectedJob.getDescription())) {
+            		parkManager.unSubmitJob(selectedJob);
+            		AlertUtils.showJobUnsubmitSuccess();
+            		root.setCenter(new ParkManagerMenu(root, parkManager));
+        		}
+        	} else {
+        		AlertUtils.showInvalidOptions();
         	}
         }
     }

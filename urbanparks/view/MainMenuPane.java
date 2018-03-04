@@ -27,30 +27,25 @@ public class MainMenuPane extends GridPane {
 
     /* A reference to the application window */
     MainApplication root;
-    MainMenuPane mainMenu;
 
     /* References from root */
     UserCollection userCollection;
     Button backButton;
     BorderPane centerPane;
-
+    
     TextField userNameTextField;
-
 
     public MainMenuPane(MainApplication root) {
         super();
         this.root = root;
-
-        mainMenu = this;
-
         this.userCollection = root.getUserCollection();
         this.backButton = root.getBackButton();
         this.centerPane = root.getCenterPane();
-        
+
         show();
     }
     
-    public void show() {
+    private void show() {
         // Login pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
@@ -79,7 +74,8 @@ public class MainMenuPane extends GridPane {
         
         backButton.setText("Back");
         backButton.setDisable(true);
-        //backButton.setOnAction(new BackButtonEventHandler());
+        
+        root.setTitle("Main Menu");
     }
 
 
@@ -89,34 +85,30 @@ public class MainMenuPane extends GridPane {
      * the appropriate menu page depending on the user's type
      */
     public class LoginEventHandler implements EventHandler<ActionEvent> {
-
         @Override
         public void handle(ActionEvent event) {
-            Object eventSource = event.getSource();
-
             String email = userNameTextField.getText();
             if (!email.isEmpty()) {
-
             	User user = userCollection.getUser(email);
 				if (user == null) {
 					AlertUtils.emailNotExist(email);
 				} else {
 					if (user instanceof Volunteer) {
-						root.setCenter(new VolunteerMenu(root, mainMenu, (Volunteer)user));
+						root.setCenter(new VolunteerMenu(root, (Volunteer)user));
 						backButton.setDisable(false);
+					
 					} else if (user instanceof ParkManager) {
-						root.setCenter(new ParkManagerMenu(root, mainMenu, (ParkManager)user));
+						root.setCenter(new ParkManagerMenu(root, (ParkManager)user));
 						backButton.setDisable(false);
+					
 					} else if (user instanceof UrbanParksStaff) {
 						//new UrbanParksStaffMenu();
 						backButton.setDisable(false);
 					}
 				}
-            	//root.setCenter(new LoginPane(root, userCollection, userName, mainMenu, backButton));
             }
         }
     }
-
 
     /**
      * Event handler for the "Sign up" button on the login splash page.
@@ -124,22 +116,10 @@ public class MainMenuPane extends GridPane {
      * a sign-up form menu.
      */
     public class SignupMenuEventHandler implements EventHandler<ActionEvent> {
-
         @Override
         public void handle(ActionEvent event) {
-            Object eventSource = event.getSource();
-
             backButton.setDisable(false);
-            root.setCenter(new SignupPane(root, mainMenu));
+            root.setCenter(new SignupPane(root));
         }
     }
-    
-    
-    public class BackButtonEventHandler implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-        	System.exit(0);
-        }
-    }
-
 }

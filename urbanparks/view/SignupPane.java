@@ -17,7 +17,7 @@ import urbanparks.view.volunteer.VolunteerMenu;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
-//import urbanparks.view.LoginPane.BackButtonEventHandler;
+import static urbanparks.view.ViewConstants.*;
 
 /***
  * Signup GUI component.
@@ -28,15 +28,6 @@ import urbanparks.model.UrbanParksStaff;
  *
  */
 public class SignupPane extends GridPane {
-	
-	private static final String EMAIL_REGEX = ".+\\@.+\\..+";
-	//https://howtodoinjava.com/regex/java-regex-validate-and-format-north-american-phone-numbers/
-	private static final String PHONE_INPUT_REGEX = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$";
-	private static final String PHONE_DISPLAY_REGEX = "($1) $2-$3";
-	
-	private static final String STYLE_FIELD_EDIT = "-fx-text-fill: black;";
-	private static final String STYLE_FIELD_VALID = "-fx-text-fill: green;";
-	private static final String STYLE_FIELD_INVALID = "-fx-text-fill: red;";
 	
 	// text fields
 	private TextField emailTextField;
@@ -60,17 +51,15 @@ public class SignupPane extends GridPane {
     MainApplication root;
 
     Button backButton;
-    MainMenuPane back;
     UserCollection userCollection;
     JobCollection jobCollection;
 
-    public SignupPane(MainApplication root, MainMenuPane back) {
+    public SignupPane(MainApplication root) {
         super();
 
         this.root = root;
 
         this.backButton = root.getBackButton();
-        this.back = back;
         this.userCollection = root.getUserCollection();
         this.jobCollection = root.getJobCollection();
         
@@ -205,6 +194,8 @@ public class SignupPane extends GridPane {
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
         setVgap(5);
+        
+        root.setTitle("Sign Up");
     }
 
 
@@ -215,8 +206,7 @@ public class SignupPane extends GridPane {
     public class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(back);
-        	back.show();
+        	root.setCenter(new MainMenuPane(root));
         }
     }
 
@@ -239,19 +229,19 @@ public class SignupPane extends GridPane {
         		if (selectedRadioButton == volunteerRadioButton) {
     				Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
     				userCollection.addUser(newVolunteer);
-    				AlertUtils.newUserRegistered("a volunteer", firstName);
-    				root.setCenter(new VolunteerMenu(root, back, newVolunteer));
+    				AlertUtils.showRegisterSuccess("a volunteer", firstName);
+    				root.setCenter(new VolunteerMenu(root, newVolunteer));
     				
         		} else if (selectedRadioButton == parkManagerRadioButton) {
         			ParkManager newParkManager = new ParkManager(firstName, lastName, email, phone);
         			userCollection.addUser(newParkManager);
-        			AlertUtils.newUserRegistered("a park manager", firstName);
-        			root.setCenter(new ParkManagerMenu(root, back, newParkManager));
+        			AlertUtils.showRegisterSuccess("a park manager", firstName);
+        			root.setCenter(new ParkManagerMenu(root, newParkManager));
         			
         		} else if (selectedRadioButton == staffRadioButton) {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);
         			userCollection.addUser(newUrbanParksStaff);
-        			AlertUtils.newUserRegistered("an Urban Parks staff", firstName);
+        			AlertUtils.showRegisterSuccess("an Urban Parks staff", firstName);
         			// todo login
         		}
         	}

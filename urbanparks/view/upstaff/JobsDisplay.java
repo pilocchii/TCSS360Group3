@@ -17,12 +17,10 @@ import urbanparks.view.MainApplication;
 
 public class JobsDisplay extends JobsTableView{
 	
-	private UPStaffMenu back;
 	private UrbanParksStaff UPStaff;
 	
-	public JobsDisplay(MainApplication root, UPStaffMenu back) {
+	public JobsDisplay(MainApplication root) {
 		this.root = root;
-		this.back = back;
 		
 		Button backButton = root.getBackButton();
 		backButton.setText("Back to Urban Parks Staff menu");
@@ -40,6 +38,7 @@ public class JobsDisplay extends JobsTableView{
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canUncreate, false, null, false);
 		
 		root.setCenter(vbox);
+		root.setTitle("View Jobs TODO DATES HERE - " + UPStaff.getEmail());
 	}
 	
 	public static ArrayList<Job> createsometestjobs() {

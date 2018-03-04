@@ -34,22 +34,15 @@ import urbanparks.view.MainApplication;
 import urbanparks.view.MainMenuPane;
 import urbanparks.view.SignupPane.BackButtonEventHandler;
 import urbanparks.view.SignupPane.SignupEventHandler;
+import static urbanparks.view.ViewConstants.*;
 
 import static urbanparks.model.Constants.*;
 
 public class CreateJobPane extends GridPane {
-
-	private static final String INVALID_DATE_STYLE = "-fx-background-color: red;";
-	private static final String VALID_DATE_STYLE = "-fx-background-color: green;";
-	private static final String STYLE_FIELD_EDIT = "-fx-text-fill: black;";
-	private static final String STYLE_FIELD_VALID = "-fx-text-fill: green;";
-	private static final String STYLE_FIELD_INVALID = "-fx-text-fill: red;";
 	
     private MainApplication root;
     private Button backButton;
-    private MainMenuPane back;
     private ParkManager parkManager;
-    private UserCollection userCollection;
     private JobCollection jobCollection;
     
     private boolean descriptionSatisfied;
@@ -63,14 +56,12 @@ public class CreateJobPane extends GridPane {
     private TextField parkNameField;
     private TextField jobLocationField;
 
-    public CreateJobPane(MainApplication root, MainMenuPane back, ParkManager parkManager) {
+    public CreateJobPane(MainApplication root, ParkManager parkManager) {
         super();
 
         this.root = root;
         this.backButton = root.getBackButton();
-        this.back = back;
         this.parkManager = parkManager;
-        this.userCollection = root.getUserCollection();
         this.jobCollection = root.getJobCollection();
         
         descriptionSatisfied = false;
@@ -81,7 +72,8 @@ public class CreateJobPane extends GridPane {
     }
     
     public void show() {
-        backButton.setText("Temp...");
+        backButton.setText("Back to park manager menu");
+        backButton.setOnAction(new BackButtonEventHandler());
         
         startDatePicker = new DatePicker();
         endDatePicker = new DatePicker();
@@ -204,9 +196,9 @@ public class CreateJobPane extends GridPane {
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
         setVgap(5);
+        
+        root.setTitle("Create A New Job - " + parkManager.getEmail());
     }
-    
-    
     
     public class CreateJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
@@ -220,14 +212,17 @@ public class CreateJobPane extends GridPane {
         	    String parkName = parkNameField.getText();
         	    String location = jobLocationField.getText();
         		
-        		Job newJob = new Job(description, startTime, endTime, parkName, location);
-				parkManager.createNewJob(newJob, jobCollection);
-				AlertUtils.showJobCreated(description);
-				root.setCenter(new ParkManagerMenu(root, back, parkManager));
+				if (AlertUtils.askJobSubmit(description)) {
+	        		Job newJob = new Job(description, startTime, endTime, parkName, location);
+					parkManager.createNewJob(newJob, jobCollection);
+					AlertUtils.showJobSubmitSuccess();
+					root.setCenter(new ParkManagerMenu(root, parkManager));
+				}
+        	} else {
+        		AlertUtils.showInvalidOptions();
         	}
         }
     }
-    
     
     private void validateDates(DatePicker startDatePicker, DatePicker endDatePicker) {
     	if (doesViolateBizRule(startDatePicker.getValue(), endDatePicker.getValue())) {
@@ -239,12 +234,10 @@ public class CreateJobPane extends GridPane {
     	}
     }
     
-    
     private boolean doesViolateBizRule(LocalDate startDatePicker, LocalDate endDatePicker) {
     	LocalDateTime startDate = startDatePicker.atStartOfDay();
     	LocalDateTime endDate = endDatePicker.atStartOfDay();
     	LocalDateTime nowDate = LocalDate.now().atStartOfDay();
-    	
     	boolean valid = true;
     	if (startDate.isAfter(endDate)) {
     		valid = false;
@@ -259,5 +252,12 @@ public class CreateJobPane extends GridPane {
     		valid = false;
     	}
     	return !valid;
+    }
+    
+    private class BackButtonEventHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	root.setCenter(new ParkManagerMenu(root, parkManager));
+        }
     }
 }
