@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 
@@ -51,9 +51,9 @@ public class JobCollectionTest {
 	@Test 
 	public void isNumJobsAtMaximum_JobCollectionIsAtMaximum_True() throws FileNotFoundException {
 		LocalDateTime dateTime = LocalDateTime.now();
-		Constants.setDefaultMaxPendingJobs();
+		ModelConstants.setDefaultMaxPendingJobs();
 		JobCollection.setDefaultJobId();
-		for(int i = jobCollection.getPendingJobsCount(); i < Constants.getMaxPendingJobs(); i++) {
+		for(int i = jobCollection.getPendingJobsCount(); i < ModelConstants.getMaxPendingJobs(); i++) {
 			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
 		}
 		assertTrue(jobCollection.isNumJobsAtMaximum());

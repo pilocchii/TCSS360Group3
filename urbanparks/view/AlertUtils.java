@@ -1,7 +1,7 @@
 package urbanparks.view;
 
 import static urbanparks.view.ViewConstants.*;
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.DateUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -59,7 +59,7 @@ public class AlertUtils {
     public static void showDataSaveError(Exception ex) {
     	String header = "Job, user, and settings data could not be saved to disk!";
     	String content = "Data could not be saved to " 
-        		+ Constants.JOB_DATA_FILE + ", " + Constants.USER_DATA_FILE + ", and " + Constants.SETTINGS_DATA_FILE;
+        		+ ModelConstants.JOB_DATA_FILE + ", " + ModelConstants.USER_DATA_FILE + ", and " + ModelConstants.SETTINGS_DATA_FILE;
     	showExceptionAlert(ex, header, content);
     }
     
@@ -70,13 +70,13 @@ public class AlertUtils {
     public static void showJobUserDataLoadError(Exception ex) {	
     	String header = "Could not load job and user data from disk!";
     	String content = "Job and user data could not be loaded from " 
-        		+ Constants.JOB_DATA_FILE + " and " + Constants.USER_DATA_FILE;
+        		+ ModelConstants.JOB_DATA_FILE + " and " + ModelConstants.USER_DATA_FILE;
     	showExceptionAlert(ex, header, content);
     }
     
     public static void showSettingsLoadError(Exception ex) {
     	String header = "Could not load settings data from disk!";
-    	String content = "Could not be loaded from " + Constants.SETTINGS_DATA_FILE;
+    	String content = "Could not be loaded from " + ModelConstants.SETTINGS_DATA_FILE;
     	showExceptionAlert(ex, header, content);
     }
     
@@ -122,8 +122,8 @@ public class AlertUtils {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(SUCCESS_DIALOG_TITLE);
         alert.setHeaderText("All job, user, and settings data is now saved to disk.");
-        alert.setContentText("Data saved to " + Constants.JOB_DATA_FILE + ", " 
-        		+ Constants.USER_DATA_FILE + " and " + Constants.SETTINGS_DATA_FILE);
+        alert.setContentText("Data saved to " + ModelConstants.JOB_DATA_FILE + ", " 
+        		+ ModelConstants.USER_DATA_FILE + " and " + ModelConstants.SETTINGS_DATA_FILE);
         alert.showAndWait();
     }
     
@@ -184,7 +184,7 @@ public class AlertUtils {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Default Settings Used");
         alert.setHeaderText("Maximum pending jobs was set to its default value " 
-        		+ Constants.DEFAULT_MAX_PENDING_JOBS + ".");
+        		+ ModelConstants.DEFAULT_MAX_PENDING_JOBS + ".");
         alert.showAndWait();
     }
     

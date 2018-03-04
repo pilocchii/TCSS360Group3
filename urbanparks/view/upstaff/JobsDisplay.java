@@ -36,7 +36,7 @@ public class JobsDisplay extends JobsTableView{
 		String startDateString = DateUtils.formatDateTime(startDate);
 		String endDateString = DateUtils.formatDateTime(endDate);
 		String tableTitle = "Jobs starting or ending from " + startDateString + " to " + endDateString;
-        ArrayList<Job> jobsToShow = root.getJobCollection().getJobsBetweenDates(startDate, endDate);
+        ArrayList<Job> jobsToShow = root.getJobCollection().getJobsBetweenDateTimes(startDate, endDate);
 		
         TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can unsubmit");
         canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));

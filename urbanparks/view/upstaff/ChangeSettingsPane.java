@@ -7,7 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
@@ -21,7 +21,7 @@ import urbanparks.view.MainMenuPane.LoginEventHandler;
 import urbanparks.view.MainMenuPane.SignupMenuEventHandler;
 import urbanparks.view.parkmanager.ParkManagerMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
-import static urbanparks.model.Constants.*;
+import static urbanparks.model.ModelConstants.*;
 import static urbanparks.view.ViewConstants.EMAIL_REGEX;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_EDIT;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_INVALID;
@@ -142,7 +142,7 @@ public class ChangeSettingsPane extends GridPane {
         	if (newMaxJobsValueSatisfied) {
         		int newValue = Integer.parseInt(newMaxJobsTextField.getText());
         		AlertUtils.showChangedMaxPendingJobs(newValue);
-        		Constants.setMaxPendingJobs(newValue);
+        		ModelConstants.setMaxPendingJobs(newValue);
         		root.setCenter(new ChangeSettingsPane(root, urbanParksStaff));
         	} else {
         		AlertUtils.showInvalidOptions();
@@ -153,7 +153,7 @@ public class ChangeSettingsPane extends GridPane {
     private class SetDefaultMaxJobsEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	Constants.setDefaultMaxPendingJobs();
+        	ModelConstants.setDefaultMaxPendingJobs();
         	newMaxJobsTextField.setPromptText("Current: " + getMaxPendingJobs());
         	newMaxJobsTextField.setText(new Integer(getMaxPendingJobs()).toString());
         	checkUpdatedMaxJobs();

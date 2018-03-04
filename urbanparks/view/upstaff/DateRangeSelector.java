@@ -1,7 +1,7 @@
 package urbanparks.view.upstaff;
 
-import static urbanparks.model.Constants.MAX_DAYS_BEFORE_JOB_ENDS;
-import static urbanparks.model.Constants.MAX_JOB_LENGTH;
+import static urbanparks.model.ModelConstants.MAX_DAYS_BEFORE_JOB_ENDS;
+import static urbanparks.model.ModelConstants.MAX_JOB_LENGTH;
 import static urbanparks.view.ViewConstants.INVALID_DATE_STYLE;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_EDIT;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_VALID;

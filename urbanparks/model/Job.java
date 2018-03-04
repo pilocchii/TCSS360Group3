@@ -1,6 +1,6 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.*;
+import static urbanparks.model.ModelConstants.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;

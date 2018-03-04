@@ -1,6 +1,6 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.JOB_DATA_FILE;
+import static urbanparks.model.ModelConstants.JOB_DATA_FILE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ public class JobCollection implements Serializable {
 	 */
 	public JobCollection() {
 		jobsList = new HashMap<Long, Job>();
-		currentJobId = Constants.DEFAULT_JOB_ID;
+		currentJobId = ModelConstants.DEFAULT_JOB_ID;
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class JobCollection implements Serializable {
 	 * @return true if the number of pending jobs is at capacity, false otherwise.
 	 */
 	public boolean isNumJobsAtMaximum() {
-		return getPendingJobsCount() >= Constants.getMaxPendingJobs();
+		return getPendingJobsCount() >= ModelConstants.getMaxPendingJobs();
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	public ArrayList<Job> getJobsBetweenDates(LocalDateTime lowerBound, LocalDateTime upperBound) {
+	public ArrayList<Job> getJobsBetweenDateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
@@ -230,7 +230,7 @@ public class JobCollection implements Serializable {
 	}
 	
 	public static void setDefaultJobId() {
-		currentJobId = Constants.DEFAULT_JOB_ID;
+		currentJobId = ModelConstants.DEFAULT_JOB_ID;
 	}
 
 }

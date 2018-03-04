@@ -9,7 +9,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.Job;
 
 /**
@@ -17,16 +17,6 @@ import urbanparks.model.Job;
  */
 public class UrbanParksStaffTest {
 
-	// not needed & unit tests should be independent from outside variables like files
-//	@Before
-//	public void setUpUrbanParksStaffTest() throws Exception {
-//		try {
-//			Constants.loadData();
-//		} catch (Exception e) {
-//			Constants.setDefaultMaxPendingJobs();
-//		}
-//	}
-	
 	/**
 	 * Testing change the max pending jobs value.
 	 * 
@@ -37,11 +27,11 @@ public class UrbanParksStaffTest {
 		
 		int maxPendingJobs = (new Random()).nextInt(50);
 
-		Constants.setMaxPendingJobs(maxPendingJobs);
+		ModelConstants.setMaxPendingJobs(maxPendingJobs);
 		
-		Constants.saveSettingsData();
+		ModelConstants.saveSettingsData();
 		
-		assertEquals(Constants.getMaxPendingJobs(), maxPendingJobs);
+		assertEquals(ModelConstants.getMaxPendingJobs(), maxPendingJobs);
 		
 	}
 	
@@ -51,12 +41,12 @@ public class UrbanParksStaffTest {
 	@Test
 	public void setDefaultMaxPendingJobs_ChangeMaxPendingJobsToDefault_NotEqual() {
 		
-		Constants.setMaxPendingJobs((new Random()).nextInt(50));
-		int OldMaxPendingJobs = Constants.getMaxPendingJobs();
+		ModelConstants.setMaxPendingJobs((new Random()).nextInt(50));
+		int OldMaxPendingJobs = ModelConstants.getMaxPendingJobs();
 	
-		Constants.setDefaultMaxPendingJobs();
+		ModelConstants.setDefaultMaxPendingJobs();
 		
-		assertNotEquals(Constants.getMaxPendingJobs(), OldMaxPendingJobs);
+		assertNotEquals(ModelConstants.getMaxPendingJobs(), OldMaxPendingJobs);
 		
 	}
 	

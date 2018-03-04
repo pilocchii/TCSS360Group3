@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.JobCollection;
 import urbanparks.model.UserCollection;
 import static urbanparks.view.ViewConstants.*;
@@ -64,7 +64,7 @@ public class MainApplication extends Application {
 		}
 		
 		try {
-			Constants.loadSettingsData();
+			ModelConstants.loadSettingsData();
 		} catch (FileNotFoundException e) {
 			AlertUtils.showSettingsLoadError(e);
 			AlertUtils.showDefaultSettingsUsed();
@@ -102,7 +102,7 @@ public class MainApplication extends Application {
 				try {
 					userCollection.saveData();
 					jobCollection.saveData();
-					Constants.saveSettingsData();
+					ModelConstants.saveSettingsData();
 					AlertUtils.showDataSaveSuccess();
 				} catch (IOException e) {
 					AlertUtils.showDataSaveError(e);

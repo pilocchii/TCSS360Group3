@@ -40,7 +40,7 @@ import urbanparks.view.SignupPane.BackButtonEventHandler;
 import urbanparks.view.SignupPane.SignupEventHandler;
 import static urbanparks.view.ViewConstants.*;
 
-import static urbanparks.model.Constants.*;
+import static urbanparks.model.ModelConstants.*;
 
 public class CreateJobPane extends GridPane {
 	

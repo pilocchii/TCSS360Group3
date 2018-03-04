@@ -1,0 +1,99 @@
+package urbanparks.model;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.util.Scanner;
+
+public final class ModelConstants {
+	
+	/**
+	 * TODO: many of these are unused
+	 */
+	
+	//For creating job
+	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
+	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
+	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
+	public static final int MAX_JOB_LENGTH = 4;
+	public static final int MAX_DAYS_BEFORE_JOB_ENDS = 60;
+	public static final int DEFAULT_JOB_ID = 0;
+	
+	//For signing up for job
+	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
+	public static final int MILLISECONDS_IN_DAY = 86400000;
+	
+	//For loading persistent data
+	public static final String JOB_DATA_FILE = "joblist.data";
+	public static final String USER_DATA_FILE = "userlist.data";
+	public static final String SETTINGS_DATA_FILE = "settings.data";
+	
+	// for DateUtils
+	public final static int DAYS_IN_YEAR = 365;
+	
+	// for park manager unsubmitting a job
+	// TODO: find out what this is supposed to be! (value is not in requirements)
+	public final static int MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART = 3;
+	
+	//or unvolunteering from job
+	public final static int MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART = 3;
+	
+	//for ParkManagerMenu
+//	public static final int MIN_WORKERS_FLOOR = 1;
+//	public static final int MIN_WORKERS_CEILING = Integer.MAX_VALUE;
+//	public static final int MAX_WORKERS_FLOOR = 0;
+//	public static final int MAX_WORKERS_CEILING = Integer.MAX_VALUE;
+	
+	public static final int RANDOM_NEXTINT = 100;
+	
+	
+	private ModelConstants() {
+		//shouldn't ever happen
+	}
+	
+	/**
+	 * Load the data from the text file and store it into the variables.
+	 * 
+	 * @return the status of the load true if it was successful and false otherwise.
+	 */
+	public static void loadSettingsData() throws FileNotFoundException {
+		Scanner scanner = new Scanner(new File(SETTINGS_DATA_FILE));
+		maxPendingJobs = scanner.nextInt();
+		scanner.close();
+	}
+	
+	/**
+	 * Save the current date to a file.
+	 * 
+	 * @return the status of the saving true if it was successful and false otherwise.
+	 */
+	public static void saveSettingsData() throws FileNotFoundException {
+		PrintStream printStream = new PrintStream(new File(SETTINGS_DATA_FILE));
+		printStream.print(maxPendingJobs);
+		printStream.close();
+	}
+
+	/**
+	 * Gets the maximum number of pending jobs
+	 * @return the maximum number of pending jobs
+	 */
+	public static int getMaxPendingJobs() {
+		return maxPendingJobs;
+	}
+
+	/**
+	 * Change the maximum pending jobs value to the given one.
+	 * Precondition: the given value should be integer greater than 0.
+	 */
+	public static void setMaxPendingJobs(int theMaxPendingJobs) {
+		maxPendingJobs = theMaxPendingJobs;
+	}
+
+	/**
+	 * Change the maximum pending jobs value to the default value.
+	 */
+	public static void setDefaultMaxPendingJobs() {
+		maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
+	}
+
+}
