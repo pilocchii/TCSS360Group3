@@ -21,10 +21,6 @@ public class Job implements Serializable {
 	private LocalDateTime endDateTime;
 	private String parkName;
 	private String location;
-	private int maxLightWorkers;
-	private int maxMediumWorker;
-	private int maxHeavyWorkers;
-	private int minTotalVolunteers;
 	private boolean isAvailable;
 	private boolean isCancelled;
 
@@ -48,7 +44,7 @@ public class Job implements Serializable {
 		this.parkName = parkName;
 		this.location = location;
 
-		volunteers = new ArrayList<String>(maxLightWorkers + maxLightWorkers + maxHeavyWorkers);
+		volunteers = new ArrayList<String>();
 		isAvailable = true;
 		isCancelled = false;
 	}
@@ -59,11 +55,8 @@ public class Job implements Serializable {
 	 * @return generated JobID
 	 */
 	private long generateJobID() {
-		LocalDateTime currentDateTime = LocalDateTime.now();
-		Random random = new Random();
-		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMddhhmmss");
-		String number = dateFormat.format(currentDateTime) + random.nextInt(Constants.RANDOM_NEXTINT);
-		return Long.parseLong(number);
+		JobCollection.incrementCurrentJobId();
+		return JobCollection.getCurrentJobId();
 	}
 
 	/**

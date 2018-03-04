@@ -66,7 +66,7 @@ public class UrbanParksStaffTest {
 	public void isBetween2Dates_JobIsBetween2Dates_True() {
 	
 		LocalDateTime dateTime = LocalDateTime.now();
-		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle", 2, 3, 4, 15);
+		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle");
 		
 		LocalDateTime startDateTime = LocalDateTime.now();
 		startDateTime = startDateTime.minusDays(5);
@@ -84,7 +84,7 @@ public class UrbanParksStaffTest {
 	public void isBetween2Dates_JobDateIsBeforeGiven2Dates_False() {
 	
 		LocalDateTime dateTime = LocalDateTime.now();
-		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle", 2, 3, 4, 15);
+		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle");
 		
 		LocalDateTime startDateTime = LocalDateTime.now();
 		startDateTime = startDateTime.plusDays(5);
@@ -102,7 +102,7 @@ public class UrbanParksStaffTest {
 	public void isBetween2Dates_JobDateIsAfterGiven2Dates_False() {
 	
 		LocalDateTime dateTime = LocalDateTime.now();
-		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle", 2, 3, 4, 15);
+		Job job = new Job("Cleaning XYZ park", dateTime, dateTime, "XYZ", "Seattle");
 		
 		LocalDateTime startDateTime = LocalDateTime.now();
 		startDateTime = startDateTime.minusDays(5);

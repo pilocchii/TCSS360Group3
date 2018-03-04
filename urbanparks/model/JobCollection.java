@@ -2,6 +2,7 @@ package urbanparks.model;
 
 import static urbanparks.model.Constants.JOB_DATA_FILE;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class JobCollection implements Serializable {
 	
 	private static final long serialVersionUID = -5732921162292711504L;
+
+	private static int currentJobId;
 	
 	private HashMap<Long, Job> jobsList;
 	
@@ -27,6 +30,7 @@ public class JobCollection implements Serializable {
 	 */
 	public JobCollection() {
 		jobsList = new HashMap<Long, Job>();
+		currentJobId = Constants.DEFAULT_JOB_ID;
 	}
 	
 	/**
@@ -66,12 +70,27 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * The size of job collection.
+	 * The size of job collection. THIS INCLUDES CANCELLED AND PENDING JOBS!
 	 * 
 	 * @return the size.
 	 */
 	public int size() {
 		return jobsList.size();
+	}
+	
+	/**
+	 * Returns an int representing the number of PENDING jobs in the collection.
+	 * @return Pending jobs in the system
+	 */
+	public int getPendingJobsCount() {
+		int pendingCount = 0;
+		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			if(!job.getIsCancelled()) {
+				pendingCount++;
+			}
+		}
+		return pendingCount;
 	}
 	
 	/**
@@ -196,7 +215,20 @@ public class JobCollection implements Serializable {
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		Object object = ois.readObject();
 		jobsList = (HashMap<Long, Job>) object;
+		currentJobId = jobsList.size();
 		ois.close();
 	}
 	
+	public static int getCurrentJobId() {
+		return currentJobId;
+	}
+
+	public static void incrementCurrentJobId() {
+		currentJobId++;
+	}
+	
+	public static void setDefaultJobId() {
+		currentJobId = Constants.DEFAULT_JOB_ID;
+	}
+
 }
