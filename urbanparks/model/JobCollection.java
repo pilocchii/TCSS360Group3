@@ -176,7 +176,6 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	// TODO: CHECK IF NEEDED WITH NEW GUI
 	/**
 	 * Sorts a list of jobs by start date, descending.
 	 * 
