@@ -64,13 +64,15 @@ public class UPStaffMenu extends GridPane {
         @Override
         public void handle(ActionEvent event) {
         	root.setCenter(new DateRangeSelector(root, urbanParksStaff));
+//        	JobsDisplay jobsDisplay = new JobsDisplay(root);
+//        	jobsDisplay.showStaffJobsBetweenDates(urbanParksStaff);
         }
     }
     
     private class ChangeSettingsEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(new ChangeSettingsPane(root, urbanParksStaff));
+        	// todo
         }
     }
 

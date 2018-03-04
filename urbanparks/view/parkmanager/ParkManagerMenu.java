@@ -11,7 +11,6 @@ import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
-import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
 import urbanparks.view.MainMenuPane;
 
@@ -67,12 +66,7 @@ public class ParkManagerMenu extends GridPane {
     private class createJobEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            // don't let park manager create jobs if system is at capacity.
-        	if (root.getJobCollection().isNumJobsAtMaximum()) {
-        		AlertUtils.numberJobsAtCapacity();
-        	} else {
-        		root.setCenter(new CreateJobPane(root, parkManager));
-        	}
+        	 root.setCenter(new CreateJobPane(root, parkManager));
         }
     }
     

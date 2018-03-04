@@ -99,7 +99,6 @@ public class SignupPane extends GridPane {
             		}
                 } else {
                 	emailTextField.setStyle(STYLE_FIELD_INVALID);
-                	emailSatisfied = false;
                 }
             }
         });
@@ -157,7 +156,6 @@ public class SignupPane extends GridPane {
                 	phoneSatisfied = true;
                 } else {
                 	phoneNumberTextField.setStyle(STYLE_FIELD_INVALID);
-                	phoneSatisfied = false;
                 }
             }
         });
@@ -172,7 +170,7 @@ public class SignupPane extends GridPane {
         parkManagerRadioButton = new RadioButton("Park Manager");
         parkManagerRadioButton.setToggleGroup(accountTypeGroup);
         
-        staffRadioButton = new RadioButton("Urban Parks Staff");
+        staffRadioButton = new RadioButton("Staff");
         staffRadioButton.setToggleGroup(accountTypeGroup);
         
         Button signupButton = new Button("Sign up");

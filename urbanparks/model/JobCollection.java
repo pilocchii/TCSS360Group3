@@ -40,7 +40,14 @@ public class JobCollection implements Serializable {
 	 * @return true if the number of pending jobs is at capacity, false otherwise.
 	 */
 	public boolean isNumJobsAtMaximum() {
-		return getPendingJobsCount() >= Constants.getMaxPendingJobs();
+		// TODO: not actually pending jobs...
+		int pendingJobs = jobsList.size();
+		try {
+			Constants.loadData();
+		} catch (FileNotFoundException e) {
+			Constants.setDefaultMaxPendingJobs();
+		}
+		return pendingJobs >= Constants.getMaxPendingJobs();
 	}
 	
 	/**
@@ -64,15 +71,23 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
+	 * The size of job collection. THIS INCLUDES CANCELLED AND PENDING JOBS!
+	 * 
+	 * @return the size.
+	 */
+	public int size() {
+		return jobsList.size();
+	}
+	
+	/**
 	 * Returns an int representing the number of PENDING jobs in the collection.
-	 * Pending means the job is not cancelled and has not yet ended.
 	 * @return Pending jobs in the system
 	 */
 	public int getPendingJobsCount() {
 		int pendingCount = 0;
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if(!job.getIsCancelled() && !job.hasJobEnded()) {
+			if(!job.getIsCancelled()) {
 				pendingCount++;
 			}
 		}
@@ -119,16 +134,13 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	public ArrayList<Job> getJobsBetweenDates(LocalDateTime lowerBound, LocalDateTime upperBound) {
+	public ArrayList<Job> getJobsBetweenDates(boolean basedOnJobStart, LocalDateTime lowerBound, LocalDateTime upperBound) {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			boolean startMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, true);
-			boolean startMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, true);
-			boolean endMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, false);
-			boolean endMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, false);
-			if ((startMeetsLowerBoundCond || endMeetsLowerBoundCond) 
-					&& (startMeetsUpperBoundCond || endMeetsUpperBoundCond)) {
+			boolean meetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, basedOnJobStart);
+			boolean meetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, basedOnJobStart);
+			if (meetsLowerBoundCond && meetsUpperBoundCond) {
 				availableJobs.add(job);
 			}
 		}
@@ -179,6 +191,7 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
+	// TODO: CHECK IF NEEDED WITH NEW GUI
 	/**
 	 * Sorts a list of jobs by start date, descending.
 	 * 

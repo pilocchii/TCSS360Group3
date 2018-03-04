@@ -20,12 +20,25 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+import urbanparks.model.DateUtils;
+import urbanparks.model.Job;
+import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
+import urbanparks.model.User;
+import urbanparks.model.UserCollection;
+import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
+import urbanparks.view.SignupPane;
+import urbanparks.view.MainMenuPane.LoginEventHandler;
+import urbanparks.view.MainMenuPane.SignupMenuEventHandler;
+import urbanparks.view.parkmanager.ParkManagerMenu;
+import urbanparks.view.volunteer.VolunteerMenu;
 
 public class DateRangeSelector extends GridPane {
 
@@ -39,6 +52,9 @@ public class DateRangeSelector extends GridPane {
     //fields
     private DatePicker lowerBoundDatePicker;
     private DatePicker upperBoundDatePicker;
+    private ToggleGroup rangeFormatRadioGroup;
+	private RadioButton basedOnJobStartRadio;
+	private RadioButton basedOnJobEndRadio;
 	
     // fields satisfied flags
 	private boolean startDateSatisfied;
@@ -100,12 +116,22 @@ public class DateRangeSelector extends GridPane {
         // Allows it to grow in size to match their container
         showJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        
+        rangeFormatRadioGroup = new ToggleGroup();
+        basedOnJobStartRadio = new RadioButton("Base bounds off of job start dates");
+        basedOnJobStartRadio.setToggleGroup(rangeFormatRadioGroup);
+        basedOnJobStartRadio.setSelected(true);
+        basedOnJobEndRadio = new RadioButton("Base bounds off of job end dates");
+        basedOnJobEndRadio.setToggleGroup(rangeFormatRadioGroup);
+        
         add(new Label("Lower bound of job dates"), 0, 0);
         add(lowerBoundDatePicker, 0, 1);
         add(new Label("Upper bound of job dates"), 0, 2);
         add(upperBoundDatePicker, 0, 3);
         add(new Separator(), 0, 4);
-        add(showJobsButton, 0, 5);
+        add(basedOnJobStartRadio, 0, 5);
+        add(basedOnJobEndRadio, 0, 6);
+        add(showJobsButton, 0, 11);
  
         // styles
         setAlignment(Pos.CENTER);
@@ -144,8 +170,13 @@ public class DateRangeSelector extends GridPane {
                 JobsDisplay jobsDisplay = new JobsDisplay(root);
                 LocalDateTime startOfLowerBoundDate = lowerBoundDatePicker.getValue().atStartOfDay();
                 LocalDateTime endOfUpperBoundDate = upperBoundDatePicker.getValue().atTime(23, 59);
-                
-                jobsDisplay.showStaffJobsBetweenDates(urbanParksStaff, dateRangeSelector, startOfLowerBoundDate, endOfUpperBoundDate);
+
+        		RadioButton selectedRadioButton = (RadioButton) rangeFormatRadioGroup.getSelectedToggle();
+        		boolean basedOnJobStart = true;
+        		if (selectedRadioButton == basedOnJobEndRadio) {
+        			basedOnJobStart = false;
+        		}
+                jobsDisplay.showStaffJobsBetweenDates(urbanParksStaff, dateRangeSelector, startOfLowerBoundDate, endOfUpperBoundDate, basedOnJobStart);
         	} else {
         		AlertUtils.showInvalidOptions();
         	}

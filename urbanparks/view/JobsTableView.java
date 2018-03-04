@@ -88,12 +88,7 @@ public class JobsTableView extends GridPane {
                         	+ "\nLocation:\t\t" + newValue.getLocation()
                         	+ "\nVolunteers registered: " + newValue.getVolunteerCount() );
                         if (showMainButton) {
-                        	// only enable button if job is available
-                        	if (newValue.getIsAvailable()) {
-                        		mainButton.setDisable(false);
-                        	} else {
-                        		mainButton.setDisable(true);
-                        	}
+                        	mainButton.setDisable(false);
                         }
                         selectedJob = newValue;
                     }

@@ -30,13 +30,14 @@ public class JobsDisplay extends JobsTableView{
 		backButton.setOnAction(new BackButton_UPStaff_Handler());
 	}
 
-	public void showStaffJobsBetweenDates(UrbanParksStaff UPStaff, DateRangeSelector dateRangeSelector, LocalDateTime startDate, LocalDateTime endDate) {
+	public void showStaffJobsBetweenDates(UrbanParksStaff UPStaff, DateRangeSelector dateRangeSelector, LocalDateTime startDate, LocalDateTime endDate, boolean basedOnJobStart) {
 		this.UPStaff = UPStaff;
 		this.dateRangeSelector = dateRangeSelector;
 		String startDateString = DateUtils.formatDateTime(startDate);
 		String endDateString = DateUtils.formatDateTime(endDate);
-		String tableTitle = "Jobs starting or ending from " + startDateString + " to " + endDateString;
-        ArrayList<Job> jobsToShow = root.getJobCollection().getJobsBetweenDates(startDate, endDate);
+		String startOrEnd = basedOnJobStart ? "Starting" : "Ending";
+		String tableTitle = "\tJobs " + startOrEnd + " From " + startDateString + " To " + endDateString;
+        ArrayList<Job> jobsToShow = root.getJobCollection().getJobsBetweenDates(basedOnJobStart, startDate, endDate);
 		
         TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can unsubmit");
         canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
