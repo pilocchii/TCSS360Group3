@@ -229,9 +229,9 @@ public class CreateJobPane extends GridPane {
         add(createJobButton, 0, 9);
         
         // column 2
-        add(new Label("Job Start (Military) Time (MM:SS)"), 1, 0);
+        add(new Label("Job start in military time (MM:SS)"), 1, 0);
         add(startTimeTextField, 1, 1);
-        add(new Label("Job End (Military) Time (MM::SS)"), 1, 2);
+        add(new Label("Job end in military time (MM::SS)"), 1, 2);
         add(endTimeTextField, 1, 3);
  
         // styles
@@ -284,9 +284,20 @@ public class CreateJobPane extends GridPane {
     	boolean timesValid = false;
     	
     	if (areDatesValid(startDatePicker.getValue(), endDatePicker.getValue())) {
-
-    		if (isTimeStringParsable(startTimeTextField.getText()) && isTimeStringParsable(endTimeTextField.getText())) {
-
+    		boolean startTimeParsable = isTimeStringParsable(startTimeTextField.getText());
+    		boolean endTimeParsable = isTimeStringParsable(endTimeTextField.getText());
+    		if (!startTimeParsable) {
+    			startTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        		datesAndTimesSatisfied = false;
+        		return;
+    		}
+    		if (!endTimeParsable) {
+        		endTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        		datesAndTimesSatisfied = false;
+        		return;
+    		}
+    		
+    		if (startTimeParsable && endTimeParsable) {
         		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
         		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
         		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
