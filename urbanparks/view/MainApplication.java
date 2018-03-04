@@ -1,5 +1,6 @@
 package urbanparks.view;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import urbanparks.model.Constants;
 import urbanparks.model.JobCollection;
 import urbanparks.model.UserCollection;
 import static urbanparks.view.ViewConstants.*;
@@ -57,8 +59,15 @@ public class MainApplication extends Application {
 			jobCollection.loadData();
 			userCollection.loadData();
 		} catch (Exception e) {
-			AlertUtils.showDataLoadError(e);
-			AlertUtils.showEmptyDataUsed();
+			AlertUtils.showJobUserDataLoadError(e);
+			AlertUtils.showEmptyJobUserDataUsed();
+		}
+		
+		try {
+			Constants.loadSettingsData();
+		} catch (FileNotFoundException e) {
+			AlertUtils.showSettingsLoadError(e);
+			AlertUtils.showDefaultSettingsUsed();
 		}
 
         // Stage init
@@ -93,8 +102,8 @@ public class MainApplication extends Application {
 				try {
 					userCollection.saveData();
 					jobCollection.saveData();
+					Constants.saveSettingsData();
 					AlertUtils.showDataSaveSuccess();
-					
 				} catch (IOException e) {
 					AlertUtils.showDataSaveError(e);
 				}

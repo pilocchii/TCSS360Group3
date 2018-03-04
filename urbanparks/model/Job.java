@@ -61,17 +61,10 @@ public class Job implements Serializable {
 
 	/**
 	 * Adds a volunteer to the list of signed up volunteers. 
-	 * Takes in a volunteer's email address, returns true if the volunteer
-	 * was signed up successfully, false otherwise.
 	 * @param theVolunteer the email address to sign-up
-	 * @return true if the volunteer was added successfully, false otherwise
 	 */
-	public boolean addVolunteer(String theVolunteer) {
+	public void addVolunteer(String theVolunteer) {
 		volunteers.add(theVolunteer);
-		if(volunteers.contains(theVolunteer)) {
-			return true;
-		}
-		return false;//if arraylist didn't add it for some reason
 	}
 	
 	public int getVolunteerCount() {
@@ -210,6 +203,10 @@ public class Job implements Serializable {
 		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
 		return (jobDateTime.isBefore(upperBound) || jobDateTime.isEqual(upperBound));
 	}
+	
+	public boolean hasJobEnded() {
+		return isJobBeforeOrAtDateTime(LocalDateTime.now(), false);
+	}
 
 	/**
 	 * Checks whether the time between now and the job start time is at least the minimum value,
@@ -223,7 +220,8 @@ public class Job implements Serializable {
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		return DateUtils.daysBetweenNowAndDate(getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
 	public boolean isUnvolunteerEarlyEnough() {
