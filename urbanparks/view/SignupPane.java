@@ -99,6 +99,7 @@ public class SignupPane extends GridPane {
             		}
                 } else {
                 	emailTextField.setStyle(STYLE_FIELD_INVALID);
+                	emailSatisfied = false;
                 }
             }
         });
@@ -156,6 +157,7 @@ public class SignupPane extends GridPane {
                 	phoneSatisfied = true;
                 } else {
                 	phoneNumberTextField.setStyle(STYLE_FIELD_INVALID);
+                	phoneSatisfied = false;
                 }
             }
         });

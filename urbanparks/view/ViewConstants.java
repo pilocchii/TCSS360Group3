@@ -24,6 +24,9 @@ public class ViewConstants {
 	public static final String EMAIL_REGEX = ".+\\@.+\\..+";
 
 	// for job creation menu
+	public static final String TIME_INPUT_REGEX = "([01][0-9]|2[0-3]):[0-5][0-9]";
+//	public static final String HOUR_PARSE_REGEX = "$1\\S\\S\\S";
+//	public static final String MINUTE_PARSE_REGEX = ":$2";
 	public static final String VALID_DATE_STYLE = "-fx-background-color: green;";
 	public static final String INVALID_DATE_STYLE = "-fx-background-color: red;";
 	

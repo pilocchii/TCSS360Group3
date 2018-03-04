@@ -2,13 +2,15 @@ package urbanparks.view;
 
 import static urbanparks.view.ViewConstants.*;
 import urbanparks.model.Constants;
-
+import urbanparks.model.DateUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.embed.swing.JFXPanel;
 import java.util.Optional;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
@@ -133,10 +135,12 @@ public class AlertUtils {
         alert.showAndWait();
     }
     
-    public static void showJobSubmitSuccess() {
+    public static void showJobSubmitSuccess(LocalDateTime start, LocalDateTime end) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(SUCCESS_DIALOG_TITLE);
-        alert.setHeaderText("The job has been created!");
+        alert.setHeaderText("The job has been created!"
+        		+ "\nStart: " + DateUtils.formatDateTime(start)
+        		+ "\nEnd: " + DateUtils.formatDateTime(end));
         alert.setContentText("You will now be taken to the park manager menu.");
         alert.showAndWait();
     }

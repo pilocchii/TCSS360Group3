@@ -2,6 +2,10 @@ package urbanparks.view.parkmanager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -48,6 +52,8 @@ public class CreateJobPane extends GridPane {
     // fields satisfied flags
 	private boolean startDateSatisfied;
 	private boolean endDateSatisfied;
+	private boolean startTimeSatisfied;
+	private boolean endTimeSatisfied;
     private boolean descriptionSatisfied;
     private boolean parkNameSatisfied;
     private boolean jobLocationSatisfied;
@@ -55,6 +61,8 @@ public class CreateJobPane extends GridPane {
     //fields
     private DatePicker startDatePicker;
     private DatePicker endDatePicker;
+    private TextField startTimeTextField;
+    private TextField endTimeTextField;
     private TextField descriptionField;
     private TextField parkNameField;
     private TextField jobLocationField;
@@ -67,8 +75,10 @@ public class CreateJobPane extends GridPane {
         this.parkManager = parkManager;
         this.jobCollection = root.getJobCollection();
         
-        startDateSatisfied = true;
-    	endDateSatisfied = true;
+        startDateSatisfied = false;
+    	endDateSatisfied = false;
+    	startTimeSatisfied = false;
+    	endTimeSatisfied = false;
         descriptionSatisfied = false;
         parkNameSatisfied = false;
         jobLocationSatisfied = false;
@@ -128,7 +138,7 @@ public class CreateJobPane extends GridPane {
         	}
         };
         endDatePicker.setDayCellFactory(endDateCallback);
-        
+        validateDates(startDatePicker, endDatePicker);
         
         descriptionField = new TextField();
         descriptionField.setPromptText("Job description");
@@ -180,22 +190,59 @@ public class CreateJobPane extends GridPane {
         });
         
         
+        startTimeTextField = new TextField();
+        startTimeTextField.setPromptText("Start time");
+        startTimeTextField.setText("00:00");
+        startTimeTextField.setFocusTraversable(false);
+        startTimeTextField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        	// focus gained
+        	if (newValue) {
+        		startTimeTextField.setStyle(STYLE_FIELD_EDIT);
+        		startTimeSatisfied = false;
+        	// focus lost
+        	} else {
+        		validateTimes();
+            }
+        });
+        
+        endTimeTextField = new TextField();
+        endTimeTextField.setPromptText("End time");
+        endTimeTextField.setText("00:01");
+        endTimeTextField.setFocusTraversable(false);
+        endTimeTextField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        	// focus gained
+        	if (newValue) {
+        		endTimeTextField.setStyle(STYLE_FIELD_EDIT);
+        		endTimeSatisfied = false;
+        	// focus lost
+        	} else {
+        		validateTimes();
+            }
+        });
+        validateTimes();
+
         Button createJobButton = new Button("Create Job");
         createJobButton.setOnAction(new CreateJobButtonHandler());
         // Allows it to grow in size to match their container
         createJobButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
-        
+        // column 1
         add(new Label("Job Start Date"), 0, 0);
         add(startDatePicker, 0, 1);
-        add(new Separator(), 0, 2);
-        add(new Label("Job End Date"), 0, 3);
-        add(endDatePicker, 0, 4);
+        add(new Label("Job End Date"), 0, 2);
+        add(endDatePicker, 0, 3);
+        add(new Separator(), 0, 4);
         add(descriptionField, 0, 5);
-        add(parkNameField, 0, 7);
-        add(jobLocationField, 0, 9);
-        add(new TextField("TODO job times"), 0, 10);
-        add(createJobButton, 0, 11);
+        add(parkNameField, 0, 6);
+        add(jobLocationField, 0, 7);
+        add(new Separator(), 0, 8);
+        add(createJobButton, 0, 9);
+        
+        // column 2
+        add(new Label("Job Start (Military) Time (MM:SS)"), 1, 0);
+        add(startTimeTextField, 1, 1);
+        add(new Label("Job End (Military) Time (MM::SS)"), 1, 2);
+        add(endTimeTextField, 1, 3);
  
         // styles
         setAlignment(Pos.CENTER);
@@ -206,23 +253,61 @@ public class CreateJobPane extends GridPane {
         root.setTitle("Create A New Job - " + parkManager.getEmail());
     }
     
+    private boolean isTimeValid(String input) {
+    	try {
+    		LocalTime.parse(input);
+    		return true;
+    	} catch (DateTimeParseException dtpe) {
+    	}
+    	return false;
+    }
+    
+    private void validateTimes() {
+    	boolean timesValid = false;
+    	if (isTimeValid(startTimeTextField.getText()) && isTimeValid(endTimeTextField.getText())) {
+    		LocalTime startLocalTime = LocalTime.parse(startTimeTextField.getText());
+    		LocalTime endLocalTime = LocalTime.parse(endTimeTextField.getText());
+    		/**
+    		 * Job start time has to be before the job's end time
+    		 */
+    		if (startLocalTime.isBefore(endLocalTime)) {
+            	timesValid = true;
+    		}
+    	}
+    	if (timesValid) {
+        	startTimeTextField.setStyle(STYLE_FIELD_VALID);
+        	startTimeSatisfied = true;
+        	endTimeTextField.setStyle(STYLE_FIELD_VALID);
+        	endTimeSatisfied = true;
+    	} else {
+        	startTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        	startTimeSatisfied = false;
+        	endTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        	endTimeSatisfied = false;
+    	}
+    }
+    
     public class CreateJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
         	if (startDateSatisfied && endDateSatisfied && descriptionSatisfied 
-        			&& parkNameSatisfied && jobLocationSatisfied) {
-        			
-        		//TODO: add times for dates
-        		LocalDateTime startTime = startDatePicker.getValue().atStartOfDay();
-        		LocalDateTime endTime = endDatePicker.getValue().atStartOfDay();
+        			&& parkNameSatisfied && jobLocationSatisfied
+        			&& startTimeSatisfied && endTimeSatisfied) {
+        		
+        		// parse and add together dates + times
+        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
+        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
+        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
+        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
+        		
         	    String description = descriptionField.getText();
         	    String parkName = parkNameField.getText();
         	    String location = jobLocationField.getText();
         		
 				if (AlertUtils.askJobSubmit(description)) {
-	        		Job newJob = new Job(description, startTime, endTime, parkName, location);
+	        		Job newJob = new Job(description, startDateTime, endDateTime, parkName, location);
 					parkManager.createNewJob(newJob, jobCollection);
-					AlertUtils.showJobSubmitSuccess();
+					AlertUtils.showJobSubmitSuccess(startDateTime, endDateTime);
 					root.setCenter(new ParkManagerMenu(root, parkManager));
 				}
         	} else {

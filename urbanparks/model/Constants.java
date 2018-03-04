@@ -59,7 +59,6 @@ public final class Constants {
 	public static void loadSettingsData() throws FileNotFoundException {
 		Scanner scanner = new Scanner(new File(SETTINGS_DATA_FILE));
 		maxPendingJobs = scanner.nextInt();
-		System.out.println(maxPendingJobs);
 		scanner.close();
 	}
 	
