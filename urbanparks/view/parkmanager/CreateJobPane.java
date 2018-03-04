@@ -50,10 +50,7 @@ public class CreateJobPane extends GridPane {
     private JobCollection jobCollection;
     
     // fields satisfied flags
-	private boolean startDateSatisfied;
-	private boolean endDateSatisfied;
-	private boolean startTimeSatisfied;
-	private boolean endTimeSatisfied;
+	private boolean datesAndTimesSatisfied;
     private boolean descriptionSatisfied;
     private boolean parkNameSatisfied;
     private boolean jobLocationSatisfied;
@@ -75,10 +72,7 @@ public class CreateJobPane extends GridPane {
         this.parkManager = parkManager;
         this.jobCollection = root.getJobCollection();
         
-        startDateSatisfied = false;
-    	endDateSatisfied = false;
-    	startTimeSatisfied = false;
-    	endTimeSatisfied = false;
+        datesAndTimesSatisfied = false;
         descriptionSatisfied = false;
         parkNameSatisfied = false;
         jobLocationSatisfied = false;
@@ -94,11 +88,10 @@ public class CreateJobPane extends GridPane {
         endDatePicker = new DatePicker();
         startDatePicker.setValue(LocalDate.now());
         endDatePicker.setValue(LocalDate.now());
-        validateDates(startDatePicker, endDatePicker);
 
         // start date picker
         startDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
-        	validateDates(startDatePicker, endDatePicker);
+        	validateDatesAndTimes();
         });
         Callback<DatePicker, DateCell> startDateCallBack = new Callback<DatePicker, DateCell>() {
         	@Override
@@ -121,7 +114,7 @@ public class CreateJobPane extends GridPane {
         
         // end date picker
         endDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
-        	validateDates(startDatePicker, endDatePicker);
+        	validateDatesAndTimes();
         });
         Callback<DatePicker, DateCell> endDateCallback = new Callback<DatePicker, DateCell>() {
         	@Override
@@ -130,7 +123,7 @@ public class CreateJobPane extends GridPane {
         			@Override
         			public void updateItem(LocalDate tempEnd, boolean empty) {
         				super.updateItem(tempEnd, empty);
-        				if (doesViolateBizRule(startDatePicker.getValue(), tempEnd)) {
+        				if (!areDatesValid(startDatePicker.getValue(), tempEnd)) {
         					setDisable(true);
         				}
         			}
@@ -138,7 +131,6 @@ public class CreateJobPane extends GridPane {
         	}
         };
         endDatePicker.setDayCellFactory(endDateCallback);
-        validateDates(startDatePicker, endDatePicker);
         
         descriptionField = new TextField();
         descriptionField.setPromptText("Job description");
@@ -198,10 +190,9 @@ public class CreateJobPane extends GridPane {
         	// focus gained
         	if (newValue) {
         		startTimeTextField.setStyle(STYLE_FIELD_EDIT);
-        		startTimeSatisfied = false;
         	// focus lost
         	} else {
-        		validateTimes();
+        		validateDatesAndTimes();
             }
         });
         
@@ -213,13 +204,12 @@ public class CreateJobPane extends GridPane {
         	// focus gained
         	if (newValue) {
         		endTimeTextField.setStyle(STYLE_FIELD_EDIT);
-        		endTimeSatisfied = false;
         	// focus lost
         	} else {
-        		validateTimes();
+        		validateDatesAndTimes();
             }
         });
-        validateTimes();
+        validateDatesAndTimes();
 
         Button createJobButton = new Button("Create Job");
         createJobButton.setOnAction(new CreateJobButtonHandler());
@@ -253,7 +243,7 @@ public class CreateJobPane extends GridPane {
         root.setTitle("Create A New Job - " + parkManager.getEmail());
     }
     
-    private boolean isTimeValid(String input) {
+    private boolean isTimeStringParsable(String input) {
     	try {
     		LocalTime.parse(input);
     		return true;
@@ -262,37 +252,11 @@ public class CreateJobPane extends GridPane {
     	return false;
     }
     
-    private void validateTimes() {
-    	boolean timesValid = false;
-    	if (isTimeValid(startTimeTextField.getText()) && isTimeValid(endTimeTextField.getText())) {
-    		LocalTime startLocalTime = LocalTime.parse(startTimeTextField.getText());
-    		LocalTime endLocalTime = LocalTime.parse(endTimeTextField.getText());
-    		/**
-    		 * Job start time has to be before the job's end time
-    		 */
-    		if (startLocalTime.isBefore(endLocalTime)) {
-            	timesValid = true;
-    		}
-    	}
-    	if (timesValid) {
-        	startTimeTextField.setStyle(STYLE_FIELD_VALID);
-        	startTimeSatisfied = true;
-        	endTimeTextField.setStyle(STYLE_FIELD_VALID);
-        	endTimeSatisfied = true;
-    	} else {
-        	startTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        	startTimeSatisfied = false;
-        	endTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        	endTimeSatisfied = false;
-    	}
-    }
-    
     public class CreateJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	if (startDateSatisfied && endDateSatisfied && descriptionSatisfied 
-        			&& parkNameSatisfied && jobLocationSatisfied
-        			&& startTimeSatisfied && endTimeSatisfied) {
+        	if (datesAndTimesSatisfied && descriptionSatisfied 
+        			&& parkNameSatisfied && jobLocationSatisfied) {
         		
         		// parse and add together dates + times
         		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
@@ -316,21 +280,41 @@ public class CreateJobPane extends GridPane {
         }
     }
     
-    private void validateDates(DatePicker startDatePicker, DatePicker endDatePicker) {
-    	if (doesViolateBizRule(startDatePicker.getValue(), endDatePicker.getValue())) {
-    		startDatePicker.setStyle(INVALID_DATE_STYLE);
-    		endDatePicker.setStyle(INVALID_DATE_STYLE);
-    		startDateSatisfied = false;
-    		endDateSatisfied = false;
-    	} else {
+    private void validateDatesAndTimes() {
+    	boolean timesValid = false;
+    	
+    	if (areDatesValid(startDatePicker.getValue(), endDatePicker.getValue())) {
+
+    		if (isTimeStringParsable(startTimeTextField.getText()) && isTimeStringParsable(endTimeTextField.getText())) {
+
+        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
+        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
+        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
+        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
+
+        		if (startDateTime.isBefore(endDateTime)) {
+                	timesValid = true;
+        		}
+        	}	
+    	}
+        	
+        if (timesValid) {
     		startDatePicker.setStyle(VALID_DATE_STYLE);
     		endDatePicker.setStyle(VALID_DATE_STYLE);
-    		startDateSatisfied = true;
-    		endDateSatisfied = true;
+    		datesAndTimesSatisfied = true;
+        	startTimeTextField.setStyle(STYLE_FIELD_VALID);
+        	endTimeTextField.setStyle(STYLE_FIELD_VALID);
+    	} else {
+    		startDatePicker.setStyle(INVALID_DATE_STYLE);
+    		endDatePicker.setStyle(INVALID_DATE_STYLE);
+    		datesAndTimesSatisfied = false;
+        	startTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        	endTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        	
     	}
     }
     
-    private boolean doesViolateBizRule(LocalDate startDatePicker, LocalDate endDatePicker) {
+    private boolean areDatesValid(LocalDate startDatePicker, LocalDate endDatePicker) {
     	LocalDateTime startDate = startDatePicker.atStartOfDay();
     	LocalDateTime endDate = endDatePicker.atStartOfDay();
     	LocalDateTime nowDate = LocalDate.now().atStartOfDay();
@@ -347,7 +331,7 @@ public class CreateJobPane extends GridPane {
     	if (DateUtils.daysBetween2Dates(startDate, endDate) > MAX_JOB_LENGTH) {
     		valid = false;
     	}
-    	return !valid;
+    	return valid;
     }
     
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
