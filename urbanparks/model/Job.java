@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.time.LocalDateTime;
 
 /**
- * This class represents a job with its all information.
+ * This class represents a job and all its information.
+ * 
+ * invariant: all fields non-null
+ * invariant: jobId unique to all other jobIds in system
  */
 public class Job implements Serializable {
 
 	private static final long serialVersionUID = 928850375626876361L;
 	
+	//The unique ID of this job
 	private long jobId;
+	
 	private String description;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
@@ -21,7 +26,8 @@ public class Job implements Serializable {
 	private String location;
 	private boolean isAvailable;
 	private boolean isCancelled;
-
+	
+	// The volunteers currently signed up for this job
 	private ArrayList<String> volunteers;
 
 	/**
@@ -92,13 +98,18 @@ public class Job implements Serializable {
 		return location;
 	}
 	/**
-	 * Gets a temporary flag representing the job's availability to a volunteer
-	 * @return
+	 * Gets a temporary flag representing the job's availability to for an action,
+	 * which depends on the context.
+	 * @return True if this job is available for an action, false otherwise
 	 */
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}
 	
+	/**
+	 * Gets this job's cancelled status
+	 * @return True if this job is cancelled, false otherwise.
+	 */
 	public boolean getIsCancelled() {
 		return isCancelled;
 	}
@@ -154,8 +165,9 @@ public class Job implements Serializable {
 
 	// Setters: -----------------------------------------------------------------------------------------------------------
 	/**
-	 * Sets a temporary flag representing the job's availability to a volunteer
-	 * @param isAvailable
+	 * Sets a temporary flag representing the job's availability for 
+	 * an action, which depends of context
+	 * @param isAvailable A flag indicating if this job is available for an action.
 	 */
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
@@ -171,7 +183,13 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Adds a volunteer to the list of signed up volunteers. 
+	 * Adds a volunteer to the list of signed up volunteers.
+	 * precondition: The email string must be unique 
+	 * to all other email strings associated with this job,
+	 * precondition: This job must not be cancelled.
+	 * precondition: email != null
+	 * postcondition: This job's total volunteer count is incremented
+	 * 
 	 * @param email the email address of the volunteer
 	 */
 	public void addVolunteer(String email) {
@@ -180,6 +198,11 @@ public class Job implements Serializable {
 	
 	/**
 	 * Removes a volunteer from this job when they unvolunteer
+	 * precondition: The email string must already be associated with this job,
+	 * precondition: This job's volunteer list must not be empty.
+	 * precondition: This job must not be cancelled.
+	 * precondition: email != null
+	 * 
 	 * @param email the email address of the volunteer
 	 */
 	public void removeVoluneer(String email) {
@@ -187,30 +210,31 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Determines if the start or end times of 2 jobs overlap
+	 * Determines if the start or end dates of 2 jobs overlap
+	 * precondition: otherJob != null
 	 * 
-	 * @param otherJob
-	 * @return
+	 * @param otherJob The job to compare with
+	 * @return True if the start or end dates of the 2 jobs overlap, false otherwise
 	 */
 	public boolean doJobsOverlap(Job otherJob) {
-		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getStartDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
 			return true;
 		}
-		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getEndDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
 			return true;
 		}
-		if (DateUtils.are2DatesOnSameDay(endDateTime,  otherJob.getEndDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Checks whether the time between now and the job start time is at least the minimum value,
-	 *  for job sign up.
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for signing up for it.
 	 * 
-	 * @param theCandidateJob
-	 * @return true if there is enough time between now and when the job starts, false otherwise.
+	 * @return true if there is enough time between now 
+	 * and when the job starts for signing up, false otherwise.
 	 */
 	public boolean isSignupEarlyEnough() {
 		/**
@@ -221,6 +245,13 @@ public class Job implements Serializable {
 		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
+	/**
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for unvolunteering from it.
+	 *  
+	 * @return true if there is enough time between now 
+	 * and when the job starts for unvolunteering, false otherwise.
+	 */
 	public boolean isUnvolunteerEarlyEnough() {
 		/**
 		 * A volunteer can unvolunteer only if the job starts 
@@ -230,6 +261,13 @@ public class Job implements Serializable {
 		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
 	}
 	
+	/**
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for unsubmitting it.
+	 * 
+	 * @return true if there is enough time between now 
+	 * and when the job starts for unsubmitting, false otherwise.
+	 */
 	public boolean isUnsubmitEarlyEnough() {
 		/**
 		 * A job can be unsubmitted only if the job starts 
@@ -240,8 +278,10 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Checks weather this job's start or end is between the given two date and time, inclusive.
+	 * Checks whether this job's start or end time is between the given two times, inclusive.
 	 * Precondition: the given two dates are not null.
+	 * precondition: lowerBound != null
+	 * precondition: upperBound != null
 	 * 
 	 * @param lowerBound the lower bound which the job's start or end times can't be below
 	 * @param upperBound the upper bound which the job's start or end times can't be above
@@ -262,6 +302,7 @@ public class Job implements Serializable {
 	/**
 	 * Determines if a job has ended, 
 	 * meaning its end time is at or before now
+	 * 
 	 * @return true if job has ended, false otherwise.
 	 */
 	public boolean hasJobEnded() {

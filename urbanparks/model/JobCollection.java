@@ -44,9 +44,10 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * Generate a new jobID using the increment of the current jobID.
+	 * Generate a new unique jobID using the increment of the current jobID.
+	 * postcondition: ID must be unique to all other job IDs in the system 
 	 *  
-	 * @return a valid generated JobID
+	 * @return a new valid unique JobID
 	 */
 	public static int generateNewJobID() {
 		currentJobId++;
