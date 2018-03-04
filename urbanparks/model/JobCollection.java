@@ -44,6 +44,16 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
+	 * Generate a new jobID using the increment of the current jobID.
+	 *  
+	 * @return a valid generated JobID
+	 */
+	public static int generateNewJobID() {
+		currentJobId++;
+		return currentJobId;
+	}
+	
+	/**
 	 * Adds a job to the job hash map.
 	 * 
 	 * PRECONDITION: HASHMAP FULL? possible?
@@ -119,23 +129,6 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	public ArrayList<Job> getJobsBetweenDateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
-		ArrayList<Job> availableJobs = new ArrayList<Job>();
-		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
-			Job job = entry.getValue();
-			boolean startMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, true);
-			boolean startMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, true);
-			boolean endMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, false);
-			boolean endMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, false);
-			if ((startMeetsLowerBoundCond || endMeetsLowerBoundCond) 
-					&& (startMeetsUpperBoundCond || endMeetsUpperBoundCond)) {
-				availableJobs.add(job);
-			}
-		}
-		sortJobsByStartDate(availableJobs);
-		return availableJobs;
-	}
-	
 	/**
 	 * Gets a sorted list of jobs available for a specific park manager to 
 	 * view these jobs which they are in the future.
@@ -162,16 +155,16 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * Gets all available jobs between two given dates.
-	 * Precondition: the given two dates should not be null.
-	 * 
-	 * @return The list of jobs that is between the two dates.
+	 * Gets all jobs whose start or end times are between the 2 times, inclusive.
+	 * @param lowerBound the lower bound which the jobs' start or end times can't be below
+	 * @param upperBound the upper bound which the jobs' start or end times can't be above
+	 * @return An ArrayList of all jobs that are between the dates
 	 */
-	public ArrayList<Job> getJobsBetween2Dates(LocalDateTime start, LocalDateTime end) throws Exception {
+	public ArrayList<Job> getJobsBetween2DateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
 		final ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if (job.isBetween2Dates(start, end)) {
+			if (job.isBetween2DatesInclusive(lowerBound, upperBound)) {
 				availableJobs.add(job);
 			}
 		}
@@ -220,17 +213,4 @@ public class JobCollection implements Serializable {
 		currentJobId = jobsList.size();
 		ois.close();
 	}
-	
-	public static int getCurrentJobId() {
-		return currentJobId;
-	}
-
-	public static void incrementCurrentJobId() {
-		currentJobId++;
-	}
-	
-	public static void setDefaultJobId() {
-		currentJobId = ModelConstants.DEFAULT_JOB_ID;
-	}
-
 }

@@ -64,7 +64,7 @@ public class UrbanParksStaffTest {
 		LocalDateTime endDateTime = LocalDateTime.now();
 		endDateTime = endDateTime.plusDays(5);
 
-		assertTrue(job.isBetween2Dates(startDateTime, endDateTime));
+		assertTrue(job.isBetween2DatesInclusive(startDateTime, endDateTime));
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class UrbanParksStaffTest {
 		LocalDateTime endDateTime = LocalDateTime.now();
 		endDateTime = endDateTime.plusDays(10);
 
-		assertFalse(job.isBetween2Dates(startDateTime, endDateTime));
+		assertFalse(job.isBetween2DatesInclusive(startDateTime, endDateTime));
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class UrbanParksStaffTest {
 		LocalDateTime endDateTime = LocalDateTime.now();
 		endDateTime = endDateTime.plusDays(10);
 
-		assertFalse(job.isBetween2Dates(startDateTime, startDateTime));
+		assertFalse(job.isBetween2DatesInclusive(startDateTime, startDateTime));
 	}
 
 }
