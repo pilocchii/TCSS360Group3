@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,6 +127,20 @@ public class JobCollection implements Serializable {
 				} else {
 					job.setIsAvailable(false);
 				}
+				availableJobs.add(job);
+			}
+		}
+		sortJobsByStartDate(availableJobs);
+		return availableJobs;
+	}
+	
+	public ArrayList<Job> getJobsBetweenDates(boolean basedOnJobStart, LocalDateTime lowerBound, LocalDateTime upperBound) {
+		ArrayList<Job> availableJobs = new ArrayList<Job>();
+		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			boolean meetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, basedOnJobStart);
+			boolean meetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, basedOnJobStart);
+			if (meetsLowerBoundCond && meetsUpperBoundCond) {
 				availableJobs.add(job);
 			}
 		}

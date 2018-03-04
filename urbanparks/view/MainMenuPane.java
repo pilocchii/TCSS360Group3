@@ -12,6 +12,7 @@ import urbanparks.model.UserCollection;
 import urbanparks.model.User;
 import urbanparks.model.Volunteer;
 import urbanparks.view.parkmanager.ParkManagerMenu;
+import urbanparks.view.upstaff.UPStaffMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
@@ -25,13 +26,9 @@ import urbanparks.model.UrbanParksStaff;
  */
 public class MainMenuPane extends GridPane {
 
-    /* A reference to the application window */
     MainApplication root;
-
-    /* References from root */
-    UserCollection userCollection;
     Button backButton;
-    BorderPane centerPane;
+    UserCollection userCollection;    
     
     TextField userNameTextField;
 
@@ -40,8 +37,6 @@ public class MainMenuPane extends GridPane {
         this.root = root;
         this.userCollection = root.getUserCollection();
         this.backButton = root.getBackButton();
-        this.centerPane = root.getCenterPane();
-
         show();
     }
     
@@ -75,7 +70,7 @@ public class MainMenuPane extends GridPane {
         backButton.setText("Back");
         backButton.setDisable(true);
         
-        root.setTitle("Main Menu");
+        root.setTitle("Urban Parks Main Menu");
     }
 
 
@@ -102,7 +97,7 @@ public class MainMenuPane extends GridPane {
 						backButton.setDisable(false);
 					
 					} else if (user instanceof UrbanParksStaff) {
-						//new UrbanParksStaffMenu();
+						root.setCenter(new UPStaffMenu(root, (UrbanParksStaff)user));
 						backButton.setDisable(false);
 					}
 				}

@@ -45,6 +45,9 @@ public class CreateJobPane extends GridPane {
     private ParkManager parkManager;
     private JobCollection jobCollection;
     
+    // fields satisfied flags
+	private boolean startDateSatisfied;
+	private boolean endDateSatisfied;
     private boolean descriptionSatisfied;
     private boolean parkNameSatisfied;
     private boolean jobLocationSatisfied;
@@ -64,6 +67,8 @@ public class CreateJobPane extends GridPane {
         this.parkManager = parkManager;
         this.jobCollection = root.getJobCollection();
         
+        startDateSatisfied = true;
+    	endDateSatisfied = true;
         descriptionSatisfied = false;
         parkNameSatisfied = false;
         jobLocationSatisfied = false;
@@ -77,9 +82,11 @@ public class CreateJobPane extends GridPane {
         
         startDatePicker = new DatePicker();
         endDatePicker = new DatePicker();
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now());
+        validateDates(startDatePicker, endDatePicker);
 
         // start date picker
-        startDatePicker.setValue(LocalDate.now());
         startDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
         	validateDates(startDatePicker, endDatePicker);
         });
@@ -103,7 +110,6 @@ public class CreateJobPane extends GridPane {
         startDatePicker.setDayCellFactory(startDateCallBack);
         
         // end date picker
-        endDatePicker.setValue(LocalDate.now());
         endDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
         	validateDates(startDatePicker, endDatePicker);
         });
@@ -203,7 +209,8 @@ public class CreateJobPane extends GridPane {
     public class CreateJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	if (descriptionSatisfied && parkNameSatisfied && jobLocationSatisfied) {
+        	if (startDateSatisfied && endDateSatisfied && descriptionSatisfied 
+        			&& parkNameSatisfied && jobLocationSatisfied) {
         			
         		//TODO: add times for dates
         		LocalDateTime startTime = startDatePicker.getValue().atStartOfDay();
@@ -228,9 +235,13 @@ public class CreateJobPane extends GridPane {
     	if (doesViolateBizRule(startDatePicker.getValue(), endDatePicker.getValue())) {
     		startDatePicker.setStyle(INVALID_DATE_STYLE);
     		endDatePicker.setStyle(INVALID_DATE_STYLE);
+    		startDateSatisfied = false;
+    		endDateSatisfied = false;
     	} else {
     		startDatePicker.setStyle(VALID_DATE_STYLE);
     		endDatePicker.setStyle(VALID_DATE_STYLE);
+    		startDateSatisfied = true;
+    		endDateSatisfied = true;
     	}
     }
     

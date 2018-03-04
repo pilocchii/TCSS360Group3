@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
 import urbanparks.view.parkmanager.ParkManagerMenu;
+import urbanparks.view.upstaff.UPStaffMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
 import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
@@ -242,8 +243,10 @@ public class SignupPane extends GridPane {
         			UrbanParksStaff newUrbanParksStaff = new UrbanParksStaff(firstName, lastName, email, phone);
         			userCollection.addUser(newUrbanParksStaff);
         			AlertUtils.showRegisterSuccess("an Urban Parks staff", firstName);
-        			// todo login
+        			root.setCenter(new UPStaffMenu(root, newUrbanParksStaff));
         		}
+        	} else {
+        		AlertUtils.showInvalidOptions();
         	}
         }
     }

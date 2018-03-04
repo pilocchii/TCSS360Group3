@@ -55,7 +55,6 @@ public class ParkManagerMenu extends GridPane {
         root.setTitle("Park Manager Menu - " + parkManager.getEmail());
     }
     
-    
     private class viewSubmittedEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -63,7 +62,6 @@ public class ParkManagerMenu extends GridPane {
         	parkManagerJobDisplay.showParkManagerCreatedJobs();
         }
     }
-    
     
     private class createJobEventHandler implements EventHandler<ActionEvent> {
         @Override
