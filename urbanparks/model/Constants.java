@@ -12,7 +12,7 @@ public final class Constants {
 	 */
 	
 	//For creating job
-	public static final int DEFAULT_MAX_PENDING_JOBS = 20;
+	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
 	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
 	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
 	public static final int MAX_JOB_LENGTH = 4;
