@@ -22,11 +22,10 @@ public class Volunteer extends User {
 	 */
 	public boolean signUpForJob(Job candidateJob) {
 		boolean flag = false;
-		if(candidateJob.addVolunteer(this.getEmail())) {
-			associatedJobs.add(candidateJob.getJobId());
-			if(associatedJobs.contains(candidateJob.getJobId())) {
-				flag = true; //both job and volunteer added each other
-			}
+		candidateJob.addVolunteer(getEmail());
+		associatedJobs.add(candidateJob.getJobId());
+		if(associatedJobs.contains(candidateJob.getJobId())) {
+			flag = true; //both job and volunteer added each other
 		}
 		return flag;
 	}

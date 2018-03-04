@@ -61,17 +61,10 @@ public class Job implements Serializable {
 
 	/**
 	 * Adds a volunteer to the list of signed up volunteers. 
-	 * Takes in a volunteer's email address, returns true if the volunteer
-	 * was signed up successfully, false otherwise.
 	 * @param theVolunteer the email address to sign-up
-	 * @return true if the volunteer was added successfully, false otherwise
 	 */
-	public boolean addVolunteer(String theVolunteer) {
+	public void addVolunteer(String theVolunteer) {
 		volunteers.add(theVolunteer);
-		if(volunteers.contains(theVolunteer)) {
-			return true;
-		}
-		return false;//if arraylist didn't add it for some reason
 	}
 	
 	public int getVolunteerCount() {
