@@ -200,6 +200,16 @@ public class Job implements Serializable {
 		}
 		return false;
 	}
+	
+	public boolean isJobAfterOrAtDateTime(LocalDateTime lowerBound, boolean basedOnJobStart) {
+		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
+		return (jobDateTime.isAfter(lowerBound) || jobDateTime.isEqual(lowerBound));
+	}
+	
+	public boolean isJobBeforeOrAtDateTime(LocalDateTime upperBound, boolean basedOnJobStart) {
+		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
+		return (jobDateTime.isBefore(upperBound) || jobDateTime.isEqual(upperBound));
+	}
 
 	/**
 	 * Checks whether the time between now and the job start time is at least the minimum value,

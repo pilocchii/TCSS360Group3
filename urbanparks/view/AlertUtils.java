@@ -83,7 +83,7 @@ public class AlertUtils {
     public static void emailNotExist(String email) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR_DIALOG_TITLE);
-        alert.setHeaderText("There is not account registered for the email " + email + "!");
+        alert.setHeaderText("There is no account registered for the email " + email + "!");
         alert.setContentText("If you do not have an account, please create one.");
         alert.showAndWait();
     }
