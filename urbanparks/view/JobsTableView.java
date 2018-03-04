@@ -1,5 +1,6 @@
 package urbanparks.view;
 
+import static urbanparks.view.ViewConstants.*;
 import urbanparks.model.Job;
 
 import java.util.ArrayList;
@@ -40,13 +41,14 @@ public class JobsTableView extends GridPane {
 	                    public void updateItem(String isAvail, boolean empty) {
 	                        super.updateItem(isAvail, empty);
 	                        if (!isEmpty()) {
-	                            TableRow<Job> currentRow = getTableRow();
+	                            @SuppressWarnings("unchecked")
+								TableRow<Job> currentRow = getTableRow();
 	                            if (currentRow != null) {
 	                                if(isAvail.equals("Yes")) {
-	                                    this.setTextFill(Color.DARKGREEN);   
+	                                    this.setTextFill(AVAILABLE_JOB_COLOR);   
 	                                    //currentRow.setStyle("-fx-background-color: DARKGREEN");
 	            					} else {
-	                                    this.setTextFill(Color.RED);
+	                                    this.setTextFill(UNAVAILABLE_JOB_COLOR);
 	                                    //currentRow.setStyle("-fx-background-color: LIGHTGREY");
 	            					}
 	                            }

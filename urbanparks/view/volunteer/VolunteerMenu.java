@@ -19,33 +19,25 @@ import urbanparks.model.User;
 import urbanparks.model.Volunteer;
 import urbanparks.view.MainApplication;
 import urbanparks.view.MainMenuPane;
-import urbanparks.view.MainMenuPane.BackButtonEventHandler;
 import urbanparks.model.UserCollection;
 
 public class VolunteerMenu extends GridPane {
 
-	private VolunteerMenu volunteerPane = this;
     private MainApplication root;
-    private UserCollection userCollection;
-    private JobCollection jobCollection;
-    private MainMenuPane back;
     private Button backButton;
     private Volunteer volunteer;
     
-    public VolunteerMenu(MainApplication root,MainMenuPane back, Volunteer volunteer) {
+    public VolunteerMenu(MainApplication root, Volunteer volunteer) {
         super();
 
         this.root = root;
-        this.userCollection = root.getUserCollection();
-        this.jobCollection = root.getJobCollection();
-        this.back = back;
         this.backButton = root.getBackButton();
         this.volunteer = volunteer;
  
         show();
     }
 
-    public void show() {
+    private void show() {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
 
@@ -65,14 +57,16 @@ public class VolunteerMenu extends GridPane {
         
         add(viewPendingButton, 0, 0);
         add(viewAvailableButton, 0, 1);
+        
+        root.setTitle("Volunteer Menu - " + volunteer.getEmail());
     }
     
     
     private class viewPendingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteerPane);
-        	volunteerJobDisplay.showVolunteerPendingJobs(volunteer);
+        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteer);
+        	volunteerJobDisplay.showVolunteerPendingJobs();
         }
     }
     
@@ -80,8 +74,8 @@ public class VolunteerMenu extends GridPane {
     private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteerPane);
-        	volunteerJobDisplay.showVolunteerAvailJobs(volunteer);
+        	JobsDisplay volunteerJobDisplay = new JobsDisplay(root, volunteer);
+        	volunteerJobDisplay.showVolunteerAvailJobs();
         }
     }
 
@@ -89,8 +83,7 @@ public class VolunteerMenu extends GridPane {
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(back);
-        	back.show();
+        	root.setCenter(new MainMenuPane(root));
         }
     }
 }

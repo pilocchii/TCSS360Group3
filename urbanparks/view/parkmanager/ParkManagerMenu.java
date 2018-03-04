@@ -18,19 +18,13 @@ public class ParkManagerMenu extends GridPane {
 	
 	private ParkManagerMenu parkManagerPane = this;
     private MainApplication root;
-    private UserCollection userCollection;
-    private JobCollection jobCollection;
-    private MainMenuPane back;
     private Button backButton;
     ParkManager parkManager;
     
-    public ParkManagerMenu(MainApplication root, MainMenuPane back, ParkManager parkManager) {
+    public ParkManagerMenu(MainApplication root, ParkManager parkManager) {
         super();
 
         this.root = root;
-        this.userCollection = root.getUserCollection();
-        this.jobCollection = root.getJobCollection();
-        this.back = back;
         this.backButton = root.getBackButton();
         this.parkManager = parkManager;
  
@@ -57,14 +51,16 @@ public class ParkManagerMenu extends GridPane {
         
         add(viewSubmittedButton, 0, 0);
         add(createJobButton, 0, 1);
+        
+        root.setTitle("Park Manager Menu - " + parkManager.getEmail());
     }
     
     
     private class viewSubmittedEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	JobsDisplay parkManagerJobDisplay = new JobsDisplay(root, parkManagerPane);
-        	parkManagerJobDisplay.showParkManagerCreatedJobs(parkManager);
+        	JobsDisplay parkManagerJobDisplay = new JobsDisplay(root, parkManager);
+        	parkManagerJobDisplay.showParkManagerCreatedJobs();
         }
     }
     
@@ -72,15 +68,14 @@ public class ParkManagerMenu extends GridPane {
     private class createJobEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	 root.setCenter(new CreateJobPane(root, back, parkManager));
+        	 root.setCenter(new CreateJobPane(root, parkManager));
         }
     }
     
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(back);
-        	back.show();
+        	root.setCenter(new MainMenuPane(root));
         }
     }
 }

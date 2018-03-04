@@ -16,26 +16,23 @@ import urbanparks.view.MainApplication;
 
 public class JobsDisplay extends JobsTableView {
 	
-	private VolunteerMenu back;
 	private Volunteer volunteer;
 	
-	public JobsDisplay(MainApplication root, VolunteerMenu back) {
+	public JobsDisplay(MainApplication root, Volunteer volunteer) {
 		this.root = root;
-		this.back = back;
+		this.volunteer = volunteer;
 		
 		Button backButton = root.getBackButton();
 		backButton.setText("Back to volunteer menu");
 		backButton.setOnAction(new BackButton_Volunteer_Handler());
 	}
 	
-	
-	public void showVolunteerAvailJobs(Volunteer volunteer) {
-		this.volunteer = volunteer;
+	public void showVolunteerAvailJobs() {
 		String tableTitle = "\t\t\t\tAvailable Jobs";
         ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
 		
         Button signUpButton = new Button();
-        signUpButton.setText("sign up for this job");
+        signUpButton.setText("Sign up for this job");
         signUpButton.setOnAction(new SignupJobButtonHandler());
 		signUpButton.setDisable(true);
 		
@@ -46,10 +43,10 @@ public class JobsDisplay extends JobsTableView {
 		vbox.getChildren().add(signUpButton);
 		
 		root.setCenter(vbox);
+		root.setTitle("View Available Jobs - " + volunteer.getEmail());
 	}
 	
-	public void showVolunteerPendingJobs(Volunteer volunteer) {
-		this.volunteer = volunteer;
+	public void showVolunteerPendingJobs() {
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
         ArrayList<Job> jobsToShow = volunteer.getSignedUpJobs(root.getJobCollection());
 		
@@ -65,6 +62,7 @@ public class JobsDisplay extends JobsTableView {
 		vbox.getChildren().add(unvolunteerButton);
 		
 		root.setCenter(vbox);
+		root.setTitle("View Pending Jobs - " + volunteer.getEmail());
 	}
 
     
@@ -72,9 +70,13 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		volunteer.signUpForJob(selectedJob);
-        		AlertUtils.showSignupUpForJob(selectedJob.getDescription());
-        		root.setCenter(back);
+        		if (AlertUtils.askJobSignup(selectedJob.getDescription())) {
+            		volunteer.signUpForJob(selectedJob);
+            		AlertUtils.showJobSignupSuccess();
+            		root.setCenter(new VolunteerMenu(root, volunteer));
+        		}
+        	} else {
+        		AlertUtils.showInvalidOptions();
         	}
         }
     }
@@ -82,17 +84,20 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		volunteer.unVolunteerFromJob(selectedJob);
-        		AlertUtils.showUnvolunteered(selectedJob.getDescription());
-        		root.setCenter(back);
+        		if (AlertUtils.askJobUnvolunteer(selectedJob.getDescription())) {
+        			volunteer.unVolunteerFromJob(selectedJob);
+        			AlertUtils.showJobUnvolunteerSuccess();
+        			root.setCenter(new VolunteerMenu(root, volunteer));
+        		}
+        	} else {
+        		AlertUtils.showInvalidOptions();
         	}
         }
     }
     private class BackButton_Volunteer_Handler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-        	root.setCenter(back);
-        	back.show();
+        	root.setCenter(new VolunteerMenu(root, volunteer));
         }
     }
 }

@@ -1,7 +1,6 @@
 package urbanparks.view;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import urbanparks.model.JobCollection;
 import urbanparks.model.UserCollection;
+import static urbanparks.view.ViewConstants.*;
 import javafx.scene.layout.BorderPane;
 
 
@@ -18,37 +18,27 @@ import javafx.scene.layout.BorderPane;
  * Main entry point for Urban Parks application GUI
  */
 public class MainApplication extends Application {
-	
-	public class Test extends BorderPane {
-	    private Button backButton;
-		private JobCollection jobCollection;
-		private UserCollection userCollection;
-		
-		public Test(Button backButton, JobCollection jobCollection, UserCollection userCollection) {
-			this.backButton = backButton;
-			this.jobCollection = jobCollection;
-			this.userCollection = userCollection;
-		}
-	}
-
-    private final String title = "Urban Parks";
 
     private MainApplication root = this;
     private Button backButton;
     private BorderPane centerPane;
-    private static JobCollection jobCollection;
+    private JobCollection jobCollection;
+	private UserCollection userCollection;
+	private Stage primaryStage;
 
-	private static UserCollection userCollection;
-
-
-    public MainApplication() {
+	/**
+	 * 
+	 */
+	public MainApplication() {
+		// shouldn't be called
 	}
-
+	
 	/**
 	 * 
 	 * @param args
 	 */
     public MainApplication(String[] args) {
+    	//root = this;
         launch(args);
     }
 
@@ -59,6 +49,7 @@ public class MainApplication extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+    	this.primaryStage = primaryStage;
     	
 		jobCollection = new JobCollection();
 		userCollection = new UserCollection();
@@ -66,23 +57,25 @@ public class MainApplication extends Application {
 			jobCollection.loadData();
 			userCollection.loadData();
 		} catch (Exception e) {
-			AlertUtils.showDataLoadError(e.getMessage());
+			AlertUtils.showDataLoadError(e);
 			AlertUtils.showEmptyDataUsed();
 		}
 
         // Stage init
-        primaryStage.setTitle(title);
         centerPane = new BorderPane();
         MenuBar menuBar = constructMenuBar();
         backButton = new Button();
 
         centerPane.setTop(new BorderPane(null, menuBar, null, backButton, null));
         centerPane.setCenter(new MainMenuPane(root));
-        primaryStage.setScene(new Scene(centerPane, 550, 500));
+        primaryStage.setScene(new Scene(centerPane, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
 
         primaryStage.show();
     }
-
+    
+    public void setTitle(String newTitle) {
+    	primaryStage.setTitle(newTitle);
+    }
 
     /**
      * Creates the menu bar.
@@ -103,7 +96,7 @@ public class MainApplication extends Application {
 					AlertUtils.showDataSaveSuccess();
 					
 				} catch (IOException e) {
-					AlertUtils.showDataSaveError(e.getMessage());
+					AlertUtils.showDataSaveError(e);
 				}
             }
         }); 
