@@ -18,9 +18,6 @@ public class Volunteer extends User {
 	 * true if the volunteer signed up successfully, false otherwise.
 	 * 
 	 * @param candidateJob the job to be signed up for
-	 * @throws volunteerJobOverlapException
-	 * @throws jobSignupTooLateException
-	 * @throws alreadySignedUpException 
 	 * @return true if the volunteer signed up successfully, false otherwise
 	 */
 	public boolean signUpForJob(Job candidateJob) {
