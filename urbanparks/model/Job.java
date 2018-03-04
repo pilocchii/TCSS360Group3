@@ -227,7 +227,8 @@ public class Job implements Serializable {
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		return DateUtils.daysBetweenNowAndDate(getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
 	public boolean isUnvolunteerEarlyEnough() {
