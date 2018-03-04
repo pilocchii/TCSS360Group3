@@ -58,5 +58,17 @@ public class JobCollectionTest {
 		}
 		assertTrue(jobCollection.isNumJobsAtMaximum());
 	}
+	
+	@Test
+	public void getPendingCount_PendingJobsAndCancelledJobInCollection_True() {
+		LocalDateTime dateTime = LocalDateTime.now();
+		int size = jobCollection.size();
+		for(int i = size; i < (size + 5); i++) {
+			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
+		}
+			Job cancelled = new Job("This is cancelled", dateTime, dateTime, "Shouldn't", "Count");
+			cancelled.setIsCancelled(true);
+			assertTrue(5 == jobCollection.getPendingJobsCount());
+	}
 
 }

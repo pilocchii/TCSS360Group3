@@ -70,12 +70,27 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * The size of job collection.
+	 * The size of job collection. THIS INCLUDES CANCELLED AND PENDING JOBS!
 	 * 
 	 * @return the size.
 	 */
 	public int size() {
 		return jobsList.size();
+	}
+	
+	/**
+	 * Returns an int representing the number of PENDING jobs in the collection.
+	 * @return Pending jobs in the system
+	 */
+	public int getPendingJobsCount() {
+		int pendingCount = 0;
+		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
+			Job job = entry.getValue();
+			if(!job.getIsCancelled()) {
+				pendingCount++;
+			}
+		}
+		return pendingCount;
 	}
 	
 	/**
