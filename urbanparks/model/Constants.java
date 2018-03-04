@@ -16,7 +16,7 @@ public final class Constants {
 	private static final int DEFAULT_MAX_PENDING_JOBS = 20;
 	private static int maxPendingJobs;
 	public static final int MAX_DAYS_BEFORE_JOB_ENDS = 60;
-	private static final int DEFAULT_JOB_ID = 0;
+	public static final int DEFAULT_JOB_ID = 0;
 	
 	//For signing up for job
 	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
@@ -92,8 +92,5 @@ public final class Constants {
 	}
 	
 	
-	public static int getDefaultJobId() {
-		return DEFAULT_JOB_ID;
-	}
 	
 }

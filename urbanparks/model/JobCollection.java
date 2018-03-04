@@ -30,7 +30,7 @@ public class JobCollection implements Serializable {
 	 */
 	public JobCollection() {
 		jobsList = new HashMap<Long, Job>();
-		currentJobId = Constants.getDefaultJobId();
+		currentJobId = Constants.DEFAULT_JOB_ID;
 	}
 	
 	/**
@@ -228,7 +228,7 @@ public class JobCollection implements Serializable {
 	}
 	
 	public static void setDefaultJobId() {
-		currentJobId = Constants.getDefaultJobId();
+		currentJobId = Constants.DEFAULT_JOB_ID;
 	}
 
 }
