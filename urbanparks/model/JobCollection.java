@@ -119,13 +119,16 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	public ArrayList<Job> getJobsBetweenDates(boolean basedOnJobStart, LocalDateTime lowerBound, LocalDateTime upperBound) {
+	public ArrayList<Job> getJobsBetweenDates(LocalDateTime lowerBound, LocalDateTime upperBound) {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			boolean meetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, basedOnJobStart);
-			boolean meetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, basedOnJobStart);
-			if (meetsLowerBoundCond && meetsUpperBoundCond) {
+			boolean startMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, true);
+			boolean startMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, true);
+			boolean endMeetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, false);
+			boolean endMeetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, false);
+			if ((startMeetsLowerBoundCond || endMeetsLowerBoundCond) 
+					&& (startMeetsUpperBoundCond || endMeetsUpperBoundCond)) {
 				availableJobs.add(job);
 			}
 		}

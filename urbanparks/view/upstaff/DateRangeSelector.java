@@ -39,9 +39,6 @@ public class DateRangeSelector extends GridPane {
     //fields
     private DatePicker lowerBoundDatePicker;
     private DatePicker upperBoundDatePicker;
-    private ToggleGroup rangeFormatRadioGroup;
-	private RadioButton basedOnJobStartRadio;
-	private RadioButton basedOnJobEndRadio;
 	
     // fields satisfied flags
 	private boolean startDateSatisfied;
@@ -102,22 +99,13 @@ public class DateRangeSelector extends GridPane {
         showJobsButton.setOnAction(new ViewJobsEventHandler());
         // Allows it to grow in size to match their container
         showJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-        rangeFormatRadioGroup = new ToggleGroup();
-        basedOnJobStartRadio = new RadioButton("Base bounds off of job start dates");
-        basedOnJobStartRadio.setToggleGroup(rangeFormatRadioGroup);
-        basedOnJobStartRadio.setSelected(true);
-        basedOnJobEndRadio = new RadioButton("Base bounds off of job end dates");
-        basedOnJobEndRadio.setToggleGroup(rangeFormatRadioGroup);
         
         add(new Label("Lower bound of job dates"), 0, 0);
         add(lowerBoundDatePicker, 0, 1);
         add(new Label("Upper bound of job dates"), 0, 2);
         add(upperBoundDatePicker, 0, 3);
         add(new Separator(), 0, 4);
-        add(basedOnJobStartRadio, 0, 5);
-        add(basedOnJobEndRadio, 0, 6);
-        add(showJobsButton, 0, 11);
+        add(showJobsButton, 0, 5);
  
         // styles
         setAlignment(Pos.CENTER);
@@ -156,13 +144,8 @@ public class DateRangeSelector extends GridPane {
                 JobsDisplay jobsDisplay = new JobsDisplay(root);
                 LocalDateTime startOfLowerBoundDate = lowerBoundDatePicker.getValue().atStartOfDay();
                 LocalDateTime endOfUpperBoundDate = upperBoundDatePicker.getValue().atTime(23, 59);
-
-        		RadioButton selectedRadioButton = (RadioButton) rangeFormatRadioGroup.getSelectedToggle();
-        		boolean basedOnJobStart = true;
-        		if (selectedRadioButton == basedOnJobEndRadio) {
-        			basedOnJobStart = false;
-        		}
-                jobsDisplay.showStaffJobsBetweenDates(urbanParksStaff, dateRangeSelector, startOfLowerBoundDate, endOfUpperBoundDate, basedOnJobStart);
+                
+                jobsDisplay.showStaffJobsBetweenDates(urbanParksStaff, dateRangeSelector, startOfLowerBoundDate, endOfUpperBoundDate);
         	} else {
         		AlertUtils.showInvalidOptions();
         	}
