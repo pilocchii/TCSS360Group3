@@ -17,14 +17,15 @@ import urbanparks.model.Job;
  */
 public class UrbanParksStaffTest {
 
-	@Before
-	public void setUpUrbanParksStaffTest() throws Exception {
-		try {
-			Constants.loadData();
-		} catch (Exception e) {
-			Constants.setDefaultMaxPendingJobs();
-		}
-	}
+	// not needed & unit tests should be independent from outside variables like files
+//	@Before
+//	public void setUpUrbanParksStaffTest() throws Exception {
+//		try {
+//			Constants.loadData();
+//		} catch (Exception e) {
+//			Constants.setDefaultMaxPendingJobs();
+//		}
+//	}
 	
 	/**
 	 * Testing change the max pending jobs value.
@@ -38,7 +39,7 @@ public class UrbanParksStaffTest {
 
 		Constants.setMaxPendingJobs(maxPendingJobs);
 		
-		Constants.saveData();
+		Constants.saveSettingsData();
 		
 		assertEquals(Constants.getMaxPendingJobs(), maxPendingJobs);
 		

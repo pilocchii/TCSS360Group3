@@ -53,7 +53,7 @@ public class JobCollectionTest {
 		LocalDateTime dateTime = LocalDateTime.now();
 		Constants.setDefaultMaxPendingJobs();
 		JobCollection.setDefaultJobId();
-		for(int i = jobCollection.size(); i < Constants.getMaxPendingJobs(); i++) {
+		for(int i = jobCollection.getPendingJobsCount(); i < Constants.getMaxPendingJobs(); i++) {
 			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
 		}
 		assertTrue(jobCollection.isNumJobsAtMaximum());
@@ -62,7 +62,7 @@ public class JobCollectionTest {
 	@Test
 	public void getPendingCount_PendingJobsAndCancelledJobInCollection_True() {
 		LocalDateTime dateTime = LocalDateTime.now();
-		int size = jobCollection.size();
+		int size = jobCollection.getPendingJobsCount();
 		for(int i = size; i < (size + 5); i++) {
 			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
 		}

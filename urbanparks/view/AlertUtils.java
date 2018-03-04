@@ -55,9 +55,9 @@ public class AlertUtils {
      * @param error
      */
     public static void showDataSaveError(Exception ex) {
-    	String header = "User and job data could not be saved to disk!";
-    	String content = "Job and user data could not be saved to " 
-        		+ Constants.JOB_DATA_FILE + " and " + Constants.USER_DATA_FILE;
+    	String header = "Job, user, and settings data could not be saved to disk!";
+    	String content = "Data could not be saved to " 
+        		+ Constants.JOB_DATA_FILE + ", " + Constants.USER_DATA_FILE + ", and " + Constants.SETTINGS_DATA_FILE;
     	showExceptionAlert(ex, header, content);
     }
     
@@ -65,10 +65,16 @@ public class AlertUtils {
      * Shows upon error saving data.
      * @param error
      */
-    public static void showDataLoadError(Exception ex) {	
+    public static void showJobUserDataLoadError(Exception ex) {	
     	String header = "Could not load job and user data from disk!";
     	String content = "Job and user data could not be loaded from " 
         		+ Constants.JOB_DATA_FILE + " and " + Constants.USER_DATA_FILE;
+    	showExceptionAlert(ex, header, content);
+    }
+    
+    public static void showSettingsLoadError(Exception ex) {
+    	String header = "Could not load settings data from disk!";
+    	String content = "Could not be loaded from " + Constants.SETTINGS_DATA_FILE;
     	showExceptionAlert(ex, header, content);
     }
     
@@ -87,6 +93,24 @@ public class AlertUtils {
         alert.setContentText("If you do not have an account, please create one.");
         alert.showAndWait();
     }
+    
+    public static void maxPendingJobsTooLow(int newValue, int pendingJobs) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR_DIALOG_TITLE);
+        alert.setHeaderText("The new maximum pending jobs value (" + newValue 
+        		+ ") is lower than the current number of pending jobs (" + pendingJobs + ").");
+        alert.setContentText("Please try a different value.");
+        alert.showAndWait();
+    }
+    
+    public static void numberJobsAtCapacity() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR_DIALOG_TITLE);
+        alert.setHeaderText("You cannot create a job because\n"
+        		+ "the maximum number of pending jobs has been reached.");
+        alert.setContentText("Please unsubmit a job or wait for a job to end.");
+        alert.showAndWait();
+    }
 	
 	// SUCCESS DIALOGS ------------------------------------------------------------------------------------------------------
     /**
@@ -95,9 +119,9 @@ public class AlertUtils {
     public static void showDataSaveSuccess() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(SUCCESS_DIALOG_TITLE);
-        alert.setHeaderText("All data is now saved to disk.");
-        alert.setContentText("Job and user data saved to " 
-        		+ Constants.JOB_DATA_FILE + " and " + Constants.USER_DATA_FILE + ".");
+        alert.setHeaderText("All job, user, and settings data is now saved to disk.");
+        alert.setContentText("Data saved to " + Constants.JOB_DATA_FILE + ", " 
+        		+ Constants.USER_DATA_FILE + " and " + Constants.SETTINGS_DATA_FILE);
         alert.showAndWait();
     }
     
@@ -145,10 +169,25 @@ public class AlertUtils {
      * Shows upon loading empty data into the system 
      * @param error
      */
-    public static void showEmptyDataUsed() {
+    public static void showEmptyJobUserDataUsed() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Empty Data Used");
         alert.setHeaderText("An empty data set (users and jobs) has been loaded.");
+        alert.showAndWait();
+    }
+    
+    public static void showDefaultSettingsUsed() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Default Settings Used");
+        alert.setHeaderText("Maximum pending jobs was set to its default value " 
+        		+ Constants.DEFAULT_MAX_PENDING_JOBS + ".");
+        alert.showAndWait();
+    }
+    
+    public static void showChangedMaxPendingJobs(int newValue) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(SUCCESS_DIALOG_TITLE);
+        alert.setHeaderText("Successfully changed the maximum number of pending jobs to " + newValue + ".");
         alert.showAndWait();
     }
 	

@@ -20,25 +20,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import urbanparks.model.DateUtils;
-import urbanparks.model.Job;
-import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
-import urbanparks.model.User;
-import urbanparks.model.UserCollection;
-import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
-import urbanparks.view.SignupPane;
-import urbanparks.view.MainMenuPane.LoginEventHandler;
-import urbanparks.view.MainMenuPane.SignupMenuEventHandler;
-import urbanparks.view.parkmanager.ParkManagerMenu;
-import urbanparks.view.volunteer.VolunteerMenu;
 
 public class DateRangeSelector extends GridPane {
 
@@ -115,8 +102,7 @@ public class DateRangeSelector extends GridPane {
         showJobsButton.setOnAction(new ViewJobsEventHandler());
         // Allows it to grow in size to match their container
         showJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        
-        
+
         rangeFormatRadioGroup = new ToggleGroup();
         basedOnJobStartRadio = new RadioButton("Base bounds off of job start dates");
         basedOnJobStartRadio.setToggleGroup(rangeFormatRadioGroup);

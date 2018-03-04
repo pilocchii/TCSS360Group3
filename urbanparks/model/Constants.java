@@ -12,9 +12,10 @@ public final class Constants {
 	 */
 	
 	//For creating job
+	public static final int DEFAULT_MAX_PENDING_JOBS = 20;
+	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
+	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
 	public static final int MAX_JOB_LENGTH = 4;
-	private static final int DEFAULT_MAX_PENDING_JOBS = 20;
-	private static int maxPendingJobs;
 	public static final int MAX_DAYS_BEFORE_JOB_ENDS = 60;
 	public static final int DEFAULT_JOB_ID = 0;
 	
@@ -25,7 +26,7 @@ public final class Constants {
 	//For loading persistent data
 	public static final String JOB_DATA_FILE = "joblist.data";
 	public static final String USER_DATA_FILE = "userlist.data";
-	private static final String fileName = "ConstantsFile.txt";
+	public static final String SETTINGS_DATA_FILE = "settings.data";
 	
 	// for DateUtils
 	public final static int DAYS_IN_YEAR = 365;
@@ -55,9 +56,10 @@ public final class Constants {
 	 * 
 	 * @return the status of the load true if it was successful and false otherwise.
 	 */
-	public static void loadData() throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File(fileName));
+	public static void loadSettingsData() throws FileNotFoundException {
+		Scanner scanner = new Scanner(new File(SETTINGS_DATA_FILE));
 		maxPendingJobs = scanner.nextInt();
+		System.out.println(maxPendingJobs);
 		scanner.close();
 	}
 	
@@ -66,12 +68,16 @@ public final class Constants {
 	 * 
 	 * @return the status of the saving true if it was successful and false otherwise.
 	 */
-	public static void saveData() throws FileNotFoundException {
-		PrintStream printStream = new PrintStream(new File(fileName));
+	public static void saveSettingsData() throws FileNotFoundException {
+		PrintStream printStream = new PrintStream(new File(SETTINGS_DATA_FILE));
 		printStream.print(maxPendingJobs);
 		printStream.close();
 	}
 
+	/**
+	 * Gets the maximum number of pending jobs
+	 * @return the maximum number of pending jobs
+	 */
 	public static int getMaxPendingJobs() {
 		return maxPendingJobs;
 	}
@@ -90,7 +96,5 @@ public final class Constants {
 	public static void setDefaultMaxPendingJobs() {
 		maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
 	}
-	
-	
-	
+
 }

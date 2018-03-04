@@ -170,7 +170,7 @@ public class SignupPane extends GridPane {
         parkManagerRadioButton = new RadioButton("Park Manager");
         parkManagerRadioButton.setToggleGroup(accountTypeGroup);
         
-        staffRadioButton = new RadioButton("Staff");
+        staffRadioButton = new RadioButton("Urban Parks Staff");
         staffRadioButton.setToggleGroup(accountTypeGroup);
         
         Button signupButton = new Button("Sign up");

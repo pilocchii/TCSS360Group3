@@ -210,6 +210,10 @@ public class Job implements Serializable {
 		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
 		return (jobDateTime.isBefore(upperBound) || jobDateTime.isEqual(upperBound));
 	}
+	
+	public boolean hasJobEnded() {
+		return isJobBeforeOrAtDateTime(LocalDateTime.now(), false);
+	}
 
 	/**
 	 * Checks whether the time between now and the job start time is at least the minimum value,
