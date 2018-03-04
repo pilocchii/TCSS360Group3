@@ -31,6 +31,7 @@ public class Volunteer extends User {
 	}
 	
 	public void unVolunteerFromJob(Job job) {
+		job.removeVoluneer(getEmail());
 		associatedJobs.remove(job.getJobId());
 	}
 	
