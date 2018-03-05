@@ -10,10 +10,6 @@ import java.util.Scanner;
  */
 public final class ModelConstants {
 	
-	/**
-	 * TODO: many of these are unused
-	 */
-	
 	//For creating job
 	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
 	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
