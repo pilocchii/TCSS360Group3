@@ -208,7 +208,7 @@ public class Job implements Serializable {
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
@@ -224,7 +224,7 @@ public class Job implements Serializable {
 		 * A volunteer can unvolunteer only if the job starts 
 		 * at least a minumum number of days in the future..
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
 	}
 	
@@ -240,7 +240,7 @@ public class Job implements Serializable {
 		 * A job can be unsubmitted only if the job starts 
 		 * at least a minumum number of days in the future.
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART;
 	}
 
