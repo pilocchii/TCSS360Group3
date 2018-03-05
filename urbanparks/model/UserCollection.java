@@ -9,6 +9,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import static urbanparks.model.ModelConstants.*;
 
+/**
+ * Holds and manages the collection of all users in the system.
+ * invariants: all fields non-null
+ */
 public class UserCollection implements Serializable {
 
 	private static final long serialVersionUID = -271344141538164296L;

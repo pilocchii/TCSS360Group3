@@ -28,6 +28,7 @@ import static urbanparks.model.ModelConstants.*;
 
 /**
  * GridPane that holds the form for creating a new job as a park manager.
+ * invariants: all fields non-null
  */
 public class CreateJobPane extends GridPane {
 	

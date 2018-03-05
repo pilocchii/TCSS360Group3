@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 
 /**
  * Main entry point (Application) for Urban Parks application GUI
+ * invariants: all fields non-null
  */
 public class MainApplication extends Application {
 

@@ -20,6 +20,7 @@ import urbanparks.model.UrbanParksStaff;
  * Login and Signup prompt pane.
  * This is a splash page that enables the user to either login, or
  * sign up if they do not have an account.
+ * invariants: all fields non-null
  */
 public class MainMenuPane extends GridPane {
 

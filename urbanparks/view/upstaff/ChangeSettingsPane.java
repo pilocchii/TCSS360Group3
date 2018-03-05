@@ -19,6 +19,7 @@ import static urbanparks.view.ViewConstants.STYLE_FIELD_VALID;
 
 /**
  * Gridpane for changing system settings as an Urban Parks staff member.
+ * invariants: all fields non-null
  */
 public class ChangeSettingsPane extends GridPane {
 

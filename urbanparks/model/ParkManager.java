@@ -1,5 +1,9 @@
 package urbanparks.model;
 
+/**
+ * User that represents a park manager user.
+ * invariants: all fields non-null
+ */
 public class ParkManager extends User {
 	
 	private static final long serialVersionUID = 3766166317518887283L;

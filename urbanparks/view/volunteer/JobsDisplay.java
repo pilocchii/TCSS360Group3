@@ -16,6 +16,7 @@ import urbanparks.view.MainApplication;
 
 /**
  * JobsTableView that shows jobs to a volunteer.
+ * invariants: all fields non-null
  */
 public class JobsDisplay extends JobsTableView {
 	
@@ -43,14 +44,15 @@ public class JobsDisplay extends JobsTableView {
 		String tableTitle = "\t\t\t\tAvailable Jobs";
         ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
 		
+        // create the sign up for selected job button
         Button signUpButton = new Button();
         signUpButton.setText("Sign up for this job");
         signUpButton.setOnAction(new SignupJobButtonHandler());
 		signUpButton.setDisable(true);
 		
+		// create the jobs table
         TableColumn<JobAvailability, String> canSignUp = new TableColumn<JobAvailability, String>("Can sign up");
         canSignUp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
-		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canSignUp, true, signUpButton, true);
 		vbox.getChildren().add(signUpButton);
 		

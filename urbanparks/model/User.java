@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * This class represent a user 
+ * This class represent a user of the Urban Parks system.
+ * invariants: all fields non-null
  */
 public abstract class User implements Serializable {
 

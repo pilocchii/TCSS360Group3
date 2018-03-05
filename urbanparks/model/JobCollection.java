@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Job Collection class
  * This class represents the collection of all jobs used in the Urban Parks application.
+ * invariants: all fields non-null
  */
 public class JobCollection implements Serializable {
 	

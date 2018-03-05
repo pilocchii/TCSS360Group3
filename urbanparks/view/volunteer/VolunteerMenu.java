@@ -12,6 +12,7 @@ import urbanparks.view.MainMenuPane;
 
 /**
  * Grid pane that shows the main volunteer menu.
+ * invariants: all fields non-null
  */
 public class VolunteerMenu extends GridPane {
 
@@ -43,20 +44,23 @@ public class VolunteerMenu extends GridPane {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
 
-    	// Login pane styles
+    	// Set pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
         setVgap(5);
         
+        // create view pending jobs button
         Button viewPendingButton = new Button("View your pending jobs");
         viewPendingButton.setOnAction(new viewPendingEventHandler());
         viewPendingButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        // create view available jobs butotn
         Button viewAvailableButton = new Button("View jobs available for signup");
         viewAvailableButton.setOnAction(new viewAvailableEventHandler());
         viewAvailableButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        // add buttons to this grid pane
         add(viewPendingButton, 0, 0);
         add(viewAvailableButton, 0, 1);
         

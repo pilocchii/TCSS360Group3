@@ -2,6 +2,7 @@ package urbanparks.model;
 
 /**
  * Temporary wrapper class for Job, adding a availability flag.
+ * invariants: all fields non-null
  */
 public class JobAvailability {
 

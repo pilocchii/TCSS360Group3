@@ -23,6 +23,7 @@ import javafx.util.Callback;
 
 /**
  * Holds the method for creating a jobs table.
+ * invariants: all fields non-null
  */
 public class JobsTableView extends GridPane {
 	

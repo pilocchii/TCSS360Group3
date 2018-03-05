@@ -17,6 +17,7 @@ import urbanparks.view.MainApplication;
 
 /**
  * JobsTableView for viewing all jobs in the system starting or ending between 2 dates.
+ * invariants: all fields non-null
  */
 public class JobsDisplay extends JobsTableView{
 	
