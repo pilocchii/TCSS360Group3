@@ -219,6 +219,7 @@ public class JobCollection implements Serializable {
 			JobAvailability ja = new JobAvailability(job);
 			if (job.isBetween2DatesInclusive(lowerBound, upperBound)) {
 				availableJobs.add(ja);
+                ja.setIsAvailable(true);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
