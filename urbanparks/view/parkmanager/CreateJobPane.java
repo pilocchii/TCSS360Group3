@@ -86,8 +86,8 @@ public class CreateJobPane extends GridPane {
         // create start and end date pickers
         startDatePicker = new DatePicker();
         endDatePicker = new DatePicker();
-        startDatePicker.setValue(LocalDate.now());
-        endDatePicker.setValue(LocalDate.now());
+        startDatePicker.setValue(LocalDate.now().plusDays(1));
+        endDatePicker.setValue(LocalDate.now().plusDays(1));
 
         // set up start date picker
         startDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
@@ -339,7 +339,7 @@ public class CreateJobPane extends GridPane {
         		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
         		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
 
-        		if (startDateTime.isBefore(endDateTime)) {
+        		if (startDateTime.isBefore(endDateTime) && startDateTime.isAfter(LocalDateTime.now())) {
                 	timesValid = true;
         		}
         	}	
