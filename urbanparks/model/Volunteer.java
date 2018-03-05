@@ -11,6 +11,11 @@ public class Volunteer extends User {
 
 	/**
 	 * Constructor for Volunteer class.
+	 * 
+	 * @param firstName the first name of the user.
+	 * @param lastName the last name of the user.
+	 * @param email the email address of the user.
+	 * @param phoneNum the phone number of the user.
 	 */
 	public Volunteer(String firstName, String lastName, String email, String phoneNum) {
 		super(firstName, lastName, email, phoneNum);
