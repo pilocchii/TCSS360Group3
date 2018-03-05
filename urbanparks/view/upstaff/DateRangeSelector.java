@@ -102,7 +102,10 @@ public class DateRangeSelector extends GridPane {
         			@Override
         			public void updateItem(LocalDate tempEnd, boolean empty) {
         				super.updateItem(tempEnd, empty);
-        				// disables the ability to select upper bound dates in the calendar that violate business rules.
+        				/**
+        				 * disables the ability to select upper bound dates 
+        				 * in the calendar that violate business rules.
+        				 */
         				if (!areDatesValid(lowerBoundDatePicker.getValue(), tempEnd)) {
         					setDisable(true);
         				}
@@ -112,12 +115,13 @@ public class DateRangeSelector extends GridPane {
         };
         upperBoundDatePicker.setDayCellFactory(endDateCallback);
         
-        
+        // create a button that shows jobs in the selected range
         Button showJobsButton = new Button("Show all jobs between dates");
         showJobsButton.setOnAction(new ViewJobsEventHandler());
         // Allows it to grow in size to match their container
         showJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        // add elements to this grid pane
         add(new Label("Lower bound of job dates"), 0, 0);
         add(lowerBoundDatePicker, 0, 1);
         add(new Label("Upper bound of job dates"), 0, 2);
@@ -125,7 +129,7 @@ public class DateRangeSelector extends GridPane {
         add(new Separator(), 0, 4);
         add(showJobsButton, 0, 5);
  
-        // styles
+        // set pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
@@ -134,6 +138,12 @@ public class DateRangeSelector extends GridPane {
         root.setTitle("Select which jobs to show - " + urbanParksStaff.getEmail());
     }
 
+    /**
+     * Validates the new user-entered start and end dates for job display
+     * by setting the date picker styles and date values satisfied flag appropriately.
+     * precondition: startDatePicker != null
+     * precondition: endDatePicker != null
+     */
     private void validateDates(DatePicker startDatePicker, DatePicker endDatePicker) {
     	if (areDatesValid(startDatePicker.getValue(), endDatePicker.getValue())) {
     		startDatePicker.setStyle(VALID_DATE_STYLE);
@@ -148,6 +158,16 @@ public class DateRangeSelector extends GridPane {
     	}
     }
     
+    /**
+     * Determines if the start and end dates picked by the user are valid
+     * (The picked end date is equal to or before the end date)
+     * precondition: startDatePicker != null
+     * precondition: endDatePicker != null
+     * 
+     * @param startDatePicker The picked lower bound for the list of jobs to show.
+     * @param endDatePicker The picked upper bound for the list of jobs to show.
+     * @return True if the selected upper bound is equal to or after the lower bound.
+     */
     private boolean areDatesValid(LocalDate startDatePicker, LocalDate endDatePicker) {
     	LocalDateTime startDate = startDatePicker.atStartOfDay();
     	LocalDateTime endDate = endDatePicker.atStartOfDay();
@@ -155,6 +175,11 @@ public class DateRangeSelector extends GridPane {
     	return startDate.isBefore(endDate) || startDate.isEqual(endDate);
     }
 
+    /**
+     * Event handler for the view jobs in selected range button.
+     * If the selected upper bound is equal to or after the lower bound, 
+     * the user will be shown a list of jobs in that date range.
+     */
     public class ViewJobsEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -170,6 +195,10 @@ public class DateRangeSelector extends GridPane {
         }
     }
     
+    /**
+     * Event handler for the back button. If pressed, 
+     * it will send the urban parks staff member to the main urban parks staff menu.
+     */
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
