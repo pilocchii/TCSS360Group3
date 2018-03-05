@@ -48,7 +48,7 @@ public final class ModelConstants {
 	 * Represents the minimum number of days beforehand that a volunteer can signup.
 	 * If a job starts sooner than this value, they will not be able to signup.
 	 */
-	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
+	public static final int MIN_DAYS_BEFORE_SIGNUP = 3;
 
 	/**
 	 * Represents the number of milliseconds in a day; for calculation purposes.
