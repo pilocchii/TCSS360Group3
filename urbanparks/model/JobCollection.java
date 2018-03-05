@@ -150,8 +150,8 @@ public class JobCollection implements Serializable {
 	 * @param volunteer The volunteer to check for jobs to unvolunteer from
 	 * @return
 	 */
-	public ArrayList<Job> getAvailableForUnvolunteer(Volunteer volunteer) {
-		ArrayList<Job> availableJobs = new ArrayList<Job>();
+	public ArrayList<JobAvailability> getAvailableForUnvolunteer(Volunteer volunteer) {
+		ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
 			JobAvailability ja = new JobAvailability(job);
@@ -213,6 +213,7 @@ public class JobCollection implements Serializable {
 			JobAvailability ja = new JobAvailability(job);
 			if (job.isBetween2DatesInclusive(lowerBound, upperBound)) {
 				availableJobs.add(ja);
+                ja.setIsAvailable(true);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
