@@ -41,7 +41,7 @@ public class UserCollection implements Serializable {
 	}
 	
 	/**
-	 * 
+	 * Save the users to a file.
 	 * @throws IOException
 	 */
 	public void saveData() throws IOException {
@@ -52,7 +52,7 @@ public class UserCollection implements Serializable {
 	}
 	
 	/**
-	 * 
+	 * Reading the data from saved file of users.
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
