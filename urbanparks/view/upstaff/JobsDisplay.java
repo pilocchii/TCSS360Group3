@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
 import urbanparks.model.DateUtils;
 import urbanparks.model.Job;
+import urbanparks.model.JobAvailability;
 import urbanparks.model.UrbanParksStaff;
 import urbanparks.view.JobsTableView;
 import urbanparks.view.MainApplication;
@@ -36,9 +37,9 @@ public class JobsDisplay extends JobsTableView{
 		String startDateString = DateUtils.formatDateTime(startDate);
 		String endDateString = DateUtils.formatDateTime(endDate);
 		String tableTitle = "Jobs starting or ending from " + startDateString + " to " + endDateString;
-        ArrayList<Job> jobsToShow = root.getJobCollection().getJobsBetween2DateTimes(startDate, endDate);
+        ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getJobsBetween2DateTimes(startDate, endDate);
 		
-        TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can unsubmit");
+        TableColumn<JobAvailability, String> canUncreate = new TableColumn<JobAvailability, String>("Can unsubmit");
         canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
 		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canUncreate, false, null, false);
