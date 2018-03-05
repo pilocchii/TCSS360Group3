@@ -14,6 +14,8 @@ public class DateUtils {
 		 * Checks if 2 Calendar objects are on the same calendar day.
 		 * Pre: Dates are non-null and have a non-null year and dayofyear field.
 		 * 
+		 * @param ld1 the first localdate to check
+		 * @param ld2 the second localdate to compare
 		 * @return true if the two dates are on the same day in the same year, false otherwise.
 		 */
 		public static boolean are2DatesOnSameDay(LocalDateTime ld1, LocalDateTime ld2) {
