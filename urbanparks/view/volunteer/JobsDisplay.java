@@ -48,7 +48,7 @@ public class JobsDisplay extends JobsTableView {
 	
 	public void showVolunteerPendingJobs() {
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
-        ArrayList<Job> jobsToShow = volunteer.getSignedUpJobs(root.getJobCollection());
+        ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForUnvolunteer(volunteer);//volunteer.getSignedUpJobs(root.getJobCollection());
 		
         Button unvolunteerButton = new Button();
         unvolunteerButton.setText("unvolunteer from this job");

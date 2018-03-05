@@ -1,21 +1,24 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.*;
+import static urbanparks.model.ModelConstants.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
- * This class represents a job with its all information.
+ * This class represents a job and all its information.
+ * 
+ * invariant: all fields non-null
+ * invariant: jobId unique to all other jobIds in system
  */
 public class Job implements Serializable {
 
 	private static final long serialVersionUID = 928850375626876361L;
 	
+	//The unique ID of this job
 	private long jobId;
+	
 	private String description;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
@@ -23,7 +26,8 @@ public class Job implements Serializable {
 	private String location;
 	private boolean isAvailable;
 	private boolean isCancelled;
-
+	
+	// The volunteers currently signed up for this job
 	private ArrayList<String> volunteers;
 
 	/**
@@ -37,7 +41,7 @@ public class Job implements Serializable {
 	 */
 	public Job(final String description, final LocalDateTime startDateTime, final LocalDateTime endDateTime, 
 			final String parkName, final String location) {
-		this.jobId = generateJobID();
+		this.jobId = JobCollection.generateNewJobID();
 		this.description = description;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
@@ -49,36 +53,7 @@ public class Job implements Serializable {
 		isCancelled = false;
 	}
 	
-	/**
-	 * Generate jobID using the current data, time and random number.
-	 *  
-	 * @return generated JobID
-	 */
-	private long generateJobID() {
-		JobCollection.incrementCurrentJobId();
-		return JobCollection.getCurrentJobId();
-	}
-
-	/**
-	 * Adds a volunteer to the list of signed up volunteers. 
-	 * Takes in a volunteer's email address, returns true if the volunteer
-	 * was signed up successfully, false otherwise.
-	 * @param theVolunteer the email address to sign-up
-	 * @return true if the volunteer was added successfully, false otherwise
-	 */
-	public boolean addVolunteer(String theVolunteer) {
-		volunteers.add(theVolunteer);
-		if(volunteers.contains(theVolunteer)) {
-			return true;
-		}
-		return false;//if arraylist didn't add it for some reason
-	}
-	
-	public int getVolunteerCount() {
-		return volunteers.size();
-	}
-	
-	// Getters:
+	// Getters: ----------------------------------------------------------------------------------------------------------
 	/**
 	 * Return the jobID.
 	 * @return job ID.
@@ -123,32 +98,29 @@ public class Job implements Serializable {
 		return location;
 	}
 	/**
-	 * Gets a temporary flag representing the job's availability to a volunteer
-	 * @return
+	 * Gets a temporary flag representing the job's availability to for an action,
+	 * which depends on the context.
+	 * @return True if this job is available for an action, false otherwise
 	 */
 	public boolean getIsAvailable() {
 		return isAvailable;
 	}
 	
+	/**
+	 * Gets this job's cancelled status
+	 * @return True if this job is cancelled, false otherwise.
+	 */
 	public boolean getIsCancelled() {
 		return isCancelled;
 	}
-
-	//Setters:
+	
 	/**
-	 * Sets a temporary flag representing the job's availability to a volunteer
-	 * @param isAvailable
+	 * Gets the number of volunteers signed up for this job
+	 * @return the number of volunteers signed up for this job
 	 */
-	public void setIsAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	public int getVolunteerCount() {
+		return volunteers.size();
 	}
-	
-	public void setIsCancelled(boolean isCancelled) {
-		this.isCancelled = isCancelled;
-	}
-	
-	
-	// Others:
 	
 	/**
 	 * Gets a the start time of a Job as a string
@@ -166,6 +138,10 @@ public class Job implements Serializable {
 		return DateUtils.formatDateTime(endDateTime);
 	}
 	
+	/**
+	 * Gets a formatted string indicating if this job is cancelled.
+	 * @return A String indicating if this job is cancelled.
+	 */
 	public String getIsCancelledFormatted() {
 		if (isCancelled) {
 			return "Yes";
@@ -174,6 +150,11 @@ public class Job implements Serializable {
 		}
 	}
 	
+	/**
+	 * Gets a formatted string indicating if this job is available for an action,
+	 * which depends on the context.
+	 * @return A String indicating if this job is available for an action.
+	 */
 	public String getIsAvailableFormatted() {
 		if (isAvailable) {
 			return "Yes";
@@ -182,50 +163,95 @@ public class Job implements Serializable {
 		}
 	}
 
+	// Setters: -----------------------------------------------------------------------------------------------------------
 	/**
-	 * Determines if the start or end times of 2 jobs overlap
+	 * Sets a temporary flag representing the job's availability for 
+	 * an action, which depends of context
+	 * @param isAvailable A flag indicating if this job is available for an action.
+	 */
+	public void setIsAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+	
+	
+	// Other methods: -----------------------------------------------------------------------------------------------------
+	/**
+	 * Sets the job's state to cancelled. This cannot be undone.
+	 */
+	public void cancelJob() {
+		this.isCancelled = true;
+	}
+
+	/**
+	 * Adds a volunteer to the list of signed up volunteers.
+	 * precondition: The email string must be unique 
+	 * to all other email strings associated with this job,
+	 * precondition: This job must not be cancelled.
+	 * precondition: email != null
+	 * postcondition: This job's total volunteer count is incremented
 	 * 
-	 * @param otherJob
-	 * @return
+	 * @param email the email address of the volunteer
+	 */
+	public void addVolunteer(String email) {
+		volunteers.add(email);
+	}
+	
+	/**
+	 * Removes a volunteer from this job when they unvolunteer
+	 * precondition: The email string must already be associated with this job,
+	 * precondition: This job's volunteer list must not be empty.
+	 * precondition: This job must not be cancelled.
+	 * precondition: email != null
+	 * 
+	 * @param email the email address of the volunteer
+	 */
+	public void removeVoluneer(String email) {
+		volunteers.remove(email);
+	}
+
+	/**
+	 * Determines if the start or end dates of 2 jobs overlap
+	 * precondition: otherJob != null
+	 * 
+	 * @param otherJob The job to compare with
+	 * @return True if the start or end dates of the 2 jobs overlap, false otherwise
 	 */
 	public boolean doJobsOverlap(Job otherJob) {
-		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getStartDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
 			return true;
 		}
-		if (DateUtils.are2DatesOnSameDay(startDateTime,  otherJob.getEndDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
 			return true;
 		}
-		if (DateUtils.are2DatesOnSameDay(endDateTime,  otherJob.getEndDateTime())) {
+		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
 			return true;
 		}
 		return false;
 	}
-	
-	public boolean isJobAfterOrAtDateTime(LocalDateTime lowerBound, boolean basedOnJobStart) {
-		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
-		return (jobDateTime.isAfter(lowerBound) || jobDateTime.isEqual(lowerBound));
-	}
-	
-	public boolean isJobBeforeOrAtDateTime(LocalDateTime upperBound, boolean basedOnJobStart) {
-		LocalDateTime jobDateTime = basedOnJobStart ? startDateTime : endDateTime;
-		return (jobDateTime.isBefore(upperBound) || jobDateTime.isEqual(upperBound));
-	}
 
 	/**
-	 * Checks whether the time between now and the job start time is at least the minimum value,
-	 *  for job sign up.
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for signing up for it.
 	 * 
-	 * @param theCandidateJob
-	 * @return true if there is enough time between now and when the job starts, false otherwise.
+	 * @return true if there is enough time between now 
+	 * and when the job starts for signing up, false otherwise.
 	 */
 	public boolean isSignupEarlyEnough() {
 		/**
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		return DateUtils.daysBetweenNowAndDate(getStartDateTime()) >= MIN_DAYS_BEFORE_SIGNUP;
+		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
+	/**
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for unvolunteering from it.
+	 *  
+	 * @return true if there is enough time between now 
+	 * and when the job starts for unvolunteering, false otherwise.
+	 */
 	public boolean isUnvolunteerEarlyEnough() {
 		/**
 		 * A volunteer can unvolunteer only if the job starts 
@@ -235,6 +261,13 @@ public class Job implements Serializable {
 		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
 	}
 	
+	/**
+	 * Checks whether the time between now and the job start time is 
+	 * at least the minimum value for unsubmitting it.
+	 * 
+	 * @return true if there is enough time between now 
+	 * and when the job starts for unsubmitting, false otherwise.
+	 */
 	public boolean isUnsubmitEarlyEnough() {
 		/**
 		 * A job can be unsubmitted only if the job starts 
@@ -245,43 +278,34 @@ public class Job implements Serializable {
 	}
 
 	/**
-	 * Checks weather this job is between the given two date and time..
+	 * Checks whether this job's start or end time is between the given two times, inclusive.
 	 * Precondition: the given two dates are not null.
+	 * precondition: lowerBound != null
+	 * precondition: upperBound != null
 	 * 
-	 * @param startDate the start time to be compare with job start and end time.
-	 * @param endDate the end time to be compare with job start and end time.
-	 * @return true if this job is between the given two dates, false otherwise.
+	 * @param lowerBound the lower bound which the job's start or end times can't be below
+	 * @param upperBound the upper bound which the job's start or end times can't be above
+	 * @return true if this job starts or ends between the given two dateTimes, false otherwise.
 	 */
-	public boolean isBetween2Dates(LocalDateTime startDate, LocalDateTime endDate) {
-		return startDateTime.compareTo(startDate) >= 0 && 
-				endDateTime.compareTo(endDate) <= 0;
+	public boolean isBetween2DatesInclusive(LocalDateTime lowerBound, LocalDateTime upperBound) {
+		boolean startAfterLowerBound = startDateTime.isAfter(lowerBound) || startDateTime.isEqual(lowerBound);
+		boolean startBeforeUpperBound = startDateTime.isBefore(upperBound) || startDateTime.isEqual(upperBound);
+		boolean startInRange = startAfterLowerBound && startBeforeUpperBound;
+		
+		boolean endAfterLowerBound = endDateTime.isAfter(lowerBound) || endDateTime.isEqual(lowerBound);
+		boolean endBeforeUpperBound = endDateTime.isBefore(upperBound) || endDateTime.isEqual(upperBound);
+		boolean endInRange = endAfterLowerBound && endBeforeUpperBound;
+		
+		return startInRange || endInRange;
 	}
-
+	
 	/**
-	 * Check if the start date and time of this job is greater than or 
-	 * equal to today date and time.
+	 * Determines if a job has ended, 
+	 * meaning its end time is at or before now
 	 * 
-	 * @return true if this job in the future, false otherwise.
+	 * @return true if job has ended, false otherwise.
 	 */
-	public boolean isInFuture() {
-		return startDateTime.isAfter(LocalDateTime.now());
+	public boolean hasJobEnded() {
+		return endDateTime.isBefore(LocalDateTime.now()) || endDateTime.isEqual(LocalDateTime.now());
 	}
-
-//	/**
-//	 * Shows job info
-//	 * precondition: All Job fields must be non-null
-//	 */
-//	public void showInfo() {
-//		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
-//		System.out.println("Starting time: " + startDateTime.format(dateFormat));
-//		System.out.println("Ending time: " + endDateTime.format(dateFormat));
-//		System.out.println("Park name: " + parkName);
-//		System.out.println("Location: " + location);
-//		System.out.println("Job description: " + description);
-//		System.out.println("Max volunteers for work levels: " 
-//				+ "Light - " + maxLightWorkers
-//				+ ", Medium - " + maxMediumWorker
-//				+ ", Heavy - " + maxHeavyWorkers);
-//		System.out.println("Min total volunteers: " + minTotalVolunteers);
-//	}
 }

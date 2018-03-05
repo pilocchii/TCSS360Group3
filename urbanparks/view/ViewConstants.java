@@ -14,7 +14,7 @@ public class ViewConstants {
 	public static final Color UNAVAILABLE_JOB_COLOR = Color.RED;
 	
 	// for main application
-	public static final double DEFAULT_WINDOW_WIDTH = 550;
+	public static final double DEFAULT_WINDOW_WIDTH = 600;
 	public static final double DEFAULT_WINDOW_HEIGHT = 500;
 	
 	// for signup menu
