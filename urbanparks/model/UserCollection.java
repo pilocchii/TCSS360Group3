@@ -25,8 +25,10 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Retrieves an User object based on its email
-	 * @param email
-	 * @return
+	 * Precondition: user should enter a email.
+	 * Postcondition: user has been returned.
+	 * @param email of user
+	 * @return user is returned from user list
 	 */
 	public User getUser(String email) {
 		return userList.get(email);
@@ -34,6 +36,9 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Adds an user to the collection
+	 * Precondition: user should register.
+	 * Postcondition: user has been registered 
+	 *                and stored in user list.
 	 * @param u
 	 */
 	public void addUser(User u) {
@@ -42,6 +47,8 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Save the users to a file.
+	 * Precondition : The file has to be exist otherwise it will create a new one.
+	 * Postcondition: The data has been written to the file.
 	 * @throws IOException
 	 */
 	public void saveData() throws IOException {
@@ -53,6 +60,8 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Reading the data from saved file of users.
+	 * Precondition : The file has to be exist in order to open the file.
+	 * Postcondition: The data has been loaded from the file.
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
