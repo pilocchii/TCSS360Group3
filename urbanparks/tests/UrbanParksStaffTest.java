@@ -1,54 +1,18 @@
 package urbanparks.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
-import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.model.ModelConstants;
 import urbanparks.model.Job;
 
 /**
  * JUnit testing to test changing the max pending job and test if the job is between a start and end date.
  */
 public class UrbanParksStaffTest {
-
-	/**
-	 * Testing change the max pending jobs value.
-	 * 
-	 * @throws FileNotFoundException
-	 */
-	@Test
-	public void setMaxPendingJobs_ChangeMaxPendingJobs_Equal() throws FileNotFoundException {
-		
-		int maxPendingJobs = (new Random()).nextInt(50);
-
-		ModelConstants.setMaxPendingJobs(maxPendingJobs);
-		
-		ModelConstants.saveSettingsData();
-		
-		assertEquals(ModelConstants.getMaxPendingJobs(), maxPendingJobs);
-		
-	}
-	
-	/**
-	 * Testing change the max pending jobs to default value.
-	 */
-	@Test
-	public void setDefaultMaxPendingJobs_ChangeMaxPendingJobsToDefault_NotEqual() {
-		
-		ModelConstants.setMaxPendingJobs((new Random()).nextInt(50));
-		int OldMaxPendingJobs = ModelConstants.getMaxPendingJobs();
-	
-		ModelConstants.setDefaultMaxPendingJobs();
-		
-		assertNotEquals(ModelConstants.getMaxPendingJobs(), OldMaxPendingJobs);
-		
-	}
 	
 	/**
 	 * Testing if the job is between the two given dates. 
