@@ -10,6 +10,7 @@ import java.util.Scanner;
  */
 public final class ModelConstants {
 	
+
 	//For creating a job
 	
 	/**
@@ -19,7 +20,6 @@ public final class ModelConstants {
 	/**
 	 * Represents default value for the max pending jobs that can exist in the system.
 	 */
-
 	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
 	/**
 	 * Represents the max allowable pending jobs in the system. This can be changed at run-time 
