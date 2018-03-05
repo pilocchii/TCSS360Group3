@@ -140,8 +140,13 @@ public class CreateJobPane extends GridPane {
         	// focus lost
         	} else {
         		// any non-empty value is ok
-        		descriptionField.setStyle(STYLE_FIELD_VALID);
-        		descriptionSatisfied = true;
+        		if (!descriptionField.getText().isEmpty()) {
+            		descriptionField.setStyle(STYLE_FIELD_VALID);
+            		descriptionSatisfied = true;
+        		} else {
+            		descriptionField.setStyle(STYLE_FIELD_INVALID);
+            		descriptionSatisfied = false;
+        		}
             }
         });
         
@@ -157,8 +162,13 @@ public class CreateJobPane extends GridPane {
         	// focus lost
         	} else {
         		// any non-empty value is ok
-        		parkNameField.setStyle(STYLE_FIELD_VALID);
-        		parkNameSatisfied = true;
+        		if (!parkNameField.getText().isEmpty()) {
+        			parkNameField.setStyle(STYLE_FIELD_VALID);
+        			parkNameSatisfied = true;
+        		} else {
+        			parkNameField.setStyle(STYLE_FIELD_INVALID);
+        			parkNameSatisfied = false;
+        		}
             }
         });
         
@@ -174,8 +184,13 @@ public class CreateJobPane extends GridPane {
         	// focus lost
         	} else {
         		// any non-empty value is ok
-        		jobLocationField.setStyle(STYLE_FIELD_VALID);
-        		jobLocationSatisfied = true;
+        		if (!jobLocationField.getText().isEmpty()) {
+        			jobLocationField.setStyle(STYLE_FIELD_VALID);
+        			jobLocationSatisfied = true;
+        		} else {
+        			jobLocationField.setStyle(STYLE_FIELD_INVALID);
+        			jobLocationSatisfied = false;
+        		}
             }
         });
         

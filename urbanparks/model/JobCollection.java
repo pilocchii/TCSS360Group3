@@ -148,16 +148,18 @@ public class JobCollection implements Serializable {
 		ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			JobAvailability ja = new JobAvailability(job);
-			// check unsubmitting job business rules
-			// jobs that violate business rules are marked as unavailable
 			if (parkManager.isAssociatedWithJob(job.getJobId())) {
-				if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
-					ja.setIsAvailable(true);
-				} else {
-					ja.setIsAvailable(false);
+				JobAvailability ja = new JobAvailability(job);
+				// check unsubmitting job business rules
+				// jobs that violate business rules are marked as unavailable
+				if (parkManager.isAssociatedWithJob(job.getJobId())) {
+					if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
+						ja.setIsAvailable(true);
+					} else {
+						ja.setIsAvailable(false);
+					}
+					availableJobs.add(ja);
 				}
-				availableJobs.add(ja);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
