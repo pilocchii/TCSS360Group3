@@ -43,6 +43,7 @@ public abstract class User implements Serializable {
 	
 	/**
 	 * Return the first name of the user.
+	 * Precondition: there is at least 1 user in file. 
 	 * @return the first name.
 	 */
 	public String getFirstName() {
@@ -51,6 +52,7 @@ public abstract class User implements Serializable {
 	
 	/**
 	 * Return the last name of the user.
+	 * Precondition: there is at least 1 user in file.
 	 * @return the last name.
 	 */
 	public String getLastName() {
@@ -58,6 +60,7 @@ public abstract class User implements Serializable {
 	}
 	/**
 	 * Return the email address of the user.
+	 * Precondition: there is at least 1 user in file.
 	 * @return the email address.
 	 */
 	public String getEmail() {
@@ -66,6 +69,7 @@ public abstract class User implements Serializable {
 	
 	/**
 	 * Gets this user's phone number.
+	 * Precondition: there is at least 1 user in file.
 	 * @return the phone number associated with this user
 	 */
 	public String getPhoneNum() {
@@ -74,6 +78,7 @@ public abstract class User implements Serializable {
 	
 	/**
 	 * Match the Job Id in with jobs in collections.
+	 * Precondition: there is at least 1 Job in file.
 	 * @return true if job id matches job in jobs collections.
 	 */
 	public boolean isAssociatedWithJob(Job job) {
