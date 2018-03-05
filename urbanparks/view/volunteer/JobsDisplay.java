@@ -8,19 +8,21 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
-import urbanparks.model.Job;
 import urbanparks.model.JobAvailability;
 import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.JobsTableView;
 import urbanparks.view.MainApplication;
 
+/**
+ * JobsTableView that shows jobs to a volunteer.
+ */
 public class JobsDisplay extends JobsTableView {
 	
 	private Volunteer volunteer;
 	
 	/**
-	 * The main screen displaying jobs to a volunteer.
+	 * JobsDisplay constructor.
 	 * 
 	 * @param root reference to the root application
 	 * @param volunteer the volunteer to show the menu for

@@ -1,16 +1,44 @@
 package urbanparks.model;
 
-import java.time.LocalDateTime;
-
 /**
- * wapper class
- *
+ * Temporary wrapper class for Job, adding a availability flag.
  */
 public class JobAvailability {
 
 	private Job job;
+	/**
+	 * Flag indicating availability for action, which depends on context.
+	 */
 	private boolean isAvailable;
 	
+	/**
+	 * Sets the availability of the job associated with this.
+	 * @return the availability of the job associated with this.
+	 */
+	public boolean getIsAvailable() {
+		return isAvailable;
+	}
+	
+	/**
+	 * Gets the job associated with this.
+	 * @return the job associated with this.
+	 */
+	public Job getJob() {
+		return job;
+	}
+	
+	/**
+	 * Sets a temporary flag representing the job's availability for 
+	 * an action, which depends of context
+	 * @param isAvailable A flag indicating if this job is available for an action.
+	 */
+	public void setIsAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+	/**
+	 * Constructor for JobAvailability
+	 * @param job The job to wrap.
+	 */
 	public JobAvailability(Job job) {
 		this.job = job;
 		this.isAvailable = false;
@@ -28,24 +56,4 @@ public class JobAvailability {
 			return "No";
 		}
 	}
-	
-	public boolean getIsAvailable() {
-		return isAvailable;
-	}
-	
-	public Job getJob() {
-		return job;
-	}
-
-	// Setters: -----------------------------------------------------------------------------------------------------------
-	/**
-	 * Sets a temporary flag representing the job's availability for 
-	 * an action, which depends of context
-	 * @param isAvailable A flag indicating if this job is available for an action.
-	 */
-	public void setIsAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
-
-
 }
