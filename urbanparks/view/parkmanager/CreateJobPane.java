@@ -270,7 +270,8 @@ public class CreateJobPane extends GridPane {
         		
 				if (AlertUtils.askJobSubmit(description)) {
 	        		Job newJob = new Job(description, startDateTime, endDateTime, parkName, location);
-					parkManager.createNewJob(newJob, jobCollection);
+					parkManager.createNewJob(newJob.getJobId());
+					jobCollection.addJob(newJob);
 					AlertUtils.showJobSubmitSuccess(startDateTime, endDateTime);
 					root.setCenter(new ParkManagerMenu(root, parkManager));
 				}

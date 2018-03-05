@@ -117,7 +117,7 @@ public class JobCollection implements Serializable {
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
 			// check the unvolunteer from job business rules
-			if (volunteer.isAssociatedWithJob(job)) {
+			if (volunteer.isAssociatedWithJob(job.getJobId())) {
 				if (!job.getIsCancelled() && job.isUnvolunteerEarlyEnough()) {
 					job.setIsAvailable(true);
 				} else {
@@ -142,7 +142,7 @@ public class JobCollection implements Serializable {
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
 			// check unsubmitting job business rules
-			if (parkManager.isAssociatedWithJob(job)) {
+			if (parkManager.isAssociatedWithJob(job.getJobId())) {
 				if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
 					job.setIsAvailable(true);
 				} else {

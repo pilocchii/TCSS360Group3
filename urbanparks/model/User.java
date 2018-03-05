@@ -64,10 +64,15 @@ public abstract class User implements Serializable {
 		return phoneNum;
 	}
 	
-	
-	public boolean isAssociatedWithJob(Job job) {
+	/**
+	 * Checks to see if the user is associated with the passed job.
+	 * Pre: Job is non-null
+	 * @param id The job id to check
+	 * @return true if the job is in this user's collection (signed up for/creator), false otherwise
+	 */
+	public boolean isAssociatedWithJob(long id) {
 		for (long jobID : associatedJobs) {
-			if (jobID == job.getJobId()) {
+			if (jobID == id) {
 				return true;
 			}
 		}
