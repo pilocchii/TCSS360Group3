@@ -1,6 +1,5 @@
 package urbanparks.tests;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -195,7 +194,7 @@ public class JobCollectionTest {
     @Test
     public void getAvailableForSignup_JobIsInPast_false() {
         jobCollection.addJob(pastJob);
-        ArrayList<Job> availJobs = jobCollection.getAvailableForSignup(testVolunteer);
+        ArrayList<JobAvailability> availJobs = jobCollection.getAvailableForSignup(testVolunteer);
         assertFalse(availJobs.get(availJobs.indexOf(pastJob)).getIsAvailable());
     }
 

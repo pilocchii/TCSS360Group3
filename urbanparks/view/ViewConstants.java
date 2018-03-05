@@ -2,6 +2,9 @@ package urbanparks.view;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Container class for the constants related to the GUI.
+ */
 public class ViewConstants {
 	
 	// for alerts
@@ -12,6 +15,7 @@ public class ViewConstants {
 	// for job display
 	public static final Color AVAILABLE_JOB_COLOR = Color.DARKGREEN;
 	public static final Color UNAVAILABLE_JOB_COLOR = Color.RED;
+	public static final int MAX_JOBS_TABLE_HEIGHT = 200;
 	
 	// for main application
 	public static final double DEFAULT_WINDOW_WIDTH = 600;

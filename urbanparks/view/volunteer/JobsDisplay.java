@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
 import urbanparks.model.Job;
+import urbanparks.model.JobAvailability;
 import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.JobsTableView;
@@ -29,14 +30,14 @@ public class JobsDisplay extends JobsTableView {
 	
 	public void showVolunteerAvailJobs() {
 		String tableTitle = "\t\t\t\tAvailable Jobs";
-        ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
+        ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
 		
         Button signUpButton = new Button();
         signUpButton.setText("Sign up for this job");
         signUpButton.setOnAction(new SignupJobButtonHandler());
 		signUpButton.setDisable(true);
 		
-        TableColumn<Job, String> canSignUp = new TableColumn<Job, String>("Can sign up");
+        TableColumn<JobAvailability, String> canSignUp = new TableColumn<JobAvailability, String>("Can sign up");
         canSignUp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
 		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canSignUp, true, signUpButton, true);
@@ -48,14 +49,14 @@ public class JobsDisplay extends JobsTableView {
 	
 	public void showVolunteerPendingJobs() {
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
-        ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForUnvolunteer(volunteer);//volunteer.getSignedUpJobs(root.getJobCollection());
+        ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForUnvolunteer(volunteer);//volunteer.getSignedUpJobs(root.getJobCollection());
 		
         Button unvolunteerButton = new Button();
         unvolunteerButton.setText("unvolunteer from this job");
         unvolunteerButton.setOnAction(new UnvolunteerButtonHandler());
 		unvolunteerButton.setDisable(true);
 		
-        TableColumn<Job, String> canUnvolunteer = new TableColumn<Job, String>("Can unvolunteer");
+        TableColumn<JobAvailability, String> canUnvolunteer = new TableColumn<JobAvailability, String>("Can unvolunteer");
         canUnvolunteer.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
 		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canUnvolunteer, true, unvolunteerButton, true);
@@ -70,8 +71,9 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		if (AlertUtils.askJobSignup(selectedJob.getDescription())) {
-            		volunteer.signUpForJob(selectedJob);
+        		if (AlertUtils.askJobSignup(selectedJob.getJob().getDescription())) {
+            		volunteer.signUpForJob(selectedJob.getJob().getJobId());
+            		selectedJob.getJob().addVolunteer(volunteer.getEmail());
             		AlertUtils.showJobSignupSuccess();
             		root.setCenter(new VolunteerMenu(root, volunteer));
         		}
@@ -84,8 +86,9 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		if (AlertUtils.askJobUnvolunteer(selectedJob.getDescription())) {
-        			volunteer.unVolunteerFromJob(selectedJob);
+        		if (AlertUtils.askJobUnvolunteer(selectedJob.getJob().getDescription())) {
+        			selectedJob.getJob().removeVoluneer(volunteer.getEmail());
+        			volunteer.unVolunteerFromJob(selectedJob.getJob().getJobId());
         			AlertUtils.showJobUnvolunteerSuccess();
         			root.setCenter(new VolunteerMenu(root, volunteer));
         		}

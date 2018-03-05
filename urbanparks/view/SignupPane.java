@@ -8,14 +8,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.Volunteer;
 import urbanparks.view.parkmanager.ParkManagerMenu;
 import urbanparks.view.upstaff.UPStaffMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
-import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 import static urbanparks.view.ViewConstants.*;
@@ -23,12 +21,12 @@ import static urbanparks.view.ViewConstants.*;
 /***
  * Signup GUI component.
  * This is a splash page that enables the user to sign up for a new account.
- *
- * @author rrki@uw.edu
- * @version 2/26/18
- *
  */
 public class SignupPane extends GridPane {
+	
+	private MainApplication root;
+	private Button backButton;
+	private UserCollection userCollection;
 	
 	// text fields
 	private TextField emailTextField;
@@ -36,33 +34,29 @@ public class SignupPane extends GridPane {
 	private TextField lastNameTextField;
 	private TextField phoneNumberTextField;
 	
-	// radio buttons
-	RadioButton volunteerRadioButton;
-	RadioButton parkManagerRadioButton;
-	RadioButton staffRadioButton;
-	ToggleGroup accountTypeGroup;
+	// radio buttons/group
+	private ToggleGroup accountTypeGroup;
+	private RadioButton volunteerRadioButton;
+	private RadioButton parkManagerRadioButton;
+	private RadioButton staffRadioButton;
 	
-	// meets requirements flags
+	// form requirements satisfied flags
 	private boolean emailSatisfied;
 	private boolean firstNameSatisfied;
 	private boolean lastNameSatisfied;
 	private boolean phoneSatisfied;
 
-    /* A reference to the root application. */
-    MainApplication root;
-
-    Button backButton;
-    UserCollection userCollection;
-    JobCollection jobCollection;
-
+	/**
+	 * Constructor for SignupPane. Constructs the pane and shows itself.
+	 * 
+	 * @param root Reference to the root application.
+	 */
     public SignupPane(MainApplication root) {
         super();
 
         this.root = root;
-
         this.backButton = root.getBackButton();
         this.userCollection = root.getUserCollection();
-        this.jobCollection = root.getJobCollection();
         
         emailSatisfied = false;
         firstNameSatisfied = false;
@@ -72,7 +66,10 @@ public class SignupPane extends GridPane {
         show();
     }
 
-    public void show() {
+    /**
+     * Shows this pane, a user signup form.
+     */
+    private void show() {
     	// set up back button
         backButton.setText("Back (to main menu)");
         backButton.setOnAction(new BackButtonEventHandler());
@@ -104,6 +101,7 @@ public class SignupPane extends GridPane {
             }
         });
         
+        // set up first name text field
         firstNameTextField = new TextField();
         firstNameTextField.setPromptText("First name");
         firstNameTextField.setFocusTraversable(false);
@@ -121,6 +119,7 @@ public class SignupPane extends GridPane {
             }
         });
         
+        // set up first last text field
         lastNameTextField = new TextField();
         lastNameTextField.setPromptText("Last name");
         lastNameTextField.setFocusTraversable(false);
@@ -138,8 +137,8 @@ public class SignupPane extends GridPane {
             }
         });
         
+        // set up phone number text field
         phoneNumberTextField = new TextField();
-        // This adds prompt text to the fields and makes them not focused by default
         phoneNumberTextField.setPromptText("Phone Number (USA)");
         phoneNumberTextField.setFocusTraversable(false);
         phoneNumberTextField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
@@ -165,6 +164,7 @@ public class SignupPane extends GridPane {
         // Create a button group for account type
         accountTypeGroup = new ToggleGroup();
         
+        // create radio buttons for the user types
         volunteerRadioButton = new RadioButton("Volunteer");
         volunteerRadioButton.setToggleGroup(accountTypeGroup);
         volunteerRadioButton.setSelected(true);
@@ -175,12 +175,13 @@ public class SignupPane extends GridPane {
         staffRadioButton = new RadioButton("Urban Parks Staff");
         staffRadioButton.setToggleGroup(accountTypeGroup);
         
+        // create the sign up button
         Button signupButton = new Button("Sign up");
         signupButton.setOnAction(new SignupEventHandler());
         // Allows it to grow in size to match their container
         signupButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
       
-        // add all buttons to this
+        // add all buttons to this pane
         add(emailTextField, 0, 1);
         add(firstNameTextField, 0, 2);
         add(lastNameTextField, 0, 3);
@@ -192,7 +193,7 @@ public class SignupPane extends GridPane {
         add(new Separator(), 0, 9);
         add(signupButton, 0, 10);
         
-        // Login pane styles
+        // Set pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
@@ -222,12 +223,14 @@ public class SignupPane extends GridPane {
         @Override
         public void handle(ActionEvent event) {
         	if (emailSatisfied && firstNameSatisfied && lastNameSatisfied && phoneSatisfied) {
-        			
+        		
+        		// fetch the user info from the text fields
         		String firstName = firstNameTextField.getText();
         		String lastName = lastNameTextField.getText();
         		String email = emailTextField.getText();
         		String phone = phoneNumberTextField.getText();
         		
+        		// creates a new User object based on the user type selected
         		RadioButton selectedRadioButton = (RadioButton) accountTypeGroup.getSelectedToggle();
         		if (selectedRadioButton == volunteerRadioButton) {
     				Volunteer newVolunteer = new Volunteer(firstName, lastName, email, phone);
