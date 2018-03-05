@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+/**
+ * Class that holds all the constants that are used in urbanparks.
+ */
 public final class ModelConstants {
 	
 	/**
@@ -21,7 +24,6 @@ public final class ModelConstants {
 	
 	//For signing up for job
 	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
-	public static final int MILLISECONDS_IN_DAY = 86400000;
 	
 	//For loading persistent data
 	public static final String JOB_DATA_FILE = "joblist.data";
@@ -31,30 +33,21 @@ public final class ModelConstants {
 	// for DateUtils
 	public final static int DAYS_IN_YEAR = 365;
 	
-	// for park manager unsubmitting a job
-	// TODO: find out what this is supposed to be! (value is not in requirements)
+	// For Park Manager unsubmitting a job.
 	public final static int MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART = 3;
 	
-	//or unvolunteering from job
+	// For Volunteer unvolunteering from a job
 	public final static int MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART = 3;
-	
-	//for ParkManagerMenu
-//	public static final int MIN_WORKERS_FLOOR = 1;
-//	public static final int MIN_WORKERS_CEILING = Integer.MAX_VALUE;
-//	public static final int MAX_WORKERS_FLOOR = 0;
-//	public static final int MAX_WORKERS_CEILING = Integer.MAX_VALUE;
-	
-	public static final int RANDOM_NEXTINT = 100;
-	
 	
 	private ModelConstants() {
 		//shouldn't ever happen
 	}
 	
 	/**
-	 * Load the data from the text file and store it into the variables.
-	 * 
-	 * @return the status of the load true if it was successful and false otherwise.
+	 * Load setting data from the file and store it into the variable(s).
+	 * Precondition : The file has to be exist in order to open the file.
+	 * Postcondition: The data has been loaded from the file.
+	 * @throws FileNotFoundException if the file does not exist.
 	 */
 	public static void loadSettingsData() throws FileNotFoundException {
 		Scanner scanner = new Scanner(new File(SETTINGS_DATA_FILE));
@@ -63,9 +56,10 @@ public final class ModelConstants {
 	}
 	
 	/**
-	 * Save the current date to a file.
-	 * 
-	 * @return the status of the saving true if it was successful and false otherwise.
+	 * Save setting current date to a file.
+	 * Precondition : The file has to be exist otherwise it will create a new one.
+	 * Postcondition: The data has been written to the file.
+	 * @throws FileNotFoundException if the file does not exist.
 	 */
 	public static void saveSettingsData() throws FileNotFoundException {
 		PrintStream printStream = new PrintStream(new File(SETTINGS_DATA_FILE));
@@ -74,8 +68,10 @@ public final class ModelConstants {
 	}
 
 	/**
-	 * Gets the maximum number of pending jobs
-	 * @return the maximum number of pending jobs
+	 * Gets the maximum number of pending jobs.
+	 * Precondition : maxPendingJobs is an integer that is > 0.
+	 * Postcondition: The data has been returned.
+	 * @return the maximum number of pending jobs.
 	 */
 	public static int getMaxPendingJobs() {
 		return maxPendingJobs;
@@ -83,7 +79,8 @@ public final class ModelConstants {
 
 	/**
 	 * Change the maximum pending jobs value to the given one.
-	 * Precondition: the given value should be integer greater than 0.
+	 * Precondition : theMaxPendingJobs > 0.
+	 * Postcondition: The maxPendingJobs has been updated.
 	 */
 	public static void setMaxPendingJobs(int theMaxPendingJobs) {
 		maxPendingJobs = theMaxPendingJobs;
@@ -91,6 +88,8 @@ public final class ModelConstants {
 
 	/**
 	 * Change the maximum pending jobs value to the default value.
+	 * Precondition : DEFAULT_MAX_PENDING_JOBS is an integer that is > 0.
+	 * Postcondition: The maxPendingJobs has been updated to the default value.
 	 */
 	public static void setDefaultMaxPendingJobs() {
 		maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
