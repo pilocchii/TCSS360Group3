@@ -18,9 +18,10 @@ import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 import static urbanparks.view.ViewConstants.*;
 
-/***
+/**
  * Signup GUI component.
  * This is a splash page that enables the user to sign up for a new account.
+ * invariants: all fields non-null
  */
 public class SignupPane extends GridPane {
 	

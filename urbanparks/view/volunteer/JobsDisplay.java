@@ -8,19 +8,22 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
-import urbanparks.model.Job;
 import urbanparks.model.JobAvailability;
 import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.JobsTableView;
 import urbanparks.view.MainApplication;
 
+/**
+ * JobsTableView that shows jobs to a volunteer.
+ * invariants: all fields non-null
+ */
 public class JobsDisplay extends JobsTableView {
 	
 	private Volunteer volunteer;
 	
 	/**
-	 * The main screen displaying jobs to a volunteer.
+	 * JobsDisplay constructor.
 	 * 
 	 * @param root reference to the root application
 	 * @param volunteer the volunteer to show the menu for
@@ -41,14 +44,15 @@ public class JobsDisplay extends JobsTableView {
 		String tableTitle = "\t\t\t\tAvailable Jobs";
         ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
 		
+        // create the sign up for selected job button
         Button signUpButton = new Button();
         signUpButton.setText("Sign up for this job");
         signUpButton.setOnAction(new SignupJobButtonHandler());
 		signUpButton.setDisable(true);
 		
+		// create the jobs table
         TableColumn<JobAvailability, String> canSignUp = new TableColumn<JobAvailability, String>("Can sign up");
         canSignUp.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
-		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canSignUp, true, signUpButton, true);
 		vbox.getChildren().add(signUpButton);
 		

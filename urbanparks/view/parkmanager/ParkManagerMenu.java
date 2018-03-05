@@ -13,6 +13,7 @@ import urbanparks.view.MainMenuPane;
 
 /**
  * GridPane that displays the main park manager menu.
+ * invariants: all fields non-null
  */
 public class ParkManagerMenu extends GridPane {
 	

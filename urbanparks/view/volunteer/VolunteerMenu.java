@@ -1,26 +1,19 @@
 package urbanparks.view.volunteer;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import urbanparks.model.Job;
-import urbanparks.model.JobCollection;
-import urbanparks.model.ParkManager;
-import urbanparks.model.UrbanParksStaff;
-import urbanparks.model.User;
 import urbanparks.model.Volunteer;
 import urbanparks.view.MainApplication;
 import urbanparks.view.MainMenuPane;
-import urbanparks.model.UserCollection;
 
+/**
+ * Grid pane that shows the main volunteer menu.
+ * invariants: all fields non-null
+ */
 public class VolunteerMenu extends GridPane {
 
     private MainApplication root;
@@ -28,7 +21,8 @@ public class VolunteerMenu extends GridPane {
     private Volunteer volunteer;
     
     /**
-     * The main screen for the volunteer menu.
+     * Constructor for VolunteerMenu.
+     * 
      * @param root The root of the application
      * @param volunteer the volunteer to show the menu to
      */
@@ -50,20 +44,23 @@ public class VolunteerMenu extends GridPane {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
 
-    	// Login pane styles
+    	// Set pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
         setVgap(5);
         
+        // create view pending jobs button
         Button viewPendingButton = new Button("View your pending jobs");
         viewPendingButton.setOnAction(new viewPendingEventHandler());
         viewPendingButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        // create view available jobs butotn
         Button viewAvailableButton = new Button("View jobs available for signup");
         viewAvailableButton.setOnAction(new viewAvailableEventHandler());
         viewAvailableButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         
+        // add buttons to this grid pane
         add(viewPendingButton, 0, 0);
         add(viewAvailableButton, 0, 1);
         

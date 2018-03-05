@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Container class for the constants related to the GUI.
+ * invariants: all fields non-null
  */
 public class ViewConstants {
 	

@@ -2,6 +2,7 @@ package urbanparks.view;
 
 /**
  * Main class & starting point for the program
+ * invariants: none
  */
 public class Main {
 	

@@ -1,5 +1,9 @@
 package urbanparks.model;
 
+/**
+ * User that represents an Urban Parks staff user
+ * invariants: none
+ */
 public class UrbanParksStaff extends User {
 
 	private static final long serialVersionUID = 3702035140593797417L;

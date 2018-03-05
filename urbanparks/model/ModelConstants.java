@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 /**
  * Class that holds all the constants that are used in urbanparks.
+ * invariants: all fields non-null
  */
 public final class ModelConstants {
 	

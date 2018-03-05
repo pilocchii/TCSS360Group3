@@ -12,6 +12,7 @@ import urbanparks.view.MainMenuPane;
 
 /**
  * GridPane for showing the main Urban Parks Staff member menu
+ * invariants: all fields non-null
  */
 public class UPStaffMenu extends GridPane {
 

@@ -16,6 +16,7 @@ import urbanparks.view.MainApplication;
 
 /**
  * JobsTableView that shows jobs for a park manager.
+ * invariants: all fields non-null
  */
 public class JobsDisplay extends JobsTableView {
 

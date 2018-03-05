@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Job Collection class
  * This class represents the collection of all jobs used in the Urban Parks application.
+ * invariants: all fields non-null
  */
 public class JobCollection implements Serializable {
 	
@@ -183,11 +184,17 @@ public class JobCollection implements Serializable {
 		ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if (parkManager.isAssociatedWithJob(job)) {
-				if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
-					job.setIsAvailable(true);
-				} else {
-					job.setIsAvailable(false);
+			if (parkManager.isAssociatedWithJob(job.getJobId())) {
+				JobAvailability ja = new JobAvailability(job);
+				// check unsubmitting job business rules
+				// jobs that violate business rules are marked as unavailable
+				if (parkManager.isAssociatedWithJob(job.getJobId())) {
+					if (!job.getIsCancelled() && job.isUnsubmitEarlyEnough()) {
+						ja.setIsAvailable(true);
+					} else {
+						ja.setIsAvailable(false);
+					}
+					availableJobs.add(ja);
 				}
 			}
 		}

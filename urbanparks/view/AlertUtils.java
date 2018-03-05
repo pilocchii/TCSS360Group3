@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 
 /**
  * Utility class to hold all of the methods that show all of the alerts in the program.
+ * invariants: none
  */
 public class AlertUtils {
 	

@@ -22,6 +22,7 @@ import urbanparks.view.MainApplication;
 /**
  * Grid pane for showing the date range selector prompt 
  * for Urban Parks staff to view all jobs in a range.
+ * invariants: all fields non-null
  */
 public class DateRangeSelector extends GridPane {
 
