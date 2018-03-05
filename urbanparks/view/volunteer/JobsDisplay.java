@@ -19,6 +19,12 @@ public class JobsDisplay extends JobsTableView {
 	
 	private Volunteer volunteer;
 	
+	/**
+	 * The main screen displaying jobs to a volunteer.
+	 * 
+	 * @param root reference to the root application
+	 * @param volunteer the volunteer to show the menu for
+	 */
 	public JobsDisplay(MainApplication root, Volunteer volunteer) {
 		this.root = root;
 		this.volunteer = volunteer;
@@ -28,6 +34,9 @@ public class JobsDisplay extends JobsTableView {
 		backButton.setOnAction(new BackButton_Volunteer_Handler());
 	}
 	
+	/**
+	 * Shows all available jobs the volunteer can sign up for
+	 */
 	public void showVolunteerAvailJobs() {
 		String tableTitle = "\t\t\t\tAvailable Jobs";
         ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForSignup(volunteer);
@@ -47,6 +56,9 @@ public class JobsDisplay extends JobsTableView {
 		root.setTitle("View Available Jobs - " + volunteer.getEmail());
 	}
 	
+	/**
+	 * Shows all jobs the volunteer is currently signed up for that are currently pending
+	 */
 	public void showVolunteerPendingJobs() {
 		String tableTitle = "\t\t\t\tYour Pending Jobs";
         ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForUnvolunteer(volunteer);//volunteer.getSignedUpJobs(root.getJobCollection());
@@ -67,6 +79,9 @@ public class JobsDisplay extends JobsTableView {
 	}
 
     
+	/**
+	 * An inner class that handles events for clicking the signup for a job button.
+	 */
     public class SignupJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -82,6 +97,10 @@ public class JobsDisplay extends JobsTableView {
         	}
         }
     }
+    
+	/**
+	 * An inner class that handles events for clicking the unvolunteer for a job button.
+	 */
     public class UnvolunteerButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -97,6 +116,10 @@ public class JobsDisplay extends JobsTableView {
         	}
         }
     }
+    /**
+     * An inner class that handles events for clicking the back button. Returns 
+     * the user to the previous screen.
+     */
     private class BackButton_Volunteer_Handler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {

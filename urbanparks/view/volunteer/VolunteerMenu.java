@@ -27,6 +27,11 @@ public class VolunteerMenu extends GridPane {
     private Button backButton;
     private Volunteer volunteer;
     
+    /**
+     * The main screen for the volunteer menu.
+     * @param root The root of the application
+     * @param volunteer the volunteer to show the menu to
+     */
     public VolunteerMenu(MainApplication root, Volunteer volunteer) {
         super();
 
@@ -36,7 +41,11 @@ public class VolunteerMenu extends GridPane {
  
         show();
     }
-
+    
+    /**
+     * Shows the main volunteer screen. Users can navigate to signing up for a job
+     * or viewing their currently signed up jobs.
+     */
     private void show() {
         backButton.setText("Sign out");
         backButton.setOnAction(new BackButtonEventHandler());
@@ -61,7 +70,9 @@ public class VolunteerMenu extends GridPane {
         root.setTitle("Volunteer Menu - " + volunteer.getEmail());
     }
     
-    
+    /**
+     * Inner class that handles the button to move to the signed up jobs screen.
+     */
     private class viewPendingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -70,7 +81,9 @@ public class VolunteerMenu extends GridPane {
         }
     }
     
-    
+    /**
+     * Inner class that handles the button to move to the available-for-signup jobs screen.
+     */
     private class viewAvailableEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -79,7 +92,10 @@ public class VolunteerMenu extends GridPane {
         }
     }
 
-    
+    /**
+     * An inner class that handles events for clicking the back button. Returns 
+     * the user to the previous screen.
+     */
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
