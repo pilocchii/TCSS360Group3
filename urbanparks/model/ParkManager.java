@@ -18,7 +18,7 @@ public class ParkManager extends User {
 
 	/**
 	 * Creates a new job
-	 * Pre: The jobid to add is the id assoicated with the job being created
+	 * Pre: The jobid to add is the id associated with the job being created
 	 * 
 	 * @param candidateJob The job to be created
 	 */
