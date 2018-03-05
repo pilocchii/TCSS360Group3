@@ -1,15 +1,9 @@
 package urbanparks.view.upstaff;
 
-import static urbanparks.model.ModelConstants.MAX_DAYS_BEFORE_JOB_ENDS;
-import static urbanparks.model.ModelConstants.MAX_JOB_LENGTH;
 import static urbanparks.view.ViewConstants.INVALID_DATE_STYLE;
-import static urbanparks.view.ViewConstants.STYLE_FIELD_EDIT;
-import static urbanparks.view.ViewConstants.STYLE_FIELD_VALID;
 import static urbanparks.view.ViewConstants.VALID_DATE_STYLE;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,25 +12,30 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import urbanparks.model.UrbanParksStaff;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
 
+/**
+ * Grid pane for showing the date range selector prompt 
+ * for Urban Parks staff to view all jobs in a range.
+ */
 public class DateRangeSelector extends GridPane {
 
-    // instance of this to retain its state
+    /**
+     * instance of this to retain its state.
+     * This makes it easier to rapidly pick different date ranges.
+     */
     private DateRangeSelector dateRangeSelector;
 	
 	private MainApplication root;
     private UrbanParksStaff urbanParksStaff;
     private Button backButton;
 
-    //fields
+    // date pickers
     private DatePicker lowerBoundDatePicker;
     private DatePicker upperBoundDatePicker;
 	
@@ -44,6 +43,12 @@ public class DateRangeSelector extends GridPane {
 	private boolean startDateSatisfied;
 	private boolean endDateSatisfied;
 
+	/**
+	 * Constructor for DateRangeSelector
+	 * 
+	 * @param root Reference to the root application. Constructs the pane and shows itself.
+	 * @param urbanParksStaff The Urban Parks staff member this menu is for.
+	 */
     public DateRangeSelector(MainApplication root, UrbanParksStaff urbanParksStaff) {
         super();
         
@@ -58,23 +63,35 @@ public class DateRangeSelector extends GridPane {
         show();
     }
     
+    /**
+     * Sets this gridPane's back button to its default state.
+     */
     public void setBackButton() {
         backButton.setText("Back to Urban Parks staff menu");
         backButton.setOnAction(new BackButtonEventHandler());
     }
     
+    /**
+     * Shows the date range selector prompt 
+     * for Urban Parks staff to view all jobs in a range.
+     */
     private void show() {
     	setBackButton();
+    	
+    	// create the date pickers
         lowerBoundDatePicker = new DatePicker();
         upperBoundDatePicker = new DatePicker();
         lowerBoundDatePicker.setValue(LocalDate.now());
         upperBoundDatePicker.setValue(LocalDate.now());
+        // validate them after they're created
         validateDates(lowerBoundDatePicker, upperBoundDatePicker);
 
+        // add listener to lower bound picker
         lowerBoundDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
         	validateDates(lowerBoundDatePicker, upperBoundDatePicker);
         });
         
+        // add listener and selected days limiter to upper bound
         upperBoundDatePicker.valueProperty().addListener((arg0, oldValue, newValue) -> {
         	validateDates(lowerBoundDatePicker, upperBoundDatePicker);
         });
@@ -85,6 +102,7 @@ public class DateRangeSelector extends GridPane {
         			@Override
         			public void updateItem(LocalDate tempEnd, boolean empty) {
         				super.updateItem(tempEnd, empty);
+        				// disables the ability to select upper bound dates in the calendar that violate business rules.
         				if (!areDatesValid(lowerBoundDatePicker.getValue(), tempEnd)) {
         					setDisable(true);
         				}

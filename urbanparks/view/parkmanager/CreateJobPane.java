@@ -24,9 +24,11 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-
 import static urbanparks.model.ModelConstants.*;
 
+/**
+ * GridPane that holds the form for creating a new job as a park manager.
+ */
 public class CreateJobPane extends GridPane {
 	
     private MainApplication root;
@@ -52,7 +54,7 @@ public class CreateJobPane extends GridPane {
     private TextField jobLocationField;
 
     /**
-     * Constructor for CreateJobPane which also shows itself. Constructs and shows itself
+     * Constructor for CreateJobPane which also shows itself. Constructs and shows itself.
      * 
 	 * @param root Reference to the root application.
      * @param parkManager Reference to the park manager logged in
@@ -259,9 +261,11 @@ public class CreateJobPane extends GridPane {
     }
     
     /**
+     * Determines if a user-entered string is in the time format "MM:SS"
+     * precondition: input != null
      * 
-     * @param input
-     * @return
+     * @param input The user-entered string
+     * @return True if the input is parsable as a time, false otherwise.
      */
     private boolean isTimeStringParsable(String input) {
     	try {
@@ -272,80 +276,16 @@ public class CreateJobPane extends GridPane {
     	return false;
     }
     
-    private class CreateJobButtonHandler implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-        	if (datesAndTimesSatisfied && descriptionSatisfied 
-        			&& parkNameSatisfied && jobLocationSatisfied) {
-        		
-        		// parse and add together dates + times
-        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
-        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
-        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
-        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
-        		
-        	    String description = descriptionField.getText();
-        	    String parkName = parkNameField.getText();
-        	    String location = jobLocationField.getText();
-        		
-				if (AlertUtils.askJobSubmit(description)) {
-	        		Job newJob = new Job(description, startDateTime, endDateTime, parkName, location);
-					parkManager.createNewJob(newJob.getJobId());
-					jobCollection.addJob(newJob);
-					AlertUtils.showJobSubmitSuccess(startDateTime, endDateTime);
-					root.setCenter(new ParkManagerMenu(root, parkManager));
-				}
-        	} else {
-        		AlertUtils.showInvalidOptions();
-        	}
-        }
-    }
-    
-    private void validateDatesAndTimes() {
-    	boolean timesValid = false;
-    	
-    	if (areDatesValid(startDatePicker.getValue(), endDatePicker.getValue())) {
-    		boolean startTimeParsable = isTimeStringParsable(startTimeTextField.getText());
-    		boolean endTimeParsable = isTimeStringParsable(endTimeTextField.getText());
-    		if (!startTimeParsable) {
-    			startTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        		datesAndTimesSatisfied = false;
-        		return;
-    		}
-    		if (!endTimeParsable) {
-        		endTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        		datesAndTimesSatisfied = false;
-        		return;
-    		}
-    		
-    		if (startTimeParsable && endTimeParsable) {
-        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
-        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
-        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
-        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
-
-        		if (startDateTime.isBefore(endDateTime)) {
-                	timesValid = true;
-        		}
-        	}	
-    	}
-        	
-        if (timesValid) {
-    		startDatePicker.setStyle(VALID_DATE_STYLE);
-    		endDatePicker.setStyle(VALID_DATE_STYLE);
-    		datesAndTimesSatisfied = true;
-        	startTimeTextField.setStyle(STYLE_FIELD_VALID);
-        	endTimeTextField.setStyle(STYLE_FIELD_VALID);
-    	} else {
-    		startDatePicker.setStyle(INVALID_DATE_STYLE);
-    		endDatePicker.setStyle(INVALID_DATE_STYLE);
-    		datesAndTimesSatisfied = false;
-        	startTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        	endTimeTextField.setStyle(STYLE_FIELD_INVALID);
-        	
-    	}
-    }
-    
+    /**
+     * Determines if the dates selected by the user are valid 
+     * (don't violated any business rules)
+     * precondition: startDatePicker != null
+     * precondition: endDatePicker != null
+     * 
+     * @param startDatePicker The start date to check.
+     * @param endDatePicker The end date to check.
+     * @return True if the start and end dates are valid for submission.
+     */
     private boolean areDatesValid(LocalDate startDatePicker, LocalDate endDatePicker) {
     	LocalDateTime startDate = startDatePicker.atStartOfDay();
     	LocalDateTime endDate = endDatePicker.atStartOfDay();
@@ -366,6 +306,98 @@ public class CreateJobPane extends GridPane {
     	return valid;
     }
     
+    /**
+     * Sets the style of the date/time selectors based on their state's validity,
+     * and sets the datesAndTimesSatisfied to true if all of them are in a valid state,
+     * false otherwise.
+     * postcondition: date and time picker styles set to appropriate styles,
+     * datesAndTimesSatisfied flag set to true if the dates/times are valid
+     */
+    private void validateDatesAndTimes() {
+    	boolean timesValid = false;
+    	
+    	if (areDatesValid(startDatePicker.getValue(), endDatePicker.getValue())) {
+    		boolean startTimeParsable = isTimeStringParsable(startTimeTextField.getText());
+    		boolean endTimeParsable = isTimeStringParsable(endTimeTextField.getText());
+    		// set start time picker style to invalid if it's not a time.
+    		if (!startTimeParsable) {
+    			startTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        		datesAndTimesSatisfied = false;
+        		return;
+    		}
+    		// set end time picker style to invalid if it's not a time.
+    		if (!endTimeParsable) {
+        		endTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        		datesAndTimesSatisfied = false;
+        		return;
+    		}
+    		// ensure the start time date is before the end time date
+    		if (startTimeParsable && endTimeParsable) {
+        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
+        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
+        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
+        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
+
+        		if (startDateTime.isBefore(endDateTime)) {
+                	timesValid = true;
+        		}
+        	}	
+    	}
+    	// if the dates and times don't violate business rules, validate them
+        if (timesValid) {
+    		startDatePicker.setStyle(VALID_DATE_STYLE);
+    		endDatePicker.setStyle(VALID_DATE_STYLE);
+    		datesAndTimesSatisfied = true;
+        	startTimeTextField.setStyle(STYLE_FIELD_VALID);
+        	endTimeTextField.setStyle(STYLE_FIELD_VALID);
+    	} else {
+    		startDatePicker.setStyle(INVALID_DATE_STYLE);
+    		endDatePicker.setStyle(INVALID_DATE_STYLE);
+    		datesAndTimesSatisfied = false;
+        	startTimeTextField.setStyle(STYLE_FIELD_INVALID);
+        	endTimeTextField.setStyle(STYLE_FIELD_INVALID);
+    	}
+    }
+    
+    /**
+     * Event handler for the create a new job button.
+     * A button press with the form in a valid state will 
+     * create a new job and take the user back to the park manager menu. 
+     */
+    private class CreateJobButtonHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	if (datesAndTimesSatisfied && descriptionSatisfied 
+        			&& parkNameSatisfied && jobLocationSatisfied) {
+        		// parse and add together dates + times
+        		LocalTime startTime = LocalTime.parse(startTimeTextField.getText());
+        		LocalTime endTime = LocalTime.parse(endTimeTextField.getText());
+        		LocalDateTime startDateTime = startDatePicker.getValue().atTime(startTime);
+        		LocalDateTime endDateTime = endDatePicker.getValue().atTime(endTime);
+        		
+        		// retrieve job information from text fields
+        	    String description = descriptionField.getText();
+        	    String parkName = parkNameField.getText();
+        	    String location = jobLocationField.getText();
+        		
+        	    // create job after confirmation
+				if (AlertUtils.askJobSubmit(description)) {
+	        		Job newJob = new Job(description, startDateTime, endDateTime, parkName, location);
+					parkManager.createNewJob(newJob.getJobId());
+					jobCollection.addJob(newJob);
+					AlertUtils.showJobSubmitSuccess(startDateTime, endDateTime);
+					root.setCenter(new ParkManagerMenu(root, parkManager));
+				}
+        	} else {
+        		AlertUtils.showInvalidOptions();
+        	}
+        }
+    }
+    
+    /**
+     * Event handler for the back button. If pressed, 
+     * it will send the user to the park manager menu.
+     */
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
