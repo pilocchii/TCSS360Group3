@@ -275,4 +275,14 @@ public class Job implements Serializable {
 	public boolean hasJobEnded() {
 		return endDateTime.isBefore(LocalDateTime.now()) || endDateTime.isEqual(LocalDateTime.now());
 	}
+	
+	/**
+	 * Determines if a job has started, 
+	 * meaning its start time is at or before now
+	 * 
+	 * @return true if job has start, false otherwise.
+	 */
+	public boolean hasJobStarted() {
+		return startDateTime.isBefore(LocalDateTime.now()) || startDateTime.isEqual(LocalDateTime.now());
+	}
 }
