@@ -13,7 +13,7 @@ public class UserCollection implements Serializable {
 
 	private static final long serialVersionUID = -271344141538164296L;
 	
-	//A HashMap that stores users based on a string key, represented by email.
+	/** A HashMap that stores users based on a string key, represented by email.*/
 	private HashMap<String, User> userList;
 	
 	/**
