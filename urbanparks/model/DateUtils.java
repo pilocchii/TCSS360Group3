@@ -15,8 +15,6 @@ public class DateUtils {
 	 * Precondition : The given two dates should not be NULL.
 	 * Postcondition: The value returned by the function is true if two dates 
 	 * are in the same day; otherwise the value returned by the function is false.
-	 * @param date1 the first date.
-	 * @param date2 the second date.
 	 * @return true if the two dates are on same day, false otherwise.
 	 */
 	public static boolean are2DatesOnSameDay(LocalDateTime date1, LocalDateTime date2) {
@@ -29,7 +27,6 @@ public class DateUtils {
 	 * Precondition : The given date should not be NULL.
 	 * Postcondition: The value returned by the function is number of days between a future date and now; 
 	 * positive if it is in the future and negative if it is in the past. 
-	 * @param date The date to use. Can be any date.
 	 * @return The number of days between a future date and now, 
 	 * 			negative if that date is in the past
 	 */
@@ -58,7 +55,6 @@ public class DateUtils {
 	 * String represents the formated date "yyyy-MM-dd HH:mm".
 	 * Precondition : The given date should not be NULL.
 	 * Postcondition: The value returned by the function is the formated date.
-	 * @param date the given date.
 	 * @return the string represents the formated date.
 	 */
 	public static String formatDateTime(LocalDateTime date) {
