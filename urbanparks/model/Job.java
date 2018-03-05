@@ -218,16 +218,22 @@ public class Job implements Serializable {
 	 * @return True if the start or end dates of the 2 jobs overlap, false otherwise
 	 */
 	public boolean doJobsOverlap(Job otherJob) {
-		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
-			return true;
-		}
-		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
-			return true;
-		}
-		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
-			return true;
-		}
-		return false;
+//		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
+//			return true;
+//		}
+//		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
+//			return true;
+//		}
+//		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
+//			return true;
+//		}
+//		if (startDateTime.isBefore(otherJob.getStartDateTime()) != endDateTime.isBefore(otherJob.getStartDateTime())) {
+//			return true;
+//		}
+//		if (startDateTime.isAfter(otherJob.getEndDateTime()) != endDateTime.isAfter(otherJob.getEndDateTime())) {
+//			return true;
+//		}
+		return isBetween2DatesInclusive(otherJob.getStartDateTime(), otherJob.getEndDateTime());
 	}
 
 	/**
@@ -289,13 +295,21 @@ public class Job implements Serializable {
 	 * @return true if this job starts or ends between the given two dateTimes, false otherwise.
 	 */
 	public boolean isBetween2DatesInclusive(LocalDateTime lowerBound, LocalDateTime upperBound) {
+		
+		if(startDateTime.isBefore(lowerBound) && endDateTime.isBefore(lowerBound)) {
+			return false;
+		}
+		if(startDateTime.isAfter(upperBound) && endDateTime.isAfter(upperBound)) {
+			return false;
+		}
+			
 		boolean startAfterLowerBound = startDateTime.isAfter(lowerBound) || startDateTime.isEqual(lowerBound);
 		boolean startBeforeUpperBound = startDateTime.isBefore(upperBound) || startDateTime.isEqual(upperBound);
-		boolean startInRange = startAfterLowerBound && startBeforeUpperBound;
+		boolean startInRange = startAfterLowerBound || startBeforeUpperBound;
 		
 		boolean endAfterLowerBound = endDateTime.isAfter(lowerBound) || endDateTime.isEqual(lowerBound);
 		boolean endBeforeUpperBound = endDateTime.isBefore(upperBound) || endDateTime.isEqual(upperBound);
-		boolean endInRange = endAfterLowerBound && endBeforeUpperBound;
+		boolean endInRange = endAfterLowerBound || endBeforeUpperBound;
 		
 		return startInRange || endInRange;
 	}
