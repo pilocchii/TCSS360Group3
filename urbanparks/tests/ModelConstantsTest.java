@@ -44,7 +44,7 @@ public class ModelConstantsTest {
 	 */
 	@Test
 	public void setMaxPendingJobs_ChangeMaxPendingJobs_Equal() throws FileNotFoundException {
-		int maxPendingJobs = (new Random()).nextInt(50);
+		int maxPendingJobs = 1 + new Random().nextInt(50);
 		ModelConstants.setMaxPendingJobs(maxPendingJobs);
 		ModelConstants.saveSettingsData();
 		assertEquals(ModelConstants.getMaxPendingJobs(), maxPendingJobs);
@@ -55,7 +55,8 @@ public class ModelConstantsTest {
 	 */
 	@Test
 	public void setDefaultMaxPendingJobs_ChangeMaxPendingJobsToDefault_NotEqual() {
-		ModelConstants.setMaxPendingJobs((new Random()).nextInt(50));
+		int newMaxPendingJobs = ModelConstants.getMaxPendingJobs() + new Random().nextInt(50);
+		ModelConstants.setMaxPendingJobs(newMaxPendingJobs);
 		int OldMaxPendingJobs = ModelConstants.getMaxPendingJobs();
 		ModelConstants.setDefaultMaxPendingJobs();
 		assertNotEquals(ModelConstants.getMaxPendingJobs(), OldMaxPendingJobs);
