@@ -13,7 +13,10 @@ public class UserCollection implements Serializable {
 
 	private static final long serialVersionUID = -271344141538164296L;
 	
-	/** A HashMap that stores users based on a string key, represented by email.*/
+	/**
+	 * A HashMap that stores users based on a string key, represented by email.
+	 * 
+	 */
 	private HashMap<String, User> userList;
 	
 	/**
@@ -25,31 +28,28 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Retrieves an User object based on its email
-	 * Precondition: user should enter a email.
-	 * Postcondition: user has been returned.
-	 * @param email of user
-	 * @return user is returned from user list
+	 * Pre: The email is associated with tuser to fetch
+	 * @param email the email the user is associated with
+	 * @return the user object represented by the email
 	 */
 	public User getUser(String email) {
 		return userList.get(email);
 	}
 	
 	/**
-	 * Adds an user to the collection
-	 * Precondition: user should register.
-	 * Postcondition: user has been registered 
-	 *                and stored in user list.
-	 * @param u
+	 * Adds an user to the collection.
+	 * Pre: the user object is non-null
+	 * @param u the user to add to the collection
 	 */
 	public void addUser(User u) {
 		userList.put(u.getEmail(), u);
 	}
 	
 	/**
-	 * Save the users to a file.
-	 * Precondition : The file has to be exist otherwise it will create a new one.
-	 * Postcondition: The data has been written to the file.
-	 * @throws IOException
+	 * Saves the user collection to a file by the name specified in the ModelConstants class.
+	 * Pre: The file by the specified name either exists, or is able to be created/written to
+	 * in the directory the program resides in.
+	 * @throws IOException If the file is unable to be written to (doesn't exist or permissions are not enabled)
 	 */
 	public void saveData() throws IOException {
 		FileOutputStream fos = new FileOutputStream(USER_DATA_FILE);
@@ -59,11 +59,10 @@ public class UserCollection implements Serializable {
 	}
 	
 	/**
-	 * Reading the data from saved file of users.
-	 * Precondition : The file has to be exist in order to open the file.
-	 * Postcondition: The data has been loaded from the file.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * Loads the user collection from the file by the name specified in the ModelConstants class.
+	 * Pre: The file exists and contains a hashmap object representing the user collection.
+	 * @throws IOException If the file does not exist
+	 * @throws ClassNotFoundException 
 	 */
 	@SuppressWarnings("unchecked")
 	public void loadData() throws IOException, ClassNotFoundException {

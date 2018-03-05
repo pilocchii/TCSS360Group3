@@ -77,13 +77,13 @@ public abstract class User implements Serializable {
 	}
 	
 	/**
-	 * Match the Job Id in with jobs in collections.
-	 * Precondition: there is at least 1 Job in file.
-	 * @return true if job id matches job in jobs collections.
+	 * Checks to see if the user is associated with the passed jobid.
+	 * @param id The job id to check
+	 * @return true if the job is in this user's collection (signed up for/creator), false otherwise
 	 */
-	public boolean isAssociatedWithJob(Job job) {
+	public boolean isAssociatedWithJob(long id) {
 		for (long jobID : associatedJobs) {
-			if (jobID == job.getJobId()) {
+			if (jobID == id) {
 				return true;
 			}
 		}
