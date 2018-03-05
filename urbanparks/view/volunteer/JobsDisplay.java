@@ -71,7 +71,8 @@ public class JobsDisplay extends JobsTableView {
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
         		if (AlertUtils.askJobSignup(selectedJob.getDescription())) {
-            		volunteer.signUpForJob(selectedJob);
+            		volunteer.signUpForJob(selectedJob.getJobId());
+            		selectedJob.addVolunteer(volunteer.getEmail());
             		AlertUtils.showJobSignupSuccess();
             		root.setCenter(new VolunteerMenu(root, volunteer));
         		}
@@ -85,7 +86,8 @@ public class JobsDisplay extends JobsTableView {
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
         		if (AlertUtils.askJobUnvolunteer(selectedJob.getDescription())) {
-        			volunteer.unVolunteerFromJob(selectedJob);
+        			selectedJob.removeVoluneer(volunteer.getEmail());
+        			volunteer.unVolunteerFromJob(selectedJob.getJobId());
         			AlertUtils.showJobUnvolunteerSuccess();
         			root.setCenter(new VolunteerMenu(root, volunteer));
         		}

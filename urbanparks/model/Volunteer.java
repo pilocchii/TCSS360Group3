@@ -11,6 +11,11 @@ public class Volunteer extends User {
 
 	/**
 	 * Constructor for Volunteer class.
+	 * 
+	 * @param firstName the first name of the user.
+	 * @param lastName the last name of the user.
+	 * @param email the email address of the user.
+	 * @param phoneNum the phone number of the user.
 	 */
 	public Volunteer(String firstName, String lastName, String email, String phoneNum) {
 		super(firstName, lastName, email, phoneNum);
@@ -23,35 +28,34 @@ public class Volunteer extends User {
 	 * @param candidateJob the job to be signed up for.
 	 * @return true if the volunteer signed up successfully, false otherwise.
 	 */
-	public boolean signUpForJob(Job candidateJob) {
+	public boolean signUpForJob(Long candidateJobId) {
 		boolean flag = false;
-		candidateJob.addVolunteer(getEmail());
-		associatedJobs.add(candidateJob.getJobId());
-		if(associatedJobs.contains(candidateJob.getJobId())) {
+		associatedJobs.add(candidateJobId);
+		if(associatedJobs.contains(candidateJobId)) {
 			flag = true; //both job and volunteer added each other
 		}
 		return flag;
 	}
-
+  
 	/**
-	 * Unvolunteer from the given job if the volunteer is already signed up for.
-	 * Precondition : The given job should not be NULL.
-	 * Postcondition: The job has been removed from the volunteer job list.
-	 * @param job the job to remove from the volunteer signed up jobs.
+	 * Removes the job from the list of jobs the volunteer is signed up for.
+	 * NOTE: THIS DOES NOT REMOVE THE VOLUNTEER FROM THE JOB'S LIST!
+	 * Pre: The jobid is associated with this user.
+	 * @param jobid the id to unvolunteer from
 	 */
-	public void unVolunteerFromJob(Job job) {
-		job.removeVoluneer(getEmail());
-		associatedJobs.remove(job.getJobId());
+	public void unVolunteerFromJob(Long jobid) {
+		associatedJobs.remove(jobid);
 	}
 
 	/**
 	 * Checks if a candidate job's start/end days equal those of any other 
 	 * job this Volunteer is signed up for
-	 * Precondition : The given job should not be NULL.
-	 * @param candidateJob the job to check if its overlap with volunteer signed up jobs.
-	 * @param jobCollection the job collection.
-	 * @return true if the jobs overlap with one of the jobs that 
-	 * the volunteer already signed up for.
+	 * Pre: job and jobcollection are non-null
+	 * 
+	 * @param candidateJob the job to check for overlap
+	 * @param jobCollection the list of all jobs in the system
+	 * @return true if the job overlaps with any job the user is signed up for, false otherwise
+
 	 */
 	public boolean doesJobOverlap(Job candidateJob, JobCollection jobCollection) {
 		for (long jobID : associatedJobs) {
@@ -62,12 +66,13 @@ public class Volunteer extends User {
 		}
 		return false;
 	}
-
+	
 	/**
-	 * Returns all the jobs that this volunteer signed up for.
-	 * Precondition : The given jobCollection should not be NULL.
-	 * @param jobCollection the job collection.
-	 * @return all jobs that this volunteer signed up for.
+	 * Constructs an arraylist with all the jobs the user is currently signed up for.
+	 * Pre: Jobcollection is non-null
+	 * @param jobCollection the list of all jobs in the system
+	 * @return an arraylist with all jobs this user is signed up for
+
 	 */
 	public ArrayList<Job> getSignedUpJobs(JobCollection jobCollection) {
 		ArrayList<Job> signedUpJobs = new ArrayList<Job>();

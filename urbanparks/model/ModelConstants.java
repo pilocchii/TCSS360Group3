@@ -10,23 +10,73 @@ import java.util.Scanner;
  */
 public final class ModelConstants {
 	
-	//For creating job
-	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
-	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
-	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
+
+	//For creating a job
+	
+	/**
+	 * Represents the maximum length of time a job may last.
+	 */
 	public static final int MAX_JOB_LENGTH = 4;
+	/**
+	 * Represents default value for the max pending jobs that can exist in the system.
+	 */
+	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
+	/**
+	 * Represents the max allowable pending jobs in the system. This can be changed at run-time 
+	 * and is saved on program close and updated on program launch.
+	 */
+	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
+	
+	//For creating job
+	/**
+	 * Represents the MINIMUM value that maxPendingJobs can be set to.
+	 */
+	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
+	/**
+	 * Represents the number of days a job is allowed to be scheduled out.
+	 */
 	public static final int MAX_DAYS_BEFORE_JOB_ENDS = 60;
+	/**
+	 * Default value for the job ids; the first job will contain this value + 1, each
+	 * job after will take sequential values.
+	 */
 	public static final int DEFAULT_JOB_ID = 0;
 	
 	//For signing up for job
+	
+	/**
+	 * Represents the minimum number of days beforehand that a volunteer can signup.
+	 * If a job starts sooner than this value, they will not be able to signup.
+	 */
 	public static final int MIN_DAYS_BEFORE_SIGNUP = 2;
+
+	/**
+	 * Represents the number of milliseconds in a day; for calculation purposes.
+	 */
+	public static final int MILLISECONDS_IN_DAY = 86400000;
+
 	
 	//For loading persistent data
+	
+	/**
+	 * The name of the file to store the list of jobs.
+	 */
 	public static final String JOB_DATA_FILE = "joblist.data";
+	/**
+	 * The name of the file to store the list of users.
+	 */
 	public static final String USER_DATA_FILE = "userlist.data";
+
+	/**
+	 * The name of the file to store the program settings values.
+	 */
 	public static final String SETTINGS_DATA_FILE = "settings.data";
 	
 	// for DateUtils
+	
+	/**
+	 * Number of days in a year; used for DateUtils calculations.
+	 */
 	public final static int DAYS_IN_YEAR = 365;
 	
 	// For Park Manager unsubmitting a job.
@@ -64,10 +114,8 @@ public final class ModelConstants {
 	}
 
 	/**
-	 * Gets the maximum number of pending jobs.
-	 * Precondition : maxPendingJobs is an integer that is > 0.
-	 * Postcondition: The data has been returned.
-	 * @return the maximum number of pending jobs.
+	 * Returns the value of max allowable pending jobs in the system.
+	 * @return an int representing the max allowable pending jobs
 	 */
 	public static int getMaxPendingJobs() {
 		return maxPendingJobs;

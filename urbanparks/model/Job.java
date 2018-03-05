@@ -53,6 +53,7 @@ public class Job implements Serializable {
 		isCancelled = false;
 	}
 	
+
 	// Getters: ----------------------------------------------------------------------------------------------------------
 	/**
 	 * Return the jobID.
