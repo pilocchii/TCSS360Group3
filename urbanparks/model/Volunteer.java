@@ -19,9 +19,7 @@ public class Volunteer extends User {
 	/**
 	 * Signs up this volunteer for a job; returns a boolean value
 	 * true if the volunteer signed up successfully, false otherwise.
-	 * Precondition : The given job should not be NULL and it should have jobID.
-	 * Postcondition: The value returned by the function is true if 
-	 * the volunteer signed up for this job successfully, false otherwise.
+	 * Precondition : The given job should not be NULL.
 	 * @param candidateJob the job to be signed up for.
 	 * @return true if the volunteer signed up successfully, false otherwise.
 	 */
@@ -50,8 +48,6 @@ public class Volunteer extends User {
 	 * Checks if a candidate job's start/end days equal those of any other 
 	 * job this Volunteer is signed up for
 	 * Precondition : The given job should not be NULL.
-	 * Postcondition: The value returned by the function is true if the job 
-	 * overlap with a job that the volunteer already signed up for; false otherwise.
 	 * @param candidateJob the job to check if its overlap with volunteer signed up jobs.
 	 * @param jobCollection the job collection.
 	 * @return true if the jobs overlap with one of the jobs that 
@@ -70,8 +66,6 @@ public class Volunteer extends User {
 	/**
 	 * Returns all the jobs that this volunteer signed up for.
 	 * Precondition : The given jobCollection should not be NULL.
-	 * Postcondition: The value returned by the function is a list that contains 
-	 * all the jobs that this volunteer signed up for. 
 	 * @param jobCollection the job collection.
 	 * @return all jobs that this volunteer signed up for.
 	 */
