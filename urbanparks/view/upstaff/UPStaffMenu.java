@@ -17,8 +17,6 @@ import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
 import urbanparks.view.MainMenuPane;
 import urbanparks.view.SignupPane;
-import urbanparks.view.MainMenuPane.LoginEventHandler;
-import urbanparks.view.MainMenuPane.SignupMenuEventHandler;
 
 public class UPStaffMenu extends GridPane {
 

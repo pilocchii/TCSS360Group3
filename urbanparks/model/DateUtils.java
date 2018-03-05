@@ -28,7 +28,7 @@ public class DateUtils {
 		 * Calculates the days between a future date and now
 		 * Pre: Date is non-null
 		 * 
-		 * @param cal The date to use. Can be any date.
+		 * @param ld1 The date to use. Can be any date.
 		 * @return The number of days between a future date and now, 
 		 * 			negative if that date is in the past
 		 */
@@ -40,8 +40,8 @@ public class DateUtils {
 		 * Calculates the number of days between 2 dates.
 		 * Pre: The dates are non-null
 		 * 
-		 * @param cal1 The past date.
-		 * @param cal2 The future date.
+		 * @param ld1 The past date.
+		 * @param ld2 The future date.
 		 * @return The number of days between a the 2 dates, 
 		 * 			negative if that future/past dates are switched.
 		 */

@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
 import urbanparks.model.Job;
+import urbanparks.model.JobAvailability;
 import urbanparks.model.ParkManager;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.JobsTableView;
@@ -29,14 +30,14 @@ public class JobsDisplay extends JobsTableView {
     
 	public void showParkManagerCreatedJobs() {
 		String tableTitle = "\t\t\t\tJobs You Created";
-        ArrayList<Job> jobsToShow = root.getJobCollection().getAvailableForUnsubmit(parkManager);
+        ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForUnsubmit(parkManager);
 		
         Button uncreateButton = new Button();
         uncreateButton.setText("Unsubmit this job");
         uncreateButton.setOnAction(new UnsubmitJobButtonHandler());
 		uncreateButton.setDisable(true);
 		
-        TableColumn<Job, String> canUncreate = new TableColumn<Job, String>("Can unsubmit");
+        TableColumn<JobAvailability, String> canUncreate = new TableColumn<JobAvailability, String>("Can unsubmit");
         canUncreate.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsAvailableFormatted()));
 		
 		VBox vbox = makeJobsTable(jobsToShow, tableTitle, canUncreate, true, uncreateButton, true);
@@ -57,8 +58,8 @@ public class JobsDisplay extends JobsTableView {
         @Override
         public void handle(ActionEvent event) {
         	if (selectedJob != null && selectedJob.getIsAvailable()) {
-        		if (AlertUtils.askJobUnsubmit(selectedJob.getDescription())) {
-            		parkManager.unSubmitJob(selectedJob);
+        		if (AlertUtils.askJobUnsubmit(selectedJob.getJob().getDescription())) {
+            		parkManager.unSubmitJob(selectedJob.getJob());
             		AlertUtils.showJobUnsubmitSuccess();
             		root.setCenter(new ParkManagerMenu(root, parkManager));
         		}
