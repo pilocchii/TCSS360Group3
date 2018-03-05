@@ -1,13 +1,9 @@
 package urbanparks.tests;
 
 import static org.junit.Assert.*;
-
 import java.time.LocalDateTime;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import urbanparks.model.Job;
 import urbanparks.model.ModelConstants;
 import urbanparks.model.Volunteer;
