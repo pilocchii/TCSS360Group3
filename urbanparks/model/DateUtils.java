@@ -5,7 +5,10 @@ import java.time.format.DateTimeFormatter;
 
 import static urbanparks.model.ModelConstants.*;
 
-	public class DateUtils {
+/**
+ * Class that contains all the methods that is not belonging to the other classes.
+ */
+public class DateUtils {
 
 		/**
 		 * Checks if 2 Calendar objects are on the same calendar day.
@@ -57,4 +60,5 @@ import static urbanparks.model.ModelConstants.*;
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	        return ldt.format(formatter);
 		}
+
 }
