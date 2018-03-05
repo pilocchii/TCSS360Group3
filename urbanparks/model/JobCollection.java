@@ -1,6 +1,6 @@
 package urbanparks.model;
 
-import static urbanparks.model.Constants.JOB_DATA_FILE;
+import static urbanparks.model.ModelConstants.JOB_DATA_FILE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ public class JobCollection implements Serializable {
 	 */
 	public JobCollection() {
 		jobsList = new HashMap<Long, Job>();
-		currentJobId = Constants.DEFAULT_JOB_ID;
+		currentJobId = ModelConstants.DEFAULT_JOB_ID;
 	}
 	
 	/**
@@ -40,14 +40,18 @@ public class JobCollection implements Serializable {
 	 * @return true if the number of pending jobs is at capacity, false otherwise.
 	 */
 	public boolean isNumJobsAtMaximum() {
-		// TODO: not actually pending jobs...
-		int pendingJobs = jobsList.size();
-		try {
-			Constants.loadData();
-		} catch (FileNotFoundException e) {
-			Constants.setDefaultMaxPendingJobs();
-		}
-		return pendingJobs >= Constants.getMaxPendingJobs();
+		return getPendingJobsCount() >= ModelConstants.getMaxPendingJobs();
+	}
+	
+	/**
+	 * Generate a new unique jobID using the increment of the current jobID.
+	 * postcondition: ID must be unique to all other job IDs in the system 
+	 *  
+	 * @return a new valid unique JobID
+	 */
+	public static int generateNewJobID() {
+		currentJobId++;
+		return currentJobId;
 	}
 	
 	/**
@@ -71,23 +75,15 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * The size of job collection. THIS INCLUDES CANCELLED AND PENDING JOBS!
-	 * 
-	 * @return the size.
-	 */
-	public int size() {
-		return jobsList.size();
-	}
-	
-	/**
 	 * Returns an int representing the number of PENDING jobs in the collection.
+	 * Pending means the job is not cancelled and has not yet ended.
 	 * @return Pending jobs in the system
 	 */
 	public int getPendingJobsCount() {
 		int pendingCount = 0;
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if(!job.getIsCancelled()) {
+			if(!job.getIsCancelled() && !job.hasJobEnded()) {
 				pendingCount++;
 			}
 		}
@@ -134,20 +130,6 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	public ArrayList<Job> getJobsBetweenDates(boolean basedOnJobStart, LocalDateTime lowerBound, LocalDateTime upperBound) {
-		ArrayList<Job> availableJobs = new ArrayList<Job>();
-		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
-			Job job = entry.getValue();
-			boolean meetsLowerBoundCond = job.isJobAfterOrAtDateTime(lowerBound, basedOnJobStart);
-			boolean meetsUpperBoundCond = job.isJobBeforeOrAtDateTime(upperBound, basedOnJobStart);
-			if (meetsLowerBoundCond && meetsUpperBoundCond) {
-				availableJobs.add(job);
-			}
-		}
-		sortJobsByStartDate(availableJobs);
-		return availableJobs;
-	}
-	
 	/**
 	 * Gets a sorted list of jobs available for a specific park manager to 
 	 * view these jobs which they are in the future.
@@ -174,16 +156,16 @@ public class JobCollection implements Serializable {
 	}
 	
 	/**
-	 * Gets all available jobs between two given dates.
-	 * Precondition: the given two dates should not be null.
-	 * 
-	 * @return The list of jobs that is between the two dates.
+	 * Gets all jobs whose start or end times are between the 2 times, inclusive.
+	 * @param lowerBound the lower bound which the jobs' start or end times can't be below
+	 * @param upperBound the upper bound which the jobs' start or end times can't be above
+	 * @return An ArrayList of all jobs that are between the dates
 	 */
-	public ArrayList<Job> getJobsBetween2Dates(LocalDateTime start, LocalDateTime end) throws Exception {
+	public ArrayList<Job> getJobsBetween2DateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
 		final ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			if (job.isBetween2Dates(start, end)) {
+			if (job.isBetween2DatesInclusive(lowerBound, upperBound)) {
 				availableJobs.add(job);
 			}
 		}
@@ -191,7 +173,6 @@ public class JobCollection implements Serializable {
 		return availableJobs;
 	}
 	
-	// TODO: CHECK IF NEEDED WITH NEW GUI
 	/**
 	 * Sorts a list of jobs by start date, descending.
 	 * 
@@ -233,17 +214,4 @@ public class JobCollection implements Serializable {
 		currentJobId = jobsList.size();
 		ois.close();
 	}
-	
-	public static int getCurrentJobId() {
-		return currentJobId;
-	}
-
-	public static void incrementCurrentJobId() {
-		currentJobId++;
-	}
-	
-	public static void setDefaultJobId() {
-		currentJobId = Constants.DEFAULT_JOB_ID;
-	}
-
 }

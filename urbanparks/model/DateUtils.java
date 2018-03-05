@@ -3,7 +3,7 @@ package urbanparks.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static urbanparks.model.Constants.*;
+import static urbanparks.model.ModelConstants.*;
 
 	public class DateUtils {
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 import urbanparks.model.Volunteer;
@@ -38,9 +38,9 @@ public class VolunteerTest {
         volunteerWithJobs = new Volunteer("HasJobs", "Volunteer",
                 "test2@test.test", "0987654321");
 
-        LocalDateTime MinDaysInFuture = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP);
-        LocalDateTime MinDaysInFuturePlusOne = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP + 1);
-        LocalDateTime minDaysInFuturePlusMaxJobLength = LocalDateTime.now().plusDays(Constants.MIN_DAYS_BEFORE_SIGNUP + Constants.MAX_JOB_LENGTH);
+        LocalDateTime MinDaysInFuture = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP);
+        LocalDateTime MinDaysInFuturePlusOne = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP + 1);
+        LocalDateTime minDaysInFuturePlusMaxJobLength = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP + ModelConstants.MAX_JOB_LENGTH);
 
         jobCollection = new JobCollection();
 

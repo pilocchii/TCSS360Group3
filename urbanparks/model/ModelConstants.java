@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public final class Constants {
+public final class ModelConstants {
 	
 	//For creating a job
 	
@@ -16,12 +16,18 @@ public final class Constants {
 	/**
 	 * Represents default value for the max pending jobs that can exist in the system.
 	 */
-	private static final int DEFAULT_MAX_PENDING_JOBS = 20;
+	public static final int DEFAULT_MAX_PENDING_JOBS = 10;
 	/**
 	 * Represents the max allowable pending jobs in the system. This can be changed at run-time 
 	 * and is saved on program close and updated on program launch.
 	 */
-	private static int maxPendingJobs;
+	private static int maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
+	
+	//For creating job
+	/**
+	 * Represents the MINIMUM value that maxPendingJobs can be set to.
+	 */
+	public static final int MIN_VALUE_OF_MAX_PENDING_JOBS = 1;
 	/**
 	 * Represents the number of days a job is allowed to be scheduled out.
 	 */
@@ -54,10 +60,11 @@ public final class Constants {
 	 * The name of the file to store the list of users.
 	 */
 	public static final String USER_DATA_FILE = "userlist.data";
+
 	/**
 	 * The name of the file to store the program settings values.
 	 */
-	private static final String fileName = "ConstantsFile.txt";
+	public static final String SETTINGS_DATA_FILE = "settings.data";
 	
 	// for DateUtils
 	
@@ -82,7 +89,7 @@ public final class Constants {
 	public static final int RANDOM_NEXTINT = 100;
 	
 	
-	private Constants() {
+	private ModelConstants() {
 		//shouldn't ever happen
 	}
 	
@@ -92,8 +99,8 @@ public final class Constants {
 	 * @return the status of the load true if the file exists and was loaded successfully,
 	 * false otherwise.
 	 */
-	public static void loadData() throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File(fileName));
+	public static void loadSettingsData() throws FileNotFoundException {
+		Scanner scanner = new Scanner(new File(SETTINGS_DATA_FILE));
 		maxPendingJobs = scanner.nextInt();
 		scanner.close();
 	}
@@ -103,15 +110,20 @@ public final class Constants {
 	 * 
 	 * @return the status of the saving true if it was successful and false otherwise.
 	 */
-	public static void saveData() throws FileNotFoundException {
-		PrintStream printStream = new PrintStream(new File(fileName));
+	public static void saveSettingsData() throws FileNotFoundException {
+		PrintStream printStream = new PrintStream(new File(SETTINGS_DATA_FILE));
 		printStream.print(maxPendingJobs);
 		printStream.close();
 	}
 
 	/**
+<<<<<<< HEAD:urbanparks/model/Constants.java
 	 * Returns the value of max allowable pending jobs in the system.
 	 * @return an int representing the max allowable pending jobs
+=======
+	 * Gets the maximum number of pending jobs
+	 * @return the maximum number of pending jobs
+>>>>>>> 749a3c52fe290888f63e7f00f0461ffe618861d4:urbanparks/model/ModelConstants.java
 	 */
 	public static int getMaxPendingJobs() {
 		return maxPendingJobs;
@@ -131,7 +143,5 @@ public final class Constants {
 	public static void setDefaultMaxPendingJobs() {
 		maxPendingJobs = DEFAULT_MAX_PENDING_JOBS;
 	}
-	
-	
-	
+
 }

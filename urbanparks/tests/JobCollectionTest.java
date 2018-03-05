@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 
-import urbanparks.model.Constants;
+import urbanparks.model.ModelConstants;
 import urbanparks.model.Job;
 import urbanparks.model.JobCollection;
 
@@ -38,7 +38,7 @@ public class JobCollectionTest {
 	 * @throws FileNotFoundException 
 	 */
 	@Test 
-	public void isNumJobsAtMaximum_JobCollectionIsNotAtMaximum_False() throws FileNotFoundException {
+	public void isNumJobsAtMaximum_JobCollectionIsNotAtMaximum_False() {
 		LocalDateTime dateTime = LocalDateTime.now();
 		jobCollection.addJob(new Job("job", dateTime, dateTime, "Park", "Seattle"));
 		assertFalse(jobCollection.isNumJobsAtMaximum());
@@ -49,12 +49,12 @@ public class JobCollectionTest {
 	 * @throws FileNotFoundException 
 	 */
 	@Test 
-	public void isNumJobsAtMaximum_JobCollectionIsAtMaximum_True() throws FileNotFoundException {
+	public void isNumJobsAtMaximum_JobCollectionIsAtMaximum_True() {
 		LocalDateTime dateTime = LocalDateTime.now();
-		Constants.setDefaultMaxPendingJobs();
-		JobCollection.setDefaultJobId();
-		for(int i = jobCollection.size(); i < Constants.getMaxPendingJobs(); i++) {
-			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
+		ModelConstants.setDefaultMaxPendingJobs();
+		for(int i = jobCollection.getPendingJobsCount(); i < ModelConstants.getMaxPendingJobs(); i++) {
+			// set job to end in future, so it can be counted as pending
+			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime.plusMinutes(1), "Park ", "Seattle"));
 		}
 		assertTrue(jobCollection.isNumJobsAtMaximum());
 	}
@@ -62,13 +62,14 @@ public class JobCollectionTest {
 	@Test
 	public void getPendingCount_PendingJobsAndCancelledJobInCollection_True() {
 		LocalDateTime dateTime = LocalDateTime.now();
-		int size = jobCollection.size();
+		int size = jobCollection.getPendingJobsCount();
 		for(int i = size; i < (size + 5); i++) {
-			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime, "Park ", "Seattle"));
+			// set job to end in future, so it can be counted as pending
+			jobCollection.addJob(new Job("job # " + i, dateTime, dateTime.plusMinutes(1), "Park ", "Seattle"));
 		}
-			Job cancelled = new Job("This is cancelled", dateTime, dateTime, "Shouldn't", "Count");
-			cancelled.setIsCancelled(true);
-			assertTrue(5 == jobCollection.getPendingJobsCount());
+		Job cancelled = new Job("This is cancelled", dateTime, dateTime, "Shouldn't", "Count");
+		cancelled.cancelJob();
+		assertTrue(5 == jobCollection.getPendingJobsCount());
 	}
 
 }

@@ -27,6 +27,6 @@ public class ParkManager extends User {
 	}
 	
 	public void unSubmitJob(Job job) {
-		job.setIsCancelled(true);
+		job.cancelJob();
 	}
 }
