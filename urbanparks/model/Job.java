@@ -50,8 +50,8 @@ public class Job implements Serializable {
 	}
 	
 	/**
-	 * Generate jobID using the current data, time and random number.
-	 *  
+	 * Generate a sequential jobid. Increments the jobid counter and returns the incremented value.
+	 * 
 	 * @return generated JobID
 	 */
 	private long generateJobID() {
@@ -61,8 +61,7 @@ public class Job implements Serializable {
 
 	/**
 	 * Adds a volunteer to the list of signed up volunteers. 
-	 * Takes in a volunteer's email address, returns true if the volunteer
-	 * was signed up successfully, false otherwise.
+	 * Pre: the volunteer email is non-null and matches the email attached to the volunteer.
 	 * @param theVolunteer the email address to sign-up
 	 * @return true if the volunteer was added successfully, false otherwise
 	 */
