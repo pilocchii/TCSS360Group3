@@ -46,4 +46,6 @@ public class JobAvailability {
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+
+
 }
