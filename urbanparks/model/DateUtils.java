@@ -19,9 +19,9 @@ public class DateUtils {
 	 * @param date2 the second date.
 	 * @return true if the two dates are on same day, false otherwise.
 	 */
-	public static boolean are2DatesOnSameDay(LocalDateTime ld1, LocalDateTime ld2) {
-		return ld1.getYear() == ld2.getYear() && 
-				ld1.getDayOfYear() == ld2.getDayOfYear();
+	public static boolean are2DatesOnSameDay(LocalDateTime date1, LocalDateTime date2) {
+		return date1.getYear() == date2.getYear() && 
+				date1.getDayOfYear() == date2.getDayOfYear();
 	}
 
 	/**
@@ -33,8 +33,8 @@ public class DateUtils {
 	 * @return The number of days between a future date and now, 
 	 * 			negative if that date is in the past
 	 */
-	public static int daysBetweenNowAndDate(LocalDateTime ld1) {
-		return daysBetween2Dates(LocalDateTime.now(), ld1);
+	public static int daysBetweenNowAndDate(LocalDateTime date) {
+		return daysBetween2Dates(LocalDateTime.now(), date);
 	}
 
 	/**
@@ -47,9 +47,9 @@ public class DateUtils {
 	 * @return The number of days between a the two dates, 
 	 * 			negative if that future/past dates are switched.
 	 */
-	public static int daysBetween2Dates(LocalDateTime ld1, LocalDateTime ld2) {
-		int yearDiff = DAYS_IN_YEAR * (ld2.getYear() - ld1.getYear());
-		int daysDiff = ld2.getDayOfYear() - ld1.getDayOfYear();
+	public static int daysBetween2Dates(LocalDateTime date1, LocalDateTime date2) {
+		int yearDiff = DAYS_IN_YEAR * (date2.getYear() - date1.getYear());
+		int daysDiff = date2.getDayOfYear() - date1.getDayOfYear();
 		int totalDiff = yearDiff + daysDiff;
 		return totalDiff;
 	}
@@ -61,8 +61,8 @@ public class DateUtils {
 	 * @param date the given date.
 	 * @return the string represents the formated date.
 	 */
-	public static String formatDateTime(LocalDateTime ldt) {
+	public static String formatDateTime(LocalDateTime date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		return ldt.format(formatter);
+		return date.format(formatter);
 	}
 }
