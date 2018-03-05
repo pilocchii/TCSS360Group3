@@ -144,5 +144,17 @@ public class VolunteerTest {
         ArrayList<Job> jobsList = volunteerNoJobs.getSignedUpJobs(jobCollection);
         assertEquals(jobsList.size(), 0);
     }
+    
+    @Test
+    public void isAssociatedWithJob_VolunteerIsSignedUp_True() {
+    	volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
+    	assertTrue(volunteerNoJobs.isAssociatedWithJob(testJob_minDaysInFuture_minDaysInFuture.getJobId()));
+    }
+    
+    @Test
+    public void isAssociatedWithJob_VolunteerIsNotSignedUp_False() {
+    	volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
+    	assertFalse(volunteerNoJobs.isAssociatedWithJob(testJob_minDaysInFuture_minDaysInFuturePlusOne.getJobId()));
+    }
 
 }
