@@ -59,7 +59,7 @@ public class VolunteerTest {
      */
 	@Test
 	public void signUpForJob_NoCurrentJobs_true() {
-	    assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture));
+	    assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId()));
     }
 
 
@@ -69,8 +69,8 @@ public class VolunteerTest {
      */
     @Test
     public void signUpForJob_HasCurrentJobs_true() {
-        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
-        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne));
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
+        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne.getJobId()));
     }
 
 
@@ -81,7 +81,7 @@ public class VolunteerTest {
 	@Test
 	public void doesJobOverlap_CurrentJobEndIsNewJobStart_true() {
         jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuturePlusOne);
-        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne.getJobId());
         assertTrue(volunteerNoJobs.doesJobOverlap(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne,
                 jobCollection));
     }
@@ -94,8 +94,8 @@ public class VolunteerTest {
 	@Test
 	public void doesJobOverlap_CurrentJobStartIsNewJobEnd_true() {
         jobCollection.addJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne);
-        volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne);
-        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne));
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne.getJobId());
+        assertTrue(volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuturePlusOne.getJobId()));
     }
 
 
@@ -105,8 +105,9 @@ public class VolunteerTest {
     @Test
     public void unVolunteerFromJob_JobIsInAssociatedJobs_JobIsRemoved() {
         jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuture);
-        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
-        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
+    	testJob_minDaysInFuture_minDaysInFuture.removeVoluneer(volunteerNoJobs.getEmail());
+        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
         assertFalse(volunteerNoJobs.getSignedUpJobs(jobCollection).contains(testJob_minDaysInFuture_minDaysInFuture));
     }
 
@@ -117,7 +118,8 @@ public class VolunteerTest {
      */
     @Test
     public void unVolunteerFromJob_JobIsNotInAssociatedJobs_ListUnchanged() {
-        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture);
+    	testJob_minDaysInFuture_minDaysInFuture.removeVoluneer(volunteerNoJobs.getEmail());
+        volunteerNoJobs.unVolunteerFromJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
         assertFalse(volunteerNoJobs.getSignedUpJobs(jobCollection).contains(testJob_minDaysInFuture_minDaysInFuture));
     }
 
@@ -128,7 +130,7 @@ public class VolunteerTest {
     @Test
     public void getSignedUpJobs_ListHasJobs_GetJobList() {
         jobCollection.addJob(testJob_minDaysInFuture_minDaysInFuture);
-        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture);
+        volunteerNoJobs.signUpForJob(testJob_minDaysInFuture_minDaysInFuture.getJobId());
         ArrayList<Job> jobsList = volunteerNoJobs.getSignedUpJobs(jobCollection);
         assertTrue(jobsList.contains(testJob_minDaysInFuture_minDaysInFuture));
     }

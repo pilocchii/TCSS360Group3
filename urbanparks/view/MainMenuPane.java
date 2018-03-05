@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.UserCollection;
 import urbanparks.model.User;
@@ -14,10 +13,8 @@ import urbanparks.model.Volunteer;
 import urbanparks.view.parkmanager.ParkManagerMenu;
 import urbanparks.view.upstaff.UPStaffMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
-import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
-
 
 /**
  * Login and Signup prompt pane.
@@ -26,12 +23,15 @@ import urbanparks.model.UrbanParksStaff;
  */
 public class MainMenuPane extends GridPane {
 
-    MainApplication root;
-    Button backButton;
-    UserCollection userCollection;    
-    
-    TextField userNameTextField;
+    private MainApplication root;
+    private Button backButton;
+    private UserCollection userCollection;
+    private TextField userNameTextField;
 
+    /**
+     * Constructor for MainMenuPane
+     * @param root The reference to the main application
+     */
     public MainMenuPane(MainApplication root) {
         super();
         this.root = root;
@@ -40,8 +40,11 @@ public class MainMenuPane extends GridPane {
         show();
     }
     
+    /**
+     * Shows the main menu pane
+     */
     private void show() {
-        // Login pane styles
+        // Set pane styles
         setAlignment(Pos.CENTER);
         setPadding(new Insets(5, 5, 5, 5));
         setHgap(5);
@@ -79,7 +82,7 @@ public class MainMenuPane extends GridPane {
      * This will take the username that has been inputted and set the stage to
      * the appropriate menu page depending on the user's type
      */
-    public class LoginEventHandler implements EventHandler<ActionEvent> {
+    private class LoginEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             String email = userNameTextField.getText();
@@ -110,7 +113,7 @@ public class MainMenuPane extends GridPane {
      * This will take the username that has been inputted and set the stage to
      * a sign-up form menu.
      */
-    public class SignupMenuEventHandler implements EventHandler<ActionEvent> {
+    private class SignupMenuEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             backButton.setDisable(false);

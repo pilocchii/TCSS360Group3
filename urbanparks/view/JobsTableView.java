@@ -2,6 +2,7 @@ package urbanparks.view;
 
 import static urbanparks.view.ViewConstants.*;
 import urbanparks.model.Job;
+import urbanparks.model.JobAvailability;
 
 import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,24 +19,41 @@ import javafx.scene.text.Font;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableRow;
-import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
+/**
+ * Holds the method for creating a jobs table.
+ */
 public class JobsTableView extends GridPane {
 	
 	protected MainApplication root;
-	protected Job selectedJob;
+	protected JobAvailability selectedJob;
 
-	public VBox makeJobsTable(ArrayList<Job> jobsToShow, String tableTitle, TableColumn<Job, String> lastColumn, 
-			boolean showLastColumn, Button mainButton, boolean showMainButton) {
+	/**
+	 * Creates a VBox node that holds a jobs table, its title, and a job info area.
+	 * 
+	 * @param jobsToShow The jobs the to show in the table.
+	 * @param tableTitle The title of the jobs table.
+	 * @param lastColumn The last column of the table.
+	 * @param showLastColumn Flag to determine whether to show the column (lastColumn).
+	 * @param mainButton The button under the table that does an action of a selected job.
+	 * @param showMainButton Flag to determine whether to show the button (mainButton).
+	 * @return A VBox that holds a jobs table containing the supplied,
+	 * a supplied title, and a job info area.
+	 */
+	public VBox makeJobsTable(ArrayList<JobAvailability> jobsToShow, String tableTitle, 
+			TableColumn<JobAvailability, String> lastColumn, boolean showLastColumn, 
+			Button mainButton, boolean showMainButton) {
         
 		Label titleLabel = new Label(tableTitle);
         titleLabel.setFont(new Font("Arial", 18));
 
-        // set row background color to green if the job is available, grey otherwise
+        // set text color of cell in "is available" column to green if the job is available, red otherwise
         if (showLastColumn) {
-	        lastColumn.setCellFactory(new Callback<TableColumn<Job, String>, TableCell<Job, String>>() {
-	            public TableCell call(TableColumn arg0) {
+	        lastColumn.setCellFactory(new Callback<TableColumn<JobAvailability, String>, 
+	        		TableCell<JobAvailability, String>>() {
+	            @SuppressWarnings("rawtypes")
+				public TableCell call(TableColumn arg0) {
 	                return new TableCell<Job, String>() {	
 	                	@Override
 	                    public void updateItem(String isAvail, boolean empty) {
@@ -46,10 +64,8 @@ public class JobsTableView extends GridPane {
 	                            if (currentRow != null) {
 	                                if(isAvail.equals("Yes")) {
 	                                    this.setTextFill(AVAILABLE_JOB_COLOR);   
-	                                    //currentRow.setStyle("-fx-background-color: DARKGREEN");
 	            					} else {
 	                                    this.setTextFill(UNAVAILABLE_JOB_COLOR);
-	                                    //currentRow.setStyle("-fx-background-color: LIGHTGREY");
 	            					}
 	                            }
 	                            setText(isAvail);
@@ -67,26 +83,29 @@ public class JobsTableView extends GridPane {
         jobInfoBox.getChildren().addAll(jobInfoHeader, jobInfoBody);
 
         // Create all columns
-        TableColumn<Job, String> startTimeColumn = new TableColumn<Job, String>("Start time");
-        startTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartDateFormatted()));
-        TableColumn<Job, String> parkNameColumn = new TableColumn<Job, String>("Park name");
-        parkNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getParkName()));
-        TableColumn<Job, String> descriptionColumn = new TableColumn<Job, String>("Description");
-        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescription()));
-        TableColumn<Job, String> cancelledColumn = new TableColumn<Job, String>("Cancelled");
-        cancelledColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getIsCancelledFormatted()));
+        TableColumn<JobAvailability, String> startTimeColumn = new TableColumn<JobAvailability, String>("Start time");
+        startTimeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJob().getStartDateFormatted()));
+        
+        TableColumn<JobAvailability, String> parkNameColumn = new TableColumn<JobAvailability, String>("Park name");
+        parkNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJob().getParkName()));
+        
+        TableColumn<JobAvailability, String> descriptionColumn = new TableColumn<JobAvailability, String>("Description");
+        descriptionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJob().getDescription()));
+        
+        TableColumn<JobAvailability, String> cancelledColumn = new TableColumn<JobAvailability, String>("Cancelled");
+        cancelledColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getJob().getIsCancelledFormatted()));
 
         // create job table
-        TableView<Job> jobsTable = new TableView<Job>();
-        jobsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Job>() {
+        TableView<JobAvailability> jobsTable = new TableView<JobAvailability>();
+        jobsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<JobAvailability>() {
                     @Override
-                    public void changed(ObservableValue<? extends Job> observable, Job oldValue, Job newValue ) {
-                        jobInfoBody.setText("\nStart time:\t" + newValue.getStartDateFormatted()
-                        	+ "\nEnd time:\t\t" + newValue.getEndDateFormatted()
-                        	+ "\nDescription:\t" + newValue.getDescription()
-                        	+ "\nPark name:\t" + newValue.getParkName()
-                        	+ "\nLocation:\t\t" + newValue.getLocation()
-                        	+ "\nVolunteers registered: " + newValue.getVolunteerCount() );
+                    public void changed(ObservableValue<? extends JobAvailability> observable, JobAvailability oldValue, JobAvailability newValue ) {
+                        jobInfoBody.setText("\nStart time:\t" + newValue.getJob().getStartDateFormatted()
+                        	+ "\nEnd time:\t\t" + newValue.getJob().getEndDateFormatted()
+                        	+ "\nDescription:\t" + newValue.getJob().getDescription()
+                        	+ "\nPark name:\t" + newValue.getJob().getParkName()
+                        	+ "\nLocation:\t\t" + newValue.getJob().getLocation()
+                        	+ "\nVolunteers registered: " + newValue.getJob().getVolunteerCount() );
                         if (showMainButton) {
                         	// only enable button if job is available
                         	if (newValue.getIsAvailable()) {
@@ -106,12 +125,12 @@ public class JobsTableView extends GridPane {
         	jobsTable.getColumns().add(lastColumn);
         }
 
-        // add all showable job to table
-        for (Job j : jobsToShow) {
+        // add all showable jobs to table
+        for (JobAvailability j : jobsToShow) {
         	jobsTable.getItems().add(j);
         }
         
-        jobsTable.setMaxHeight(200);
+        jobsTable.setMaxHeight(MAX_JOBS_TABLE_HEIGHT);
         
         // create up VBox for all components
         VBox vbox = new VBox();

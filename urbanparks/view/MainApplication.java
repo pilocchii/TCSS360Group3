@@ -15,9 +15,8 @@ import urbanparks.model.UserCollection;
 import static urbanparks.view.ViewConstants.*;
 import javafx.scene.layout.BorderPane;
 
-
 /**
- * Main entry point for Urban Parks application GUI
+ * Main entry point (Application) for Urban Parks application GUI
  */
 public class MainApplication extends Application {
 
@@ -29,46 +28,33 @@ public class MainApplication extends Application {
 	private Stage primaryStage;
 
 	/**
-	 * 
+	 * Default constructor for MainApplication. Should not be called.
 	 */
 	public MainApplication() {
-		// shouldn't be called
 	}
 	
 	/**
+	 * Non-default constructor for MainApplication.
+	 * Launches the application from here.
 	 * 
-	 * @param args
+	 * @param args Command line arguments for the Javafx Application.
 	 */
     public MainApplication(String[] args) {
-    	//root = this;
         launch(args);
     }
 
     /**
      * Creates the primary stage context on which the GUI is built.
      * Adds the static components, such as menu bar and back button.
-     * @param primaryStage
+     * Also loads the persistent data from the files.
+     * 
+     * @param primaryStage The primary stage of the application.
      */
     @Override
     public void start(Stage primaryStage) {
     	this.primaryStage = primaryStage;
     	
-		jobCollection = new JobCollection();
-		userCollection = new UserCollection();
-		try {
-			jobCollection.loadData();
-			userCollection.loadData();
-		} catch (Exception e) {
-			AlertUtils.showJobUserDataLoadError(e);
-			AlertUtils.showEmptyJobUserDataUsed();
-		}
-		
-		try {
-			ModelConstants.loadSettingsData();
-		} catch (FileNotFoundException e) {
-			AlertUtils.showSettingsLoadError(e);
-			AlertUtils.showDefaultSettingsUsed();
-		}
+    	loadPersistentData();
 
         // Stage init
         centerPane = new BorderPane();
@@ -82,16 +68,37 @@ public class MainApplication extends Application {
         primaryStage.show();
     }
     
-    public void setTitle(String newTitle) {
-    	primaryStage.setTitle(newTitle);
+    /**
+     * Loads the data for users, jobs, and settings,
+     * alerting the user if something went wrong.
+     * postcondition: jobCollection and userCollection are non-empty.
+     */
+    private void loadPersistentData() {
+    	// try to load user and job data
+		jobCollection = new JobCollection();
+		userCollection = new UserCollection();
+		try {
+			jobCollection.loadData();
+			userCollection.loadData();
+		} catch (Exception e) {
+			AlertUtils.showJobUserDataLoadError(e);
+			AlertUtils.showEmptyJobUserDataUsed();
+		}
+		
+		// try to load settings data
+		try {
+			ModelConstants.loadSettingsData();
+		} catch (FileNotFoundException e) {
+			AlertUtils.showSettingsLoadError(e);
+			AlertUtils.showDefaultSettingsUsed();
+		}
     }
 
     /**
-     * Creates the menu bar.
-     * @return MenuBar the menu bar
+     * Creates the menu barf or the gui.
+     * @return MenuBar the menu bar for the gui.
      */
-    public MenuBar constructMenuBar() {
-
+    private MenuBar constructMenuBar() {
         final MenuBar menuBar = new MenuBar();
 
         // create file menu components
@@ -123,11 +130,10 @@ public class MainApplication extends Application {
         return menuBar;
     }
 
-
     /**
      * Returns a reference to this application's back button.
      * The back button's behavior should be changed at each state change.
-     * @return Button a reference to the application's back button
+     * @return Button a reference to the application's back button.
      */
     public Button getBackButton() {
         return backButton;
@@ -135,7 +141,7 @@ public class MainApplication extends Application {
 
     /**
      * Returns a reference to this application's job collection.
-     * @return JobCollection a reference to the application's job collection
+     * @return JobCollection a reference to the application's job collection.
      */
     public JobCollection getJobCollection() {
         return jobCollection;
@@ -143,7 +149,7 @@ public class MainApplication extends Application {
 
     /**
      * Returns a reference to this application's user collection.
-     * @return UserCollection a reference to the application's user collection
+     * @return UserCollection a reference to the application's user collection.
      */
     public UserCollection getUserCollection() {
         return userCollection;
@@ -152,7 +158,7 @@ public class MainApplication extends Application {
     /**
      * Returns a reference to this application's central border pane.
      * This allows the application's context to be changed.
-     * @return BorderPane a reference to the application's central border pane
+     * @return BorderPane a reference to the application's central border pane.
      */
     public BorderPane getCenterPane() {
         return centerPane;
@@ -160,10 +166,20 @@ public class MainApplication extends Application {
 
     /**
      * Sets the center pane of this application to the provided Pane.
-     * @param pane the pane with to replace the current pane with
+     * precondition: pane != null
+     * @param pane the pane with to replace the current pane with.
      */
     public void setCenter(Pane pane) {
         centerPane.setCenter(pane);
+    }
+    
+    /**
+     * Updates the title of the gui to the provided title.
+     * precondition: newTitle != null
+     * @param newTitle The new title of the gui.
+     */
+    public void setTitle(String newTitle) {
+    	primaryStage.setTitle(newTitle);
     }
     
 }

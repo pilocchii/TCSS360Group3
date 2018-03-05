@@ -5,10 +5,19 @@ import java.time.format.DateTimeFormatter;
 
 import static urbanparks.model.ModelConstants.*;
 
-	public class DateUtils {
+/**
+ * Class that contains all the methods that is not belonging to the other classes.
+ */
+public class DateUtils {
+
 
 		/**
-		 * Checks if 2 Calendar objects are on the same calendar day
+		 * Checks if 2 localdatetime objects are on the same calendar day.
+		 * Pre: Dates are non-null and have a non-null year and dayofyear field.
+		 * 
+		 * @param ld1 the first localdate to check
+		 * @param ld2 the second localdate to compare
+		 * @return true if the two dates are on the same day in the same year, false otherwise.
 		 */
 		public static boolean are2DatesOnSameDay(LocalDateTime ld1, LocalDateTime ld2) {
 			return ld1.getYear() == ld2.getYear() && 
@@ -17,8 +26,9 @@ import static urbanparks.model.ModelConstants.*;
 		
 		/**
 		 * Calculates the days between a future date and now
+		 * Pre: Date is non-null
 		 * 
-		 * @param cal The date to use. Can be any date.
+		 * @param ld1 The date to use. Can be any date.
 		 * @return The number of days between a future date and now, 
 		 * 			negative if that date is in the past
 		 */
@@ -28,9 +38,10 @@ import static urbanparks.model.ModelConstants.*;
 		
 		/**
 		 * Calculates the number of days between 2 dates.
+		 * Pre: The dates are non-null
 		 * 
-		 * @param cal1 The past date.
-		 * @param cal2 The future date.
+		 * @param ld1 The past date.
+		 * @param ld2 The future date.
 		 * @return The number of days between a the 2 dates, 
 		 * 			negative if that future/past dates are switched.
 		 */
@@ -41,9 +52,16 @@ import static urbanparks.model.ModelConstants.*;
 			return totalDiff;
 		}
 		
-		
+		/**
+		 * Returns a string representation of the date in the following format:
+		 * yyyy-MM-dd HH:mm
+		 * Pre: Date is non-null
+		 * @param ldt a date representing the time to format in a string
+		 * @return String in the format yyyy-MM-dd HH:mm equal to the date
+		 */
 		public static String formatDateTime(LocalDateTime ldt) {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	        return ldt.format(formatter);
 		}
+
 }

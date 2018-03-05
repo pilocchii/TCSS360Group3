@@ -25,7 +25,7 @@ public class JobCollection implements Serializable {
 	private static final long serialVersionUID = -5732921162292711504L;
 
 	private static int currentJobId;
-	
+
 	private HashMap<Long, Job> jobsList;
 
 
@@ -118,17 +118,22 @@ public class JobCollection implements Serializable {
 	 * @param volunteer The volunteer to check availability for
 	 * @return The list of jobs that volunteer can sign up for
 	 */
-	public ArrayList<Job> getAvailableForSignup(Volunteer volunteer) {
-		ArrayList<Job> availableJobs = new ArrayList<Job>();
+	public ArrayList<JobAvailability> getAvailableForSignup(Volunteer volunteer) {
+		ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
-			// check the signing up for job business rules
-			if (!job.getIsCancelled() && !volunteer.doesJobOverlap(job, this) && job.isSignupEarlyEnough()) {
-				job.setIsAvailable(true);
-			} else {
-				job.setIsAvailable(false);
+			// no jobs that have started should be displayed to user
+			if (!job.hasJobStarted()) {
+				JobAvailability ja = new JobAvailability(job);
+				// check the signing up for job business rules
+				// jobs that violate business rules are marked as unavailable
+				if (!job.getIsCancelled() && !volunteer.doesJobOverlap(job, this) && job.isSignupEarlyEnough()) {
+					ja.setIsAvailable(true);
+				} else {
+					ja.setIsAvailable(false);
+				}
+				availableJobs.add(ja);
 			}
-			availableJobs.add(job);
 		}
 		sortJobsByStartDate(availableJobs);
 		return availableJobs;
@@ -149,14 +154,16 @@ public class JobCollection implements Serializable {
 		ArrayList<Job> availableJobs = new ArrayList<Job>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
+			JobAvailability ja = new JobAvailability(job);
 			// check the unvolunteer from job business rules
-			if (volunteer.isAssociatedWithJob(job)) {
+			// jobs that violate business rules are marked as unavailable
+			if (volunteer.isAssociatedWithJob(job.getJobId())) {
 				if (!job.getIsCancelled() && job.isUnvolunteerEarlyEnough()) {
-					job.setIsAvailable(true);
+					ja.setIsAvailable(true);
 				} else {
-					job.setIsAvailable(false);
+					ja.setIsAvailable(false);
 				}
-				availableJobs.add(job);
+				availableJobs.add(ja);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
@@ -172,8 +179,8 @@ public class JobCollection implements Serializable {
 	 * @param parkManager The park manager who wishes to unsubmit a job
 	 * @return The list of jobs that park manager created.
 	 */
-	public ArrayList<Job> getAvailableForUnsubmit(ParkManager parkManager) {
-		ArrayList<Job> availableJobs = new ArrayList<Job>();
+	public ArrayList<JobAvailability> getAvailableForUnsubmit(ParkManager parkManager) {
+		ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
 			if (parkManager.isAssociatedWithJob(job)) {
@@ -182,7 +189,6 @@ public class JobCollection implements Serializable {
 				} else {
 					job.setIsAvailable(false);
 				}
-				availableJobs.add(job);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
@@ -200,12 +206,13 @@ public class JobCollection implements Serializable {
 	 * @param upperBound the upper bound which the jobs' start or end times can't be above
 	 * @return An ArrayList of all jobs that are between the dates
 	 */
-	public ArrayList<Job> getJobsBetween2DateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
-		final ArrayList<Job> availableJobs = new ArrayList<Job>();
+	public ArrayList<JobAvailability> getJobsBetween2DateTimes(LocalDateTime lowerBound, LocalDateTime upperBound) {
+		final ArrayList<JobAvailability> availableJobs = new ArrayList<JobAvailability>();
 		for(Map.Entry<Long, Job> entry : jobsList.entrySet()) {
 			Job job = entry.getValue();
+			JobAvailability ja = new JobAvailability(job);
 			if (job.isBetween2DatesInclusive(lowerBound, upperBound)) {
-				availableJobs.add(job);
+				availableJobs.add(ja);
 			}
 		}
 		sortJobsByStartDate(availableJobs);
@@ -220,12 +227,11 @@ public class JobCollection implements Serializable {
 	 * 
 	 * @param jobs The jobs to sort
 	 */
-	private void sortJobsByStartDate(ArrayList<Job> jobs) {
-		Collections.sort(jobs, new Comparator<Job>() {
+	private void sortJobsByStartDate(ArrayList<JobAvailability> jobs) {
+		Collections.sort(jobs, new Comparator<JobAvailability>() {
 	        @Override
-	        public int compare(Job job1, Job job2)
-	        {
-	            return  job1.getStartDateTime().compareTo(job2.getEndDateTime());
+	        public int compare(JobAvailability job1, JobAvailability job2) {
+	            return job1.getJob().getStartDateTime().compareTo(job2.getJob().getEndDateTime());
 	        }
 	    });
 	}

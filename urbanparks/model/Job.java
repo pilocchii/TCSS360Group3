@@ -24,7 +24,6 @@ public class Job implements Serializable {
 	private LocalDateTime endDateTime;
 	private String parkName;
 	private String location;
-	private boolean isAvailable;
 	private boolean isCancelled;
 	
 	// The volunteers currently signed up for this job
@@ -49,10 +48,10 @@ public class Job implements Serializable {
 		this.location = location;
 
 		volunteers = new ArrayList<String>();
-		isAvailable = true;
 		isCancelled = false;
 	}
 	
+
 	// Getters: ----------------------------------------------------------------------------------------------------------
 	/**
 	 * Return the jobID.
@@ -96,14 +95,6 @@ public class Job implements Serializable {
 	 */
 	public String getLocation() {
 		return location;
-	}
-	/**
-	 * Gets a temporary flag representing the job's availability to for an action,
-	 * which depends on the context.
-	 * @return True if this job is available for an action, false otherwise
-	 */
-	public boolean getIsAvailable() {
-		return isAvailable;
 	}
 	
 	/**
@@ -150,30 +141,6 @@ public class Job implements Serializable {
 		}
 	}
 	
-	/**
-	 * Gets a formatted string indicating if this job is available for an action,
-	 * which depends on the context.
-	 * @return A String indicating if this job is available for an action.
-	 */
-	public String getIsAvailableFormatted() {
-		if (isAvailable) {
-			return "Yes";
-		} else {
-			return "No";
-		}
-	}
-
-	// Setters: -----------------------------------------------------------------------------------------------------------
-	/**
-	 * Sets a temporary flag representing the job's availability for 
-	 * an action, which depends of context
-	 * @param isAvailable A flag indicating if this job is available for an action.
-	 */
-	public void setIsAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
-	
-	
 	// Other methods: -----------------------------------------------------------------------------------------------------
 	/**
 	 * Sets the job's state to cancelled. This cannot be undone.
@@ -217,16 +184,22 @@ public class Job implements Serializable {
 	 * @return True if the start or end dates of the 2 jobs overlap, false otherwise
 	 */
 	public boolean doJobsOverlap(Job otherJob) {
-		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
-			return true;
-		}
-		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
-			return true;
-		}
-		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
-			return true;
-		}
-		return false;
+//		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getStartDateTime())) {
+//			return true;
+//		}
+//		if (DateUtils.are2DatesOnSameDay(startDateTime, otherJob.getEndDateTime())) {
+//			return true;
+//		}
+//		if (DateUtils.are2DatesOnSameDay(endDateTime, otherJob.getEndDateTime())) {
+//			return true;
+//		}
+//		if (startDateTime.isBefore(otherJob.getStartDateTime()) != endDateTime.isBefore(otherJob.getStartDateTime())) {
+//			return true;
+//		}
+//		if (startDateTime.isAfter(otherJob.getEndDateTime()) != endDateTime.isAfter(otherJob.getEndDateTime())) {
+//			return true;
+//		}
+		return isBetween2DatesInclusive(otherJob.getStartDateTime(), otherJob.getEndDateTime());
 	}
 
 	/**
@@ -241,7 +214,7 @@ public class Job implements Serializable {
 		 * A volunteer may sign up only if the job begins 
 		 * at least a minimum number of calendar days after the current date
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BEFORE_SIGNUP;
 	}
 	
@@ -257,7 +230,7 @@ public class Job implements Serializable {
 		 * A volunteer can unvolunteer only if the job starts 
 		 * at least a minumum number of days in the future..
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BETWEEN_UNVOLUNTEER_AND_JOBSTART;
 	}
 	
@@ -273,7 +246,7 @@ public class Job implements Serializable {
 		 * A job can be unsubmitted only if the job starts 
 		 * at least a minumum number of days in the future.
 		 */
-		int daysBetween = DateUtils.daysBetweenNowAndDate(getStartDateTime());
+		int daysBetween = DateUtils.daysBetweenNowAndDate(startDateTime);
 		return daysBetween >= MIN_DAYS_BETWEEN_UNSUBMIT_AND_JOBSTART;
 	}
 
@@ -288,13 +261,21 @@ public class Job implements Serializable {
 	 * @return true if this job starts or ends between the given two dateTimes, false otherwise.
 	 */
 	public boolean isBetween2DatesInclusive(LocalDateTime lowerBound, LocalDateTime upperBound) {
+		
+		if(startDateTime.isBefore(lowerBound) && endDateTime.isBefore(lowerBound)) {
+			return false;
+		}
+		if(startDateTime.isAfter(upperBound) && endDateTime.isAfter(upperBound)) {
+			return false;
+		}
+			
 		boolean startAfterLowerBound = startDateTime.isAfter(lowerBound) || startDateTime.isEqual(lowerBound);
 		boolean startBeforeUpperBound = startDateTime.isBefore(upperBound) || startDateTime.isEqual(upperBound);
-		boolean startInRange = startAfterLowerBound && startBeforeUpperBound;
+		boolean startInRange = startAfterLowerBound || startBeforeUpperBound;
 		
 		boolean endAfterLowerBound = endDateTime.isAfter(lowerBound) || endDateTime.isEqual(lowerBound);
 		boolean endBeforeUpperBound = endDateTime.isBefore(upperBound) || endDateTime.isEqual(upperBound);
-		boolean endInRange = endAfterLowerBound && endBeforeUpperBound;
+		boolean endInRange = endAfterLowerBound || endBeforeUpperBound;
 		
 		return startInRange || endInRange;
 	}
@@ -307,5 +288,15 @@ public class Job implements Serializable {
 	 */
 	public boolean hasJobEnded() {
 		return endDateTime.isBefore(LocalDateTime.now()) || endDateTime.isEqual(LocalDateTime.now());
+	}
+	
+	/**
+	 * Determines if a job has started, 
+	 * meaning its start time is at or before now
+	 * 
+	 * @return true if job has start, false otherwise.
+	 */
+	public boolean hasJobStarted() {
+		return startDateTime.isBefore(LocalDateTime.now()) || startDateTime.isEqual(LocalDateTime.now());
 	}
 }
