@@ -113,9 +113,13 @@ public class SignupPane extends GridPane {
         	// focus lost
         	} else {
         		// any non-empty name is ok
-        		firstNameTextField.setStyle(STYLE_FIELD_VALID);
-        		firstNameSatisfied = true;
-
+        		if (!firstNameTextField.getText().isEmpty()) {
+            		firstNameTextField.setStyle(STYLE_FIELD_VALID);
+            		firstNameSatisfied = true;
+        		} else {
+            		firstNameTextField.setStyle(STYLE_FIELD_INVALID);
+            		firstNameSatisfied = false;
+        		}
             }
         });
         
@@ -131,9 +135,13 @@ public class SignupPane extends GridPane {
         	// focus lost
         	} else {
         		// any non-empty name is ok
-        		lastNameTextField.setStyle(STYLE_FIELD_VALID);
-        		lastNameSatisfied = true;
-
+        		if (!lastNameTextField.getText().isEmpty()) {
+            		lastNameTextField.setStyle(STYLE_FIELD_VALID);
+            		lastNameSatisfied = true;
+        		} else {
+            		lastNameTextField.setStyle(STYLE_FIELD_INVALID);
+            		lastNameSatisfied = false;
+        		}
             }
         });
         
