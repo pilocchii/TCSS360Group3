@@ -9,22 +9,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import urbanparks.model.ModelConstants;
 import urbanparks.model.JobCollection;
-import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
-import urbanparks.model.User;
-import urbanparks.model.UserCollection;
-import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
-import urbanparks.view.SignupPane;
-import urbanparks.view.parkmanager.ParkManagerMenu;
-import urbanparks.view.volunteer.VolunteerMenu;
 import static urbanparks.model.ModelConstants.*;
-import static urbanparks.view.ViewConstants.EMAIL_REGEX;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_EDIT;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_INVALID;
 import static urbanparks.view.ViewConstants.STYLE_FIELD_VALID;
 
+/**
+ * Gridpane for changing system settings as an Urban Parks staff member.
+ */
 public class ChangeSettingsPane extends GridPane {
 
     private MainApplication root;
@@ -32,11 +27,15 @@ public class ChangeSettingsPane extends GridPane {
     private JobCollection jobCollection;
     
     private Button backButton; 
-    
     private TextField newMaxJobsTextField;
-    
     private boolean newMaxJobsValueSatisfied;
 
+    /**
+     * Constructor for ChangeSettingsPane
+     * 
+     * @param root Reference to the root application. Constructs the pane and shows itself.
+     * @param urbanParksStaff The staff member this menu is for.
+     */
     public ChangeSettingsPane(MainApplication root, UrbanParksStaff urbanParksStaff) {
         super();
         this.root = root;
@@ -47,6 +46,10 @@ public class ChangeSettingsPane extends GridPane {
         show();
     }
     
+    /**
+     * Shows the Urban Parks Staff member a prompt for 
+     * changing the max number of pending jobs
+     */
     private void show() {
         backButton.setText("Back to Urban Parks staff menu");
         backButton.setOnAction(new BackButtonEventHandler());
@@ -57,17 +60,18 @@ public class ChangeSettingsPane extends GridPane {
         setHgap(5);
         setVgap(5);
 
-        // Components
+        // Create the buttons
         Button changeMaxJobsButton = new Button("Update maximum pending jobs in system");
+        changeMaxJobsButton.setOnAction(new ChangeSettingEventHandler());
         Button setDefaultMaxJobsButton = new Button("Set to default value (" + DEFAULT_MAX_PENDING_JOBS + ")");
-        newMaxJobsTextField = new TextField();
+        setDefaultMaxJobsButton.setOnAction(new SetDefaultMaxJobsEventHandler());
         
+        newMaxJobsTextField = new TextField();
         // This adds prompt text to the field and makes it not focused by default
         newMaxJobsTextField.setPromptText("Current: " + getMaxPendingJobs());
         newMaxJobsTextField.setText(new Integer(getMaxPendingJobs()).toString());
         newMaxJobsTextField.setFocusTraversable(false);
-        checkUpdatedMaxJobs();
-        
+        validateNewMaxJobs();
         newMaxJobsTextField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
         	// focus gained
         	if (newValue) {
@@ -75,17 +79,15 @@ public class ChangeSettingsPane extends GridPane {
         		newMaxJobsValueSatisfied = false;
         	// focus lost
         	} else {
-        		checkUpdatedMaxJobs();
+        		validateNewMaxJobs();
             }
         });
-
-        changeMaxJobsButton.setOnAction(new ChangeSettingEventHandler());
-        setDefaultMaxJobsButton.setOnAction(new SetDefaultMaxJobsEventHandler());
-
+        
         // This allows the buttons to grow in size to match their container
         changeMaxJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         setDefaultMaxJobsButton.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
+        // adds the buttons and text field to this gridpane
         add(newMaxJobsTextField, 0, 1);
         add(changeMaxJobsButton, 0, 2, 2, 1);
         add(setDefaultMaxJobsButton, 0, 3, 2, 1);
@@ -93,7 +95,11 @@ public class ChangeSettingsPane extends GridPane {
         root.setTitle("Change settings - " + urbanParksStaff.getEmail());
     }
     
-    private void checkUpdatedMaxJobs() {
+    /**
+     * Validates the new user-entered value for the max pending jobs
+     * by setting the text style and value satisfied flag appropriately.
+     */
+    private void validateNewMaxJobs() {
 		if (isNewMaxJobsValid(newMaxJobsTextField.getText())) {
     		newMaxJobsTextField.setStyle(STYLE_FIELD_VALID);
     		newMaxJobsValueSatisfied = true;
@@ -106,8 +112,11 @@ public class ChangeSettingsPane extends GridPane {
     /**
      * Checks if the string entered is an int and
      * if it is not below the minimum allowed value.
-     * @param input
-     * @return
+     * precondition: input != null
+     * 
+     * @param input The text field value
+     * @return True if the text field value is an int and if it 
+     * is not below the minimum allowed value for max pending jobs
      */
     private boolean isNewMaxJobsValid(String input) {
     	if (input.length() != 0) {
@@ -133,7 +142,10 @@ public class ChangeSettingsPane extends GridPane {
         return false;
     }
     
-    
+    /**
+     * Event handler for changing the entered max pending jobs setting.
+     * Updates the setting if the input is valid, shows an error otherwise.
+     */
     private class ChangeSettingEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -148,16 +160,23 @@ public class ChangeSettingsPane extends GridPane {
         }
     }
 
+    /**
+     * Event handler for setting the max pending jobs to its default setting.
+     */
     private class SetDefaultMaxJobsEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
         	ModelConstants.setDefaultMaxPendingJobs();
         	newMaxJobsTextField.setPromptText("Current: " + getMaxPendingJobs());
         	newMaxJobsTextField.setText(new Integer(getMaxPendingJobs()).toString());
-        	checkUpdatedMaxJobs();
+        	validateNewMaxJobs();
         }
     }
     
+    /**
+     * Event handler for the back button. If pressed, 
+     * it will send the urban parks staff member to the main urban parks staff menu.
+     */
     private class BackButtonEventHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {

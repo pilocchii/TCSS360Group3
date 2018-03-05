@@ -8,17 +8,25 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.VBox;
-import urbanparks.model.Job;
 import urbanparks.model.JobAvailability;
 import urbanparks.model.ParkManager;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.JobsTableView;
 import urbanparks.view.MainApplication;
 
+/**
+ * JobsTableView that shows jobs for a park manager.
+ */
 public class JobsDisplay extends JobsTableView {
 
 	private ParkManager parkManager;
 	
+	/**
+	 * Constructor for JobsDisplay
+	 * 
+	 * @param root Reference to the root application.
+	 * @param parkManager The park manager this menu is for.
+	 */
 	public JobsDisplay(MainApplication root, ParkManager parkManager) {
 		this.root = root;
 		this.parkManager = parkManager;
@@ -28,6 +36,9 @@ public class JobsDisplay extends JobsTableView {
 		backButton.setOnAction(new BackButton_ParkManager_Handler());
 	}
     
+	/**
+	 * Displays the park manager's created jobs in a jobs table.
+	 */
 	public void showParkManagerCreatedJobs() {
 		String tableTitle = "\t\t\t\tJobs You Created";
         ArrayList<JobAvailability> jobsToShow = root.getJobCollection().getAvailableForUnsubmit(parkManager);
@@ -46,14 +57,11 @@ public class JobsDisplay extends JobsTableView {
 		root.setCenter(vbox);
 		root.setTitle("View Submitted Jobs - " + parkManager.getEmail());
 	}
-	
-    private class BackButton_ParkManager_Handler implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-        	root.setCenter(new ParkManagerMenu(root, parkManager));
-        }
-    }
-    
+
+	/**
+	 * Event handler for the unsubmit job button. If the business rules are met, 
+	 * pressing this will prompt the park manager to unsubmit the selected job.
+	 */
     public class UnsubmitJobButtonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
@@ -66,6 +74,17 @@ public class JobsDisplay extends JobsTableView {
         	} else {
         		AlertUtils.showInvalidOptions();
         	}
+        }
+    }
+    
+    /**
+     * Event handler for the back button. If pressed, 
+     * it will send the user to the park manager menu.
+     */
+    private class BackButton_ParkManager_Handler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+        	root.setCenter(new ParkManagerMenu(root, parkManager));
         }
     }
 }
