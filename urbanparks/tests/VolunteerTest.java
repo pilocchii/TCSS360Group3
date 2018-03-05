@@ -20,13 +20,11 @@ import urbanparks.model.Volunteer;
 public class VolunteerTest {
 
 	private Volunteer volunteerNoJobs;
-	private Volunteer volunteerWithJobs;
 	private JobCollection jobCollection;
 
 	/* test jobs with various lengths, name scheme "testJob_{start date}_{end date}"  */
 	private Job testJob_minDaysInFuture_minDaysInFuture;
     private Job testJob_minDaysInFuture_minDaysInFuturePlusOne;
-    private Job testJob_minDaysInFuture_minDaysInFuturePlusMaxJobLength;
     private Job testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne;
 
 	@Before
@@ -35,12 +33,8 @@ public class VolunteerTest {
         volunteerNoJobs = new Volunteer("NoJobs", "Volunteer",
                 "test1@test.test", "1234567890");
 
-        volunteerWithJobs = new Volunteer("HasJobs", "Volunteer",
-                "test2@test.test", "0987654321");
-
         LocalDateTime MinDaysInFuture = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP);
         LocalDateTime MinDaysInFuturePlusOne = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP + 1);
-        LocalDateTime minDaysInFuturePlusMaxJobLength = LocalDateTime.now().plusDays(ModelConstants.MIN_DAYS_BEFORE_SIGNUP + ModelConstants.MAX_JOB_LENGTH);
 
         jobCollection = new JobCollection();
 
@@ -48,7 +42,6 @@ public class VolunteerTest {
                 "Gasworks", "Seattle");
         testJob_minDaysInFuture_minDaysInFuturePlusOne = new Job("A test job", MinDaysInFuture, MinDaysInFuturePlusOne,
                 "Gasworks", "Seattle");
-        testJob_minDaysInFuture_minDaysInFuturePlusMaxJobLength = new Job("A test job", MinDaysInFuture, minDaysInFuturePlusMaxJobLength, "Gasworks", "Seattle");
         testJob_minDaysInFuturePlusOne_minDaysInFuturePlusOne = new Job("A test job", MinDaysInFuturePlusOne, MinDaysInFuturePlusOne,
                 "Gasworks", "Seattle");
 	}

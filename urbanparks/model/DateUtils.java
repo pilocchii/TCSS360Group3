@@ -7,6 +7,7 @@ import static urbanparks.model.ModelConstants.*;
 
 /**
  * Class that contains all the methods that is not belonging to the other classes.
+ * invariants: none
  */
 public class DateUtils {
 
