@@ -28,7 +28,7 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Retrieves an User object based on its email
-	 * Pre: The email is associated with tuser to fetch
+	 * Pre: The non-null email is associated with the user to fetch 
 	 * @param email the email the user is associated with
 	 * @return the user object represented by the email
 	 */
@@ -38,7 +38,7 @@ public class UserCollection implements Serializable {
 	
 	/**
 	 * Adds an user to the collection.
-	 * Pre: the user object is non-null
+	 * Pre: the unique user object is non-null
 	 * @param u the user to add to the collection
 	 */
 	public void addUser(User u) {
