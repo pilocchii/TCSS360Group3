@@ -17,8 +17,6 @@ import urbanparks.model.Volunteer;
 import urbanparks.view.AlertUtils;
 import urbanparks.view.MainApplication;
 import urbanparks.view.SignupPane;
-import urbanparks.view.MainMenuPane.LoginEventHandler;
-import urbanparks.view.MainMenuPane.SignupMenuEventHandler;
 import urbanparks.view.parkmanager.ParkManagerMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
 import static urbanparks.model.ModelConstants.*;
