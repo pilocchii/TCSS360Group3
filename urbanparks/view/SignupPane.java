@@ -14,7 +14,6 @@ import urbanparks.model.Volunteer;
 import urbanparks.view.parkmanager.ParkManagerMenu;
 import urbanparks.view.upstaff.UPStaffMenu;
 import urbanparks.view.volunteer.VolunteerMenu;
-import urbanparks.model.JobCollection;
 import urbanparks.model.ParkManager;
 import urbanparks.model.UrbanParksStaff;
 import static urbanparks.view.ViewConstants.*;
